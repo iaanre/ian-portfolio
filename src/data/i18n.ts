@@ -55,7 +55,7 @@ export const UI_COPY = {
       carouselAria: "Featured works showcase",
     },
     home: {
-      statementHeading: "Design that goes beyond surface and format.",
+      statementHeading: "Design that goes\nbeyond surface\nand format.",
       role: "Senior Graphic, Visual & Digital Designer",
       intro:
         "Senior Graphic & Digital Designer holding a B.A. in Graphic Design & Visual Communication, with 6+ years of experience crafting brand identities, editorial systems, websites and digital products.",
@@ -289,7 +289,7 @@ export const UI_COPY = {
       carouselAria: "Carrusel de proyectos destacados",
     },
     home: {
-      statementHeading: "Diseño que trasciende la superficie y el formato.",
+      statementHeading: "Diseño que trasciende\nla superficie\ny el formato.",
       role: "Diseñador Gráfico Senior · Visual y Digital",
       intro:
         "Diseñador Gráfico Senior y Licenciado en Diseño Gráfico y Comunicación Visual, con más de 6 años de experiencia creando identidades de marca, sistemas editoriales, sitios web y productos digitales.",
