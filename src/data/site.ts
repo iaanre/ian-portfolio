@@ -4,11 +4,15 @@ export const site = {
   last: "Rebuffo",
   role: "Senior Visual & Digital Designer",
   disciplinesLine: "Editorial · Web Design · Brand Identity · UX/UI",
-  yearsSpan: "Selected Works",
-  email: null as string | null,
-  location: null as string | null,
+  yearsSpan: "2019 — 2026",
+  email: "rebuffoi@gmail.com",
+  location: "Buenos Aires, Argentina",
+  socials: [
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/ian-rebuffo-929b84383/" },
+    { label: "Behance", href: "https://www.behance.net/ianrebuffo2" },
+  ],
   intro:
-    "Ian Rebuffo is a Senior Visual & Digital Designer crafting editorial systems, digital products, websites and brand identities with strong visual direction.",
+    "Senior Graphic & Digital Designer holding a B.A. in Graphic Design & Visual Communication, with 6+ years of experience crafting brand identities, editorial systems, websites and digital products.",
   capabilities: [
     "Editorial Design",
     "Web Design",
@@ -17,7 +21,7 @@ export const site = {
     "UX/UI",
     "Visual Design",
     "Digital Campaigns",
-    "Marketing Design",
+    "Generative AI Workflows",
   ],
   tools: [
     "Figma",
@@ -26,8 +30,11 @@ export const site = {
     "Adobe Photoshop",
     "Adobe After Effects",
     "Adobe Premiere Pro",
+    "Adobe Firefly",
+    "Google Gemini & AI Studio",
+    "ChatGPT & Cursor",
+    "Google Ads & Salesforce",
   ],
-  languages: [] as string[],
   nav: [
     { label: "Index", to: "/" },
     { label: "Works", to: "/work" },

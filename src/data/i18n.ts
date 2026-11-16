@@ -1,6 +1,25 @@
 import type { Locale } from "../context/LanguageContext.tsx";
 import type { Project, ProjectCategory } from "./projects.ts";
 
+export type ExperienceItem = {
+  role: string;
+  company: string;
+  period: string;
+  summary: string;
+};
+
+export type EducationItem = {
+  title: string;
+  institution: string;
+  year: string;
+  detail?: string;
+};
+
+export type ToolGroup = {
+  category: string;
+  items: string[];
+};
+
 export const UI_COPY = {
   en: {
     skipToContent: "Skip to content",
@@ -37,9 +56,9 @@ export const UI_COPY = {
     },
     home: {
       statementHeading: "Design that goes beyond surface and format.",
-      role: "Senior Visual & Digital Designer",
+      role: "Senior Graphic, Visual & Digital Designer",
       intro:
-        "Ian Rebuffo is a Senior Visual & Digital Designer crafting editorial systems, digital products, websites and brand identities with strong visual direction.",
+        "Senior Graphic & Digital Designer holding a B.A. in Graphic Design & Visual Communication, with 6+ years of experience crafting brand identities, editorial systems, websites and digital products.",
       readMore: "Read More",
       kineticLabel: "Disciplines",
       kineticPrimary: "EDITORIAL  ·  WEB DESIGN  ·  BRANDING  ·  UX/UI  ·  ",
@@ -54,13 +73,13 @@ export const UI_COPY = {
       capabilitiesHeading: "Services, skills and expertise",
       capabilities: [
         "Editorial Design",
-        "Web Design",
-        "Brand Identity",
-        "Product Design",
-        "UX/UI",
-        "Visual Design",
-        "Digital Campaigns",
-        "Marketing Design",
+        "Web Design & Landing Pages",
+        "Brand Identity & Visual Systems",
+        "Product Design & UX/UI",
+        "Art Direction",
+        "Digital & Multi-Channel Campaigns",
+        "Generative AI & Visual Experimentation",
+        "Marketing & B2B Communication",
       ],
     },
     categories: {
@@ -92,20 +111,110 @@ export const UI_COPY = {
       grid: "Grid",
     },
     about: {
-      eyebrow: "Studio · About",
-      introTitle: "Introduction",
-      introPlaceholder:
-        "A longer introduction will be added here. No biography has been invented for this placeholder.",
+      eyebrow: "Studio · Profile",
+      availability:
+        "Buenos Aires, Argentina · Open to remote, hybrid & on-site · Freelance / Full-time",
+      introTitle: "Profile",
+      bioLead:
+        "Senior Graphic Designer holding a Bachelor’s Degree in Graphic Design & Visual Communication (UCES), with over 6 years of experience across visual design, branding, editorial design, websites and digital campaigns in the technology, B2B industrial and real estate sectors.",
+      bioSecondary:
+        "My career combines hands-on visual execution with strategic thinking —evolving from Senior Graphic Designer to Marketing Director—, integrating art direction, team coordination, UX/UI design and generative AI workflows with a focus on visual quality, brand consistency and production efficiency.",
       experienceTitle: "Experience",
-      experiencePlaceholder: "Experience entries will be listed here once they are provided.",
+      experience: [
+        {
+          role: "Document Designer",
+          company: "Taste Labs",
+          period: "Oct 2026 – Nov 2026",
+          summary:
+            "Designed professional editorial documents in Figma for international clients, developing content structures, typographic hierarchies and grid systems to communicate complex information clearly within strict brand guidelines.",
+        },
+        {
+          role: "Marketing Director",
+          company: "Patagonia CNC Machines",
+          period: "Jan 2026 – Jun 2026",
+          summary:
+            "Led brand strategy, visual communication and creative development for a B2B industrial technology company across Latin American markets. Coordinated graphic design and marketing teams across digital campaigns, websites, institutional collateral and commercial presentations.",
+        },
+        {
+          role: "Senior Graphic Designer",
+          company: "Patagonia CNC Machines",
+          period: "Aug 2023 – Jan 2026",
+          summary:
+            "Designed technical catalogs, brochures, editorial pieces, presentations, websites and multi-channel digital campaigns, as well as promotional materials and print production for international trade shows.",
+        },
+        {
+          role: "Graphic Designer",
+          company: "Vitrium Capital",
+          period: "2022 – 2023",
+          summary:
+            "Created institutional, commercial and advertising assets for the real estate sector, including brochures, sales folders, shopping-center and outdoor signage, web designs and social media content.",
+        },
+        {
+          role: "Graphic Designer",
+          company: "Egoforum",
+          period: "2021",
+          summary:
+            "Designed and built websites, digital assets, social media visual content and Google Ads advertising materials for small and medium-sized businesses.",
+        },
+        {
+          role: "Graphic Designer",
+          company: "Vitrium Capital",
+          period: "2019 – 2021",
+          summary:
+            "Produced visual content for social media, email marketing campaigns and digital promotional materials aligned with brand identity guidelines.",
+        },
+      ] satisfies ExperienceItem[],
+      educationTitle: "Education",
+      education: [
+        {
+          title: "B.A. in Graphic Design & Visual Communication",
+          institution: "Universidad de Ciencias Empresariales y Sociales (UCES)",
+          year: "2025",
+        },
+        {
+          title: "UX/UI Design",
+          institution: "Coderhouse",
+          year: "2025",
+          detail: "User research, information architecture, wireframing, prototyping and interface design.",
+        },
+        {
+          title: "Artificial Intelligence Immersion",
+          institution: "Google",
+          year: "2025",
+          detail: "LLMs, content generation, workflow automation and AI assistants with Gemini & Google AI Studio.",
+        },
+      ] satisfies EducationItem[],
       capabilitiesTitle: "Capabilities",
-      toolsTitle: "Tools",
+      toolsTitle: "Tools & Tech",
+      toolGroups: [
+        {
+          category: "Design & Motion",
+          items: [
+            "Figma",
+            "Adobe InDesign",
+            "Adobe Illustrator",
+            "Adobe Photoshop",
+            "Adobe After Effects",
+            "Adobe Premiere Pro",
+            "Microsoft PowerPoint",
+          ],
+        },
+        {
+          category: "AI & Creative Automation",
+          items: ["Adobe Firefly", "Google Gemini", "Google AI Studio", "ChatGPT", "Cursor"],
+        },
+        {
+          category: "Marketing & Platforms",
+          items: ["Google Ads", "Salesforce", "Google Workspace"],
+        },
+      ] satisfies ToolGroup[],
       languagesTitle: "Languages",
-      languagesPlaceholder: "Spanish · English",
+      languagesList: [
+        { name: "Spanish", level: "Native" },
+        { name: "English", level: "Advanced" },
+      ],
       contactTitle: "Contact",
-      emailPending: "Email pending",
-      locationPending: "Location pending",
-      openingLink: "Get in touch",
+      socialsTitle: "Profiles",
     },
     caseStudy: {
       projectPrefix: "Project",
@@ -133,12 +242,13 @@ export const UI_COPY = {
       eyebrow: "Work with me",
       headlineLines: ["Let’s create", "something", "together."],
       directContact: "Direct Contact",
-      emailPending: "Email pending",
-      locationPending: "Location pending",
+      locationAvailability:
+        "Buenos Aires, Argentina · Open to remote, hybrid & on-site · Freelance / Full-time",
+      socialsLabel: "Connect",
       disciplines: "Disciplines",
       disciplinesList: ["Editorial Design", "Web & Digital Product", "Brand Identity"],
       sitemap: "Sitemap",
-      roleFooter: "Visual & Digital Designer",
+      roleFooter: "Senior Graphic, Visual & Digital Designer",
     },
     notFound: {
       heading: "This page is not in the index.",
@@ -180,9 +290,9 @@ export const UI_COPY = {
     },
     home: {
       statementHeading: "Diseño que trasciende la superficie y el formato.",
-      role: "Diseñador Senior Visual y Digital",
+      role: "Diseñador Gráfico Senior · Visual y Digital",
       intro:
-        "Ian Rebuffo es Diseñador Senior Visual y Digital especializado en sistemas editoriales, productos digitales, sitios web e identidades de marca con fuerte dirección visual.",
+        "Diseñador Gráfico Senior y Licenciado en Diseño Gráfico y Comunicación Visual, con más de 6 años de experiencia creando identidades de marca, sistemas editoriales, sitios web y productos digitales.",
       readMore: "Conocer más",
       kineticLabel: "Disciplinas",
       kineticPrimary: "EDITORIAL  ·  DISEÑO WEB  ·  BRANDING  ·  UX/UI  ·  ",
@@ -197,13 +307,13 @@ export const UI_COPY = {
       capabilitiesHeading: "Servicios, habilidades y especialidad",
       capabilities: [
         "Diseño Editorial",
-        "Diseño Web",
-        "Identidad de Marca",
-        "Diseño de Producto",
-        "UX/UI",
-        "Diseño Visual",
-        "Campañas Digitales",
-        "Diseño de Marketing",
+        "Diseño Web y Landing Pages",
+        "Identidad de Marca y Sistemas Visuales",
+        "Diseño de Producto y UX/UI",
+        "Dirección de Arte",
+        "Campañas Digitales Multicanal",
+        "IA Generativa y Experimentación Visual",
+        "Marketing y Comunicación B2B",
       ],
     },
     categories: {
@@ -235,20 +345,110 @@ export const UI_COPY = {
       grid: "Grilla",
     },
     about: {
-      eyebrow: "Estudio · Sobre mí",
-      introTitle: "Introducción",
-      introPlaceholder:
-        "Aquí se sumará una presentación extendida. No se inventó ninguna biografía en este espacio.",
+      eyebrow: "Estudio · Perfil Profesional",
+      availability:
+        "Buenos Aires, Argentina · Disponible para remoto, híbrido o presencial · Freelance / Full-time",
+      introTitle: "Perfil",
+      bioLead:
+        "Diseñador Gráfico Senior y Licenciado en Diseño Gráfico y Comunicación Visual (UCES), con más de 6 años de experiencia en diseño visual, branding, diseño editorial, sitios web y campañas digitales en los sectores tecnológico, industrial B2B e inmobiliario.",
+      bioSecondary:
+        "Mi trayectoria combina ejecución práctica de diseño con visión estratégica —evolucionando desde Diseñador Gráfico Senior hasta Director de Marketing—, integrando dirección de arte, coordinación de equipos, diseño UX/UI y flujos de inteligencia artificial generativa con foco en calidad visual, consistencia de marca y eficiencia productiva.",
       experienceTitle: "Experiencia",
-      experiencePlaceholder: "La trayectoria profesional se listará aquí cuando se cargue el contenido.",
+      experience: [
+        {
+          role: "Diseñador de Documentos",
+          company: "Taste Labs",
+          period: "Oct 2026 – Nov 2026",
+          summary:
+            "Diseño y maquetación editorial de documentos profesionales en Figma para clientes internacionales, desarrollando estructuras de contenido, jerarquías tipográficas y sistemas de grillas para comunicar información compleja con claridad y consistencia de marca.",
+        },
+        {
+          role: "Director de Marketing",
+          company: "Patagonia CNC Machines",
+          period: "Ene 2026 – Jun 2026",
+          summary:
+            "Dirección de la estrategia de marca, comunicación visual y desarrollo creativo para una empresa de tecnología industrial B2B en mercados latinoamericanos. Coordinación de equipos de diseño y marketing en campañas digitales, sitios web, materiales institucionales y presentaciones comerciales.",
+        },
+        {
+          role: "Diseñador Gráfico Senior",
+          company: "Patagonia CNC Machines",
+          period: "Ago 2023 – Ene 2026",
+          summary:
+            "Diseño de catálogos técnicos, folletos, piezas editoriales, presentaciones, sitios web y campañas digitales multicanal, además de materiales promocionales y coordinación de producción gráfica para ferias y eventos internacionales.",
+        },
+        {
+          role: "Diseñador Gráfico",
+          company: "Vitrium Capital",
+          period: "2022 – 2023",
+          summary:
+            "Diseño de piezas institucionales, comerciales y publicitarias para el sector inmobiliario: brochures, carpetas comerciales, cartelería para centros comerciales y vía pública, diseños web y contenido digital.",
+        },
+        {
+          role: "Diseñador Gráfico",
+          company: "Egoforum",
+          period: "2021",
+          summary:
+            "Diseño y desarrollo de sitios web, piezas digitales, contenido visual para redes sociales y gestión creativa de campañas en Google Ads para PyMEs.",
+        },
+        {
+          role: "Diseñador Gráfico",
+          company: "Vitrium Capital",
+          period: "2019 – 2021",
+          summary:
+            "Desarrollo de contenido visual para redes sociales, campañas de email marketing y piezas promocionales digitales aplicando el sistema de identidad de marca.",
+        },
+      ] satisfies ExperienceItem[],
+      educationTitle: "Formación",
+      education: [
+        {
+          title: "Licenciatura en Diseño Gráfico y Comunicación Visual",
+          institution: "Universidad de Ciencias Empresariales y Sociales (UCES)",
+          year: "2025",
+        },
+        {
+          title: "Diseño UX/UI",
+          institution: "Coderhouse",
+          year: "2025",
+          detail: "Investigación de usuarios, arquitectura de información, wireframes, prototipado y diseño de interfaces.",
+        },
+        {
+          title: "Inmersión en Inteligencia Artificial",
+          institution: "Google",
+          year: "2025",
+          detail: "Modelos de lenguaje, generación de contenido, automatización y asistentes de IA con Gemini y Google AI Studio.",
+        },
+      ] satisfies EducationItem[],
       capabilitiesTitle: "Capacidades",
-      toolsTitle: "Herramientas",
+      toolsTitle: "Herramientas y Tecnología",
+      toolGroups: [
+        {
+          category: "Diseño y Motion",
+          items: [
+            "Figma",
+            "Adobe InDesign",
+            "Adobe Illustrator",
+            "Adobe Photoshop",
+            "Adobe After Effects",
+            "Adobe Premiere Pro",
+            "Microsoft PowerPoint",
+          ],
+        },
+        {
+          category: "IA y Automatización Creativa",
+          items: ["Adobe Firefly", "Google Gemini", "Google AI Studio", "ChatGPT", "Cursor"],
+        },
+        {
+          category: "Marketing y Plataformas",
+          items: ["Google Ads", "Salesforce", "Google Workspace"],
+        },
+      ] satisfies ToolGroup[],
       languagesTitle: "Idiomas",
-      languagesPlaceholder: "Español · Inglés",
+      languagesList: [
+        { name: "Español", level: "Nativo" },
+        { name: "Inglés", level: "Avanzado" },
+      ],
       contactTitle: "Contacto",
-      emailPending: "Email pendiente",
-      locationPending: "Ubicación pendiente",
-      openingLink: "Contactar",
+      socialsTitle: "Perfiles",
     },
     caseStudy: {
       projectPrefix: "Proyecto",
@@ -276,12 +476,13 @@ export const UI_COPY = {
       eyebrow: "Trabajemos juntos",
       headlineLines: ["Creemos", "algo", "juntos."],
       directContact: "Contacto Directo",
-      emailPending: "Email pendiente",
-      locationPending: "Ubicación pendiente",
+      locationAvailability:
+        "Buenos Aires, Argentina · Disponible para remoto, híbrido o presencial · Freelance / Full-time",
+      socialsLabel: "Redes y Perfiles",
       disciplines: "Disciplinas",
       disciplinesList: ["Diseño Editorial", "Web y Producto Digital", "Identidad de Marca"],
       sitemap: "Mapa del sitio",
-      roleFooter: "Diseñador Visual y Digital",
+      roleFooter: "Diseñador Gráfico Senior · Visual y Digital",
     },
     notFound: {
       heading: "Esta página no está en el índice.",

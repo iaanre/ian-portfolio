@@ -10,6 +10,8 @@ type MagneticProps = {
   className?: string;
   to?: string;
   href?: string;
+  target?: string;
+  rel?: string;
   strength?: number;
   onClick?: () => void;
   "aria-current"?: "page" | undefined;
@@ -21,6 +23,8 @@ export function MagneticLink({
   className,
   to,
   href,
+  target,
+  rel,
   strength = 0.28,
   onClick,
   "aria-current": ariaCurrent,
@@ -73,8 +77,20 @@ export function MagneticLink({
     );
   }
 
+  const isExternalHttp = href?.startsWith("http://") || href?.startsWith("https://");
+  const resolvedTarget = target ?? (isExternalHttp ? "_blank" : undefined);
+  const resolvedRel = rel ?? (resolvedTarget === "_blank" ? "noopener noreferrer" : undefined);
+
   return (
-    <a ref={ref} href={href} className={cls} onClick={onClick} data-cursor={dataCursor}>
+    <a
+      ref={ref}
+      href={href}
+      target={resolvedTarget}
+      rel={resolvedRel}
+      className={cls}
+      onClick={onClick}
+      data-cursor={dataCursor}
+    >
       {children}
     </a>
   );
