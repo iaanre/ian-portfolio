@@ -16,7 +16,6 @@ export function CaseStudyHero({ project }: { project: Project }) {
   const localizedTitle = localizeProjectTitle(project, lang);
   const isTay = project.slug === "tay";
   const isNudos = project.slug === "nudos";
-  const aspectHero = isTay || isNudos;
 
   const heroFrame = isNudos
     ? "relative w-full bg-[#0a0a0a] aspect-[3/4] sm:aspect-[5/4] md:aspect-[16/10] md:max-h-[92svh]"

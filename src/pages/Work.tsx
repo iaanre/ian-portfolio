@@ -109,7 +109,9 @@ export default function Work() {
               const count =
                 item.id === "all"
                   ? projects.length
-                  : projects.filter((p) => projectBelongsTo(p, item.id)).length;
+                  : projects.filter((p) =>
+                      projectBelongsTo(p, item.id as ProjectCategory),
+                    ).length;
               const isSelected = filter === item.id;
 
               return (
