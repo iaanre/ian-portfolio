@@ -36,7 +36,7 @@ export const site = {
     "Google Ads & Salesforce",
   ],
   nav: [
-    { label: "Index", to: "/" },
+    { label: "Home", to: "/" },
     { label: "Works", to: "/work" },
     { label: "Editorial", to: "/#editorial" },
     { label: "Studio", to: "/about" },

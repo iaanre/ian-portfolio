@@ -29,7 +29,7 @@ export const UI_COPY = {
     docTitleAbout: "Studio — Ian Rebuffo",
     docTitleNotFound: "Not found — Ian Rebuffo",
     nav: {
-      index: "Index",
+      index: "Home",
       works: "Works",
       editorial: "Editorial",
       studio: "Studio",
