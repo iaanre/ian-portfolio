@@ -14,9 +14,24 @@ export function CaseStudyHero({ project }: { project: Project }) {
   const copy = UI_COPY[lang].caseStudy;
   const cover = project.media[0];
   const localizedTitle = localizeProjectTitle(project, lang);
+  const isTay = project.slug === "tay";
+  const isNudos = project.slug === "nudos";
+  const aspectHero = isTay || isNudos;
+
+  const heroFrame = isNudos
+    ? "relative w-full bg-[#0a0a0a] aspect-[3/4] sm:aspect-[5/4] md:aspect-[16/10] md:max-h-[92svh]"
+    : isTay
+      ? "relative w-full bg-[#0a0a0a] aspect-[4/5] sm:aspect-[5/4] md:aspect-auto md:h-[100svh]"
+      : "h-[72svh] sm:h-[82svh] md:h-[100svh]";
+
+  const objectPosition = isNudos
+    ? "center 42%"
+    : isTay
+      ? "center center"
+      : cover.objectPosition;
 
   return (
-    <header data-header-theme="paper" className="relative isolate px-[5vw] pt-24 sm:pt-28 md:pt-32">
+    <header data-header-theme="paper" className="relative isolate">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[76svh]"
@@ -25,13 +40,22 @@ export function CaseStudyHero({ project }: { project: Project }) {
         }}
       />
 
-      <div className="h-[68svh] md:h-[82svh]">
-        <ImageReveal variant="expand" className="h-full">
-          <ProjectVisual project={project} slot={cover} />
+      {/* Aspect-led heroes for image-heavy case studies; others keep tall cover */}
+      <div className={heroFrame}>
+        <ImageReveal variant="scale" className="absolute inset-0 h-full w-full">
+          <ProjectVisual
+            project={project}
+            slot={{
+              ...cover,
+              objectPosition,
+            }}
+            underNav
+            className="block"
+          />
         </ImageReveal>
       </div>
 
-      <div className="relative z-[1] -mt-[14vh] bg-[var(--c-paper)] pb-10 pt-6 md:-mt-[18vh] md:w-fit md:pr-[8vw]">
+      <div className="relative z-[1] -mt-[8vh] bg-[var(--c-paper)] px-[5vw] pb-10 pt-6 md:-mt-[16vh] md:w-fit md:pr-[8vw]">
         <p className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.2em] text-[var(--c-muted)]">
           <span
             className="inline-block h-2 w-2 rounded-[1px]"
@@ -51,7 +75,7 @@ export function CaseStudyHero({ project }: { project: Project }) {
         <p className="mt-5 text-sm text-[var(--c-muted)]">{localizeDisciplines(project, lang)}</p>
       </div>
 
-      <dl className="grid gap-6 border-t border-[var(--c-line)] py-8 text-[11px] uppercase tracking-[0.16em] sm:grid-cols-3">
+      <dl className="grid gap-6 border-t border-[var(--c-line)] px-[5vw] py-8 text-[11px] uppercase tracking-[0.16em] sm:grid-cols-3">
         <div>
           <dt className="text-[var(--c-muted)]">{copy.discipline}</dt>
           <dd className="mt-2 text-[15px] normal-case tracking-normal">

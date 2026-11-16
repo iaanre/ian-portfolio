@@ -46,7 +46,30 @@ export function ProjectVisual({
   }
 
   if (slot?.src) {
-    return <img src={slot.src} alt={slot.alt} className={cn("h-full w-full object-cover", className)} />;
+    const position = slot.objectPosition ? { objectPosition: slot.objectPosition } : undefined;
+    const imgClass = cn("h-full w-full object-cover", className);
+
+    if (slot.srcMobile && slot.srcMobile !== slot.src) {
+      return (
+        <>
+          <img
+            src={slot.srcMobile}
+            alt={slot.alt}
+            className={cn(imgClass, "md:hidden")}
+            style={position}
+          />
+          <img
+            src={slot.src}
+            alt=""
+            aria-hidden="true"
+            className={cn(imgClass, "hidden md:block")}
+            style={position}
+          />
+        </>
+      );
+    }
+
+    return <img src={slot.src} alt={slot.alt} className={imgClass} style={position} />;
   }
 
   const banner = project.banner ?? DEFAULT_BANNER;

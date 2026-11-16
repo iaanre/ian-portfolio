@@ -1,4 +1,13 @@
 import { PENDING_COPY } from "./site.ts";
+import { tayAsset, tayCover } from "./tayAssets.ts";
+import { TAY_COPY } from "./tayCopy.ts";
+import { nudosAsset, nudosCover } from "./nudosAssets.ts";
+import { NUDOS_COPY } from "./nudosCopy.ts";
+
+const tayCovers = tayCover("es");
+const tayEn = TAY_COPY.en;
+const nudosCovers = nudosCover("es");
+const nudosEn = NUDOS_COPY.en;
 
 export type MediaFrame = "none" | "browser" | "phone" | "spread";
 
@@ -29,6 +38,10 @@ export type MediaSlot = {
   frame: MediaFrame;
   /** Set this to an imported asset URL when the real file is added. */
   src?: string;
+  /** Optional portrait/mobile crop — used by hero full-bleed covers. */
+  srcMobile?: string;
+  /** CSS object-position when cropping (e.g. "center 30%"). */
+  objectPosition?: string;
 };
 
 export type CaseSection = {
@@ -43,6 +56,8 @@ export type Project = {
   title: string;
   lines: string[];
   category: ProjectCategory;
+  /** Extra sections this project also appears in (beyond `category`). */
+  alsoIn?: ProjectCategory[];
   categoryLabel: string;
   featured?: boolean;
   placeholder?: boolean;
@@ -107,25 +122,25 @@ export const projects: Project[] = [
     categoryLabel: "Product · Mobile",
     featured: true,
     disciplines: ["Product Design", "UX/UI", "Mobile"],
-    year: "Pending",
-    role: "Pending",
+    year: tayEn.year,
+    role: tayEn.role,
     tone: "paper",
     banner: {
-      bg: "#0d1220",
-      secondary: "#192440",
-      glow: "rgba(130, 140, 255, 0.34)",
-      accent: "#9aa2ff",
+      bg: "#12161a",
+      secondary: "#2c343b",
+      glow: "rgba(255, 87, 11, 0.32)",
+      accent: "#ff570b",
       headerTheme: "ink",
     },
-    overview: PENDING_COPY,
+    overview: tayEn.overview ?? PENDING_COPY,
     sections: [
-      { id: "overview", title: "Overview", body: PENDING_COPY },
-      { id: "challenge", title: "Challenge", body: PENDING_COPY },
-      { id: "role", title: "My Role", body: PENDING_COPY },
-      { id: "thinking", title: "Product Thinking", body: PENDING_COPY },
-      { id: "ia", title: "Information Architecture", body: PENDING_COPY },
-      { id: "ux", title: "User Experience", body: PENDING_COPY },
-      { id: "flows", title: "Key User Flows", body: PENDING_COPY },
+      { id: "overview", title: "Overview", body: tayEn.overview ?? PENDING_COPY },
+      { id: "challenge", title: "Challenge", body: tayEn.challenge ?? PENDING_COPY },
+      { id: "role", title: "My Role", body: tayEn.role ?? PENDING_COPY },
+      { id: "thinking", title: "Product Thinking", body: tayEn.thinking ?? PENDING_COPY },
+      { id: "ia", title: "Information Architecture", body: tayEn.ia ?? PENDING_COPY },
+      { id: "ux", title: "User Experience", body: tayEn.ux ?? PENDING_COPY },
+      { id: "flows", title: "Key User Flows", body: tayEn.flows ?? PENDING_COPY },
       { id: "ui", title: "UI System", body: PENDING_COPY },
       { id: "mobile", title: "Mobile Experience", body: PENDING_COPY },
       { id: "decisions", title: "Key Decisions", body: PENDING_COPY },
@@ -133,13 +148,98 @@ export const projects: Project[] = [
       { id: "learnings", title: "Learnings", body: PENDING_COPY },
     ],
     media: [
-      media("cover.webp", "TAY cover", "portrait"),
-      media("flow.webp", "TAY user flow", "landscape"),
-      media("system.webp", "TAY interface system", "landscape"),
-      media("mobile-01.webp", "TAY phone screen 01", "phone", "phone"),
-      media("mobile-02.webp", "TAY phone screen 02", "phone", "phone"),
-      media("mobile-03.webp", "TAY phone screen 03", "phone", "phone"),
-      media("walkthrough.mp4", "TAY product film", "landscape", "none", "video"),
+      {
+        ...media("cover", "TAY cover", "landscape"),
+        src: tayCovers.desktop,
+        srcMobile: tayCovers.mobile,
+        objectPosition: "center center",
+        alt: "TAY — Tu Auto Ya. Comprá y vendé autos de forma simple y segura.",
+        caption: "Portada",
+      },
+      {
+        ...media("flow", "TAY user flow", "landscape"),
+        src: tayAsset("flow"),
+        alt: "TAY — recorrido clave: marketplace, búsqueda, detalle y chat.",
+        caption: "Key user flow",
+      },
+      {
+        ...media("final", "TAY final product", "landscape"),
+        src: tayAsset("final"),
+        alt: "TAY — producto final: publicar, perfil y guardados.",
+        caption: "Final product",
+      },
+      {
+        ...media("logo-board-positive", "TAY wordmark positive", "landscape"),
+        src: tayAsset("logo-board-positive"),
+        alt: "TAY — wordmark positivo sobre fondo paper.",
+        caption: "Wordmark · positivo",
+      },
+      {
+        ...media("logo-board-negative", "TAY wordmark negative", "landscape"),
+        src: tayAsset("logo-board-negative"),
+        alt: "TAY — wordmark negativo sobre fondo ink.",
+        caption: "Wordmark · negativo",
+      },
+      {
+        ...media("logo-board-icons", "TAY app icons", "landscape"),
+        src: tayAsset("logo-board-icons"),
+        alt: "TAY — iconos de aplicación dark y orange.",
+        caption: "App icons",
+      },
+      {
+        ...media("logo-app-dark", "TAY app icon dark", "square"),
+        src: tayAsset("logo-app-dark"),
+        alt: "TAY — icono de aplicación, A naranja sobre fondo charcoal.",
+        caption: "App icon · dark",
+      },
+      {
+        ...media("logo-app-orange", "TAY app icon orange", "square"),
+        src: tayAsset("logo-app-orange"),
+        alt: "TAY — icono de aplicación, A blanca sobre fondo naranja.",
+        caption: "App icon · orange",
+      },
+      {
+        ...media("mobile-01", "TAY marketplace", "phone", "phone"),
+        src: tayAsset("01-marketplace"),
+        alt: "TAY — marketplace: listado de autos con filtros y financiación.",
+        caption: "Marketplace",
+      },
+      {
+        ...media("mobile-02", "TAY listing detail", "phone", "phone"),
+        src: tayAsset("02-detalle"),
+        alt: "TAY — detalle del vehículo con precio, specs y contacto al vendedor.",
+        caption: "Detalle",
+      },
+      {
+        ...media("mobile-03", "TAY search", "phone", "phone"),
+        src: tayAsset("03-busqueda"),
+        alt: "TAY — búsqueda y vistos recientemente.",
+        caption: "Búsqueda",
+      },
+      {
+        ...media("mobile-04", "TAY publish", "phone", "phone"),
+        src: tayAsset("04-publicar"),
+        alt: "TAY — publicar auto: fotos e información del vehículo.",
+        caption: "Publicar",
+      },
+      {
+        ...media("mobile-05", "TAY chat", "phone", "phone"),
+        src: tayAsset("05-chat"),
+        alt: "TAY — chat entre comprador y vendedor.",
+        caption: "Chat",
+      },
+      {
+        ...media("mobile-06", "TAY profile", "phone", "phone"),
+        src: tayAsset("06-perfil"),
+        alt: "TAY — perfil de usuario con publicaciones activas.",
+        caption: "Perfil",
+      },
+      {
+        ...media("mobile-07", "TAY saved", "phone", "phone"),
+        src: tayAsset("07-guardados"),
+        alt: "TAY — guardados: autos marcados por el usuario.",
+        caption: "Guardados",
+      },
     ],
   },
   {
@@ -148,22 +248,23 @@ export const projects: Project[] = [
     title: "NUDOS",
     lines: ["NUDOS"],
     category: "branding",
-    categoryLabel: "Brand Identity",
+    alsoIn: ["web"],
+    categoryLabel: "Brand Identity · Web Design",
     featured: true,
     disciplines: ["Brand Identity", "Web Design", "Digital"],
-    year: "Pending",
-    role: "Pending",
+    year: nudosEn.year,
+    role: nudosEn.role,
     tone: "ink",
     banner: {
-      bg: "#120d1c",
-      secondary: "#26193d",
-      glow: "rgba(184, 128, 255, 0.38)",
-      accent: "#b880ff",
+      bg: "#0a0a0a",
+      secondary: "#1a1a1a",
+      glow: "rgba(255, 255, 255, 0.1)",
+      accent: "#0a0a0a",
       headerTheme: "ink",
     },
-    overview: PENDING_COPY,
+    overview: nudosEn.overview ?? PENDING_COPY,
     sections: [
-      { id: "overview", title: "Overview", body: PENDING_COPY },
+      { id: "overview", title: "Overview", body: nudosEn.overview ?? PENDING_COPY },
       { id: "challenge", title: "Challenge", body: PENDING_COPY },
       { id: "approach", title: "Approach", body: PENDING_COPY },
       { id: "visual", title: "Visual System", body: PENDING_COPY },
@@ -173,10 +274,62 @@ export const projects: Project[] = [
       { id: "outcome", title: "Final Outcome", body: PENDING_COPY },
     ],
     media: [
-      media("cover.webp", "Nudos cover", "portrait"),
-      media("site-01.webp", "Nudos website frame 01", "landscape", "browser"),
-      media("site-02.webp", "Nudos website frame 02", "landscape", "browser"),
-      media("brand-01.webp", "Nudos brand element", "square"),
+      {
+        ...media("cover", "NUDOS cover", "landscape"),
+        src: nudosCovers.desktop,
+        srcMobile: nudosCovers.mobile,
+        objectPosition: "center 42%",
+        alt: "NUDOS — Design & Technology. Portada del estudio con sitio en laptop.",
+        caption: "Portada",
+      },
+      {
+        ...media("site-home", "NUDOS homepage", "landscape", "browser"),
+        src: nudosAsset("site-home"),
+        alt: "NUDOS — experiencia principal del sitio: Diseñamos. Desarrollamos. Conectamos.",
+        caption: "Homepage",
+      },
+      {
+        ...media("site-system", "NUDOS visual system", "landscape"),
+        src: nudosAsset("site-system"),
+        alt: "NUDOS — sistema visual: tipografía Metropolis y color monocromo.",
+        caption: "Visual system",
+      },
+      {
+        ...media("site-contact", "NUDOS contact", "landscape", "browser"),
+        src: nudosAsset("site-contact"),
+        alt: "NUDOS — bloque de contacto en superficie oscura.",
+        caption: "Contact",
+      },
+      {
+        ...media("site-projects", "NUDOS projects", "landscape", "browser"),
+        src: nudosAsset("site-projects"),
+        alt: "NUDOS — sección de proyectos en la web.",
+        caption: "Projects",
+      },
+      {
+        ...media("site-mobile", "NUDOS mobile", "landscape"),
+        src: nudosAsset("site-mobile"),
+        alt: "NUDOS — experiencia responsive mobile.",
+        caption: "Mobile",
+      },
+      {
+        ...media("logo-board-positive", "NUDOS wordmark positive", "landscape"),
+        src: nudosAsset("logo-board-positive"),
+        alt: "NUDOS — wordmark positivo.",
+        caption: "Wordmark · positivo",
+      },
+      {
+        ...media("logo-board-negative", "NUDOS wordmark negative", "landscape"),
+        src: nudosAsset("logo-board-negative"),
+        alt: "NUDOS — wordmark negativo.",
+        caption: "Wordmark · negativo",
+      },
+      {
+        ...media("logo-board-icons", "NUDOS brand mark", "landscape"),
+        src: nudosAsset("logo-board-icons"),
+        alt: "NUDOS — isologo positivo y negativo.",
+        caption: "Isologo",
+      },
     ],
   },
   {
@@ -409,8 +562,12 @@ export const projects: Project[] = [
 
 export const featuredProjects = projects.filter((project) => project.featured);
 
+export function projectBelongsTo(project: Project, category: ProjectCategory) {
+  return project.category === category || Boolean(project.alsoIn?.includes(category));
+}
+
 export function projectsByCategory(category: ProjectCategory) {
-  return projects.filter((project) => project.category === category);
+  return projects.filter((project) => projectBelongsTo(project, category));
 }
 
 export function getProject(slug: string | undefined) {

@@ -518,6 +518,7 @@ const DISCIPLINE_ES: Record<string, string> = {
 const CATEGORY_LABEL_ES: Record<string, string> = {
   "Product · Mobile": "Producto · Mobile",
   "Brand Identity": "Identidad de Marca",
+  "Brand Identity · Web Design": "Identidad de Marca · Diseño Web",
   "Web Design": "Diseño Web",
   "Editorial · B2B": "Editorial · B2B",
   "Publication · Print": "Publicación · Impreso",
@@ -575,6 +576,14 @@ export function localizeDisciplines(project: Project, lang: Locale): string {
 export function localizeMetaValue(value: string, lang: Locale): string {
   if (value === "Pending") {
     return UI_COPY[lang].caseStudy.pending;
+  }
+  // Project meta — keep Spanish when UI lang is ES
+  if (lang === "es") {
+    if (value === "2025 — 2026") return "2025 — 2026";
+    if (value === "Product Design Lead · UX/UI") return "Lead de Diseño de Producto · UX/UI";
+    if (value === "Founder · Brand & Product Design Lead") {
+      return "Fundador · Lead de Marca y Diseño de Producto";
+    }
   }
   return value;
 }

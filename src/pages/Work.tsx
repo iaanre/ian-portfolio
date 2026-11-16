@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { MouseEvent, RefObject } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { getProject, projects } from "../data/projects.ts";
+import { getProject, projectBelongsTo, projects } from "../data/projects.ts";
 import type { Project, ProjectCategory } from "../data/projects.ts";
 import {
   localizeCategoryLabel,
@@ -52,7 +52,9 @@ export default function Work() {
   }, [lang]);
 
   const filtered =
-    filter === "all" ? projects : projects.filter((project) => project.category === filter);
+    filter === "all"
+      ? projects
+      : projects.filter((project) => projectBelongsTo(project, filter));
 
   const current =
     filtered.find((item) => item.slug === activeSlug) ??
@@ -62,7 +64,8 @@ export default function Work() {
 
   const handleFilter = (next: FilterValue) => {
     setFilter(next);
-    const nextList = next === "all" ? projects : projects.filter((p) => p.category === next);
+    const nextList =
+      next === "all" ? projects : projects.filter((p) => projectBelongsTo(p, next));
     if (nextList[0]) setActiveSlug(nextList[0].slug);
     if (next === "all") {
       searchParams.delete("category");
@@ -106,7 +109,7 @@ export default function Work() {
               const count =
                 item.id === "all"
                   ? projects.length
-                  : projects.filter((p) => p.category === item.id).length;
+                  : projects.filter((p) => projectBelongsTo(p, item.id)).length;
               const isSelected = filter === item.id;
 
               return (

@@ -1,0 +1,35 @@
+TAY — cómo trabajamos los assets
+================================
+
+TU PARTE
+  1. Tirás capturas / logos / portadas en:
+       src/assets/tay/es/   (español)
+       src/assets/tay/en/   (inglés, opcional)
+  2. Me avisás (“actualicé las pantallas” / “subí portada nueva”).
+
+MI PARTE
+  - Recorto portada desktop + mobile
+  - Armao composiciones (flows, final, boards)
+  - Ajusto layout, marcos, mobile/desktop
+  - Cableo todo al case study
+
+NOMBRES (cualquier .jpg / .png / .webp)
+  cover              portada desktop
+  cover-mobile       portada mobile (si no está, yo la genero)
+  01-marketplace
+  02-detalle
+  03-busqueda
+  04-publicar
+  05-chat
+  06-perfil
+  07-guardados
+  logo-wordmark
+  logo-wordmark-neg
+  logo-app-dark
+  logo-app-orange
+
+COMPOSICIONES QUE ARMO YO (no hace falta que las subas)
+  flow.jpg           recorrido 4 pantallas
+  final.jpg          publicar + perfil + guardados
+
+Tip: subí las pantallas “crudas” de la app. Yo me encargo del diseño.
