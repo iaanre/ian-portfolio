@@ -35,6 +35,7 @@ export function HaylerHeroSlider() {
   const titleWrapRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLSpanElement>(null);
   const animatingRef = useRef(false);
+  const transitioningRef = useRef(false);
   const dragState = useRef<{
     active: boolean;
     startX: number;
@@ -54,6 +55,7 @@ export function HaylerHeroSlider() {
 
   const current: Project = slides[activeIndex] ?? slides[0];
   const outgoing: Project | null = prevIndex !== null ? slides[prevIndex] ?? null : null;
+  transitioningRef.current = prevIndex !== null;
   const isInk = current.banner.headerTheme === "ink";
   const currentTitle = localizeProjectTitle(current, lang);
 
@@ -100,102 +102,80 @@ export function HaylerHeroSlider() {
 
     const incomingEl = incomingSlideRef.current;
     const outgoingEl = outgoingSlideRef.current;
-    const titleEl = titleWrapRef.current;
+    if (prevIndex === null || !incomingEl || !outgoingEl) {
+      animatingRef.current = false;
+      return;
+    }
 
     const ctx = gsap.context(() => {
-      if (prevIndex !== null && incomingEl && outgoingEl) {
-        gsap.set(incomingEl, { zIndex: 2, xPercent: direction * 100 });
-        gsap.set(outgoingEl, { zIndex: 1, xPercent: 0 });
+      gsap.set(incomingEl, { zIndex: 2, xPercent: direction * 100 });
+      gsap.set(outgoingEl, { zIndex: 1, xPercent: 0 });
 
-        const inInner = incomingEl.querySelector(".slide-media-inner");
-        const outInner = outgoingEl.querySelector(".slide-media-inner");
-        if (inInner) gsap.set(inInner, { xPercent: -direction * 32, scale: 1.06 });
+      const inInner = incomingEl.querySelector(".slide-media-inner");
+      const outInner = outgoingEl.querySelector(".slide-media-inner");
+      if (inInner) gsap.set(inInner, { xPercent: -direction * 32, scale: 1.06 });
 
-        const tl = gsap.timeline({
-          onComplete: () => {
-            animatingRef.current = false;
-            setPrevIndex(null);
-          },
-        });
+      const tl = gsap.timeline({
+        onComplete: () => {
+          animatingRef.current = false;
+          setPrevIndex(null);
+        },
+      });
 
-        tl.to(
-          incomingEl,
-          {
-            xPercent: 0,
-            duration: 0.92,
-            ease: ease.inOut,
-          },
-          0,
-        );
-        if (inInner) {
-          tl.to(
-            inInner,
-            {
-              xPercent: 0,
-              scale: 1,
-              duration: 0.92,
-              ease: ease.inOut,
-            },
-            0,
-          );
-        }
-        tl.to(
-          outgoingEl,
-          {
-            xPercent: -direction * 35,
-            duration: 0.92,
-            ease: ease.inOut,
-          },
-          0,
-        );
-        if (outInner) {
-          tl.to(
-            outInner,
-            {
-              scale: 1.05,
-              duration: 0.92,
-              ease: ease.inOut,
-            },
-            0,
-          );
-        }
-      } else {
-        animatingRef.current = false;
+      tl.to(incomingEl, { xPercent: 0, duration: 0.92, ease: ease.inOut }, 0);
+      if (inInner) {
+        tl.to(inInner, { xPercent: 0, scale: 1, duration: 0.92, ease: ease.inOut }, 0);
       }
-
-      if (titleEl) {
-        const lines = titleEl.querySelectorAll(".hero-title-line");
-        const meta = titleEl.querySelectorAll(".hero-slide-meta");
-        gsap.fromTo(
-          lines,
-          { yPercent: 110 },
-          {
-            yPercent: 0,
-            duration: 0.78,
-            stagger: 0.06,
-            ease: ease.out,
-            overwrite: "auto",
-            delay: prevIndex !== null ? 0.12 : 0.02,
-          },
-        );
-        gsap.fromTo(
-          meta,
-          { y: 12, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.62,
-            stagger: 0.05,
-            ease: ease.out,
-            overwrite: "auto",
-            delay: prevIndex !== null ? 0.18 : 0.06,
-          },
-        );
+      tl.to(outgoingEl, { xPercent: -direction * 35, duration: 0.92, ease: ease.inOut }, 0);
+      if (outInner) {
+        tl.to(outInner, { scale: 1.05, duration: 0.92, ease: ease.inOut }, 0);
       }
     });
 
     return () => ctx.revert();
   }, [activeIndex, direction, prevIndex, reduced]);
+
+  useLayoutEffect(() => {
+    if (reduced) return;
+    const titleEl = titleWrapRef.current;
+    if (!titleEl) return;
+
+    const ctx = gsap.context(() => {
+      const lines = titleEl.querySelectorAll<HTMLElement>(".hero-title-line");
+      const meta = titleEl.querySelectorAll(".hero-slide-meta");
+      gsap.set(lines, { y: 0, clearProps: "transform,translate" });
+      gsap.fromTo(
+        lines,
+        { yPercent: 110 },
+        {
+          yPercent: 0,
+          duration: 0.78,
+          stagger: 0.06,
+          ease: ease.out,
+          overwrite: "auto",
+          delay: transitioningRef.current ? 0.12 : 0.02,
+          onComplete: () => {
+            gsap.set(lines, { y: 0, yPercent: 0, clearProps: "transform,translate" });
+          },
+        },
+      );
+      gsap.fromTo(
+        meta,
+        { y: 12, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.62,
+          stagger: 0.05,
+          ease: ease.out,
+          overwrite: "auto",
+          delay: transitioningRef.current ? 0.18 : 0.06,
+        },
+      );
+    });
+
+    return () => ctx.revert();
+  }, [activeIndex, reduced, currentTitle.title]);
 
   useEffect(() => {
     const bar = progressBarRef.current;
@@ -405,14 +385,16 @@ export function HaylerHeroSlider() {
               onPointerLeave={() => setPaused(false)}
               className="group inline-block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8"
             >
-              <h1 className="text-[clamp(2.8rem,8vw,8.4rem)] font-semibold leading-[0.98] tracking-[-0.05em]">
+              <h1 className="text-[clamp(2.8rem,8vw,8.4rem)] font-semibold leading-none tracking-[-0.05em]">
                 {currentTitle.lines.map((line) => (
                   <span
                     key={`${current.slug}-${line}`}
-                    className="-my-[0.04em] block overflow-hidden py-[0.06em]"
+                    className="-my-[0.2em] block overflow-hidden py-[0.22em] pr-[0.08em]"
                   >
-                    <span className="hero-title-line block will-change-transform transition-transform duration-500 group-hover:translate-x-1.5">
-                      {line}
+                    <span className="hero-title-line block will-change-transform">
+                      <span className="block transition-transform duration-500 group-hover:translate-x-1.5">
+                        {line}
+                      </span>
                     </span>
                   </span>
                 ))}
