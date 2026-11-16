@@ -25,12 +25,12 @@ export default function Home() {
         data-header-theme="paper"
         className="hayler-grid-bg px-[5vw] pb-[14vh] pt-[16vh] md:pb-[18vh] md:pt-[22vh]"
       >
-        <div className="max-w-[18ch]">
+        <div className="w-full max-w-none">
           <AnimatedHeading
             as="h2"
             mode="line"
             text={copy.statementHeading}
-            className="text-[clamp(2.6rem,6.6vw,6.2rem)] font-semibold leading-[0.95] tracking-[-0.045em]"
+            className="text-[clamp(1.55rem,calc(5.2vw+0.55rem),6.2rem)] font-semibold leading-[0.95] tracking-[-0.045em]"
           />
         </div>
 

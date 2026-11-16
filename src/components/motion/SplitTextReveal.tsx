@@ -49,9 +49,9 @@ export function SplitTextReveal({ text, className, mode = "word", as = "p" }: Sp
 
 function SplitContent({ text, mode }: { text: string; mode: Mode }) {
   if (mode === "line") {
-    return text.split("\n").map((line) => (
-      <span key={line} className="block overflow-hidden">
-        <span data-split className="block">
+    return text.split("\n").map((line, index) => (
+      <span key={`${line}-${index}`} className="block overflow-y-hidden">
+        <span data-split className="block whitespace-nowrap">
           {line}
         </span>
       </span>
