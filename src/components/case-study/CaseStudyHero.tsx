@@ -22,30 +22,24 @@ export function CaseStudyHero({ project }: { project: Project }) {
   const isNexo = project.slug === "queer";
   const isPackaging = project.slug === "patagonia-packaging";
   const isMockupHero = isNudos || isPatagonia || isCatalog02 || isNexo || isPackaging;
+  const showFullProduct = isMockupHero || cover.fit === "contain";
 
   const heroFrame = isVila
     ? "relative w-full bg-[#0a0a0a] h-[78svh] sm:h-[86svh] md:h-[94svh]"
-    : isMockupHero
-      ? "relative w-full bg-[#0a0a0a] aspect-[3/4] sm:aspect-[5/4] md:aspect-[16/10] md:max-h-[92svh]"
+    : showFullProduct
+      ? // Landscape-first so product mockups stay large + fully visible on all breakpoints.
+        "relative w-full bg-[#0a0a0a] aspect-[4/5] sm:aspect-[16/11] md:aspect-[16/10] md:max-h-[88svh]"
       : isTay
         ? "relative w-full bg-[#0a0a0a] aspect-[4/5] sm:aspect-[5/4] md:aspect-auto md:h-[100svh]"
         : "relative h-[72svh] sm:h-[82svh] md:h-[100svh]";
 
-  const objectPosition = isPatagonia
-    ? "62% 45%"
-    : isCatalog02
-      ? "center 40%"
-      : isNexo
-        ? "center 30%"
-        : isPackaging
-          ? "center 55%"
-          : isVila
-            ? "center 55%"
-            : isNudos
-              ? "center center"
-              : isTay
-                ? "center center"
-                : cover.objectPosition;
+  const objectPosition = showFullProduct
+    ? "center center"
+    : isVila
+      ? "center 55%"
+      : isTay
+        ? "center center"
+        : cover.objectPosition;
 
   return (
     <header data-header-theme="paper" className="relative isolate">
@@ -59,15 +53,16 @@ export function CaseStudyHero({ project }: { project: Project }) {
 
       {/* Aspect-led heroes for image-heavy case studies; others keep tall cover */}
       <div className={heroFrame}>
-        <ImageReveal variant="scale" className="absolute inset-0 h-full w-full">
+        <ImageReveal variant={showFullProduct ? "fade" : "scale"} className="absolute inset-0 h-full w-full">
           <ProjectVisual
             project={project}
             slot={{
               ...cover,
+              fit: showFullProduct ? "contain" : cover.fit,
               objectPosition,
             }}
             underNav
-            className="block"
+            className="h-full w-full"
           />
         </ImageReveal>
 

@@ -364,14 +364,24 @@ export function HaylerHeroSlider() {
       {outgoing ? (
         <div ref={outgoingSlideRef} className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="slide-media-inner h-full w-full will-change-transform">
-            <ProjectVisual project={outgoing} slot={homeMedia(outgoing)} hideOverlayMeta className="h-full w-full" />
+            <ProjectVisual
+              project={outgoing}
+              slot={homeMedia(outgoing)}
+              hideOverlayMeta
+              className="h-full w-full"
+            />
           </div>
         </div>
       ) : null}
 
       <div ref={incomingSlideRef} className="pointer-events-none absolute inset-0 z-[2] overflow-hidden">
         <div className="slide-media-inner h-full w-full will-change-transform">
-          <ProjectVisual project={current} slot={homeMedia(current)} hideOverlayMeta className="h-full w-full" />
+          <ProjectVisual
+            project={current}
+            slot={homeMedia(current)}
+            hideOverlayMeta
+            className="h-full w-full"
+          />
         </div>
         <div
           className="pointer-events-none absolute inset-0"

@@ -299,6 +299,7 @@ export const projects: Project[] = [
         ...media("cover", "NUDOS brand cover", "landscape"),
         src: nudosBrandCovers.desktop,
         srcMobile: nudosBrandCovers.mobile,
+        fit: "contain",
         objectPosition: "center center",
         alt: "NUDOS — portada del manual de marca, mockup del logo.",
         caption: "Portada",
@@ -396,7 +397,8 @@ export const projects: Project[] = [
         ...media("cover", "NUDOS web cover", "landscape"),
         src: nudosCovers.desktop,
         srcMobile: nudosCovers.mobile,
-        objectPosition: "center 42%",
+        fit: "contain",
+        objectPosition: "center center",
         alt: "NUDOS — Design & Technology. Portada del estudio con sitio en laptop.",
         caption: "Portada",
       },
@@ -547,7 +549,8 @@ export const projects: Project[] = [
         ...media("cover", "Patagonia web cover", "landscape"),
         src: patagoniaWebCovers.desktop,
         srcMobile: patagoniaWebCovers.mobile,
-        objectPosition: "58% 45%",
+        fit: "contain",
+        objectPosition: "center center",
         alt: "Patagonia CNC — homepage en laptop sobre roca.",
         caption: "Portada",
       },
@@ -788,6 +791,7 @@ export const projects: Project[] = [
         ...media("cover", "Millbridge cover", "landscape"),
         src: catalog02Covers.desktop,
         srcMobile: catalog02Covers.mobile,
+        fit: "contain",
         objectPosition: "center center",
         alt: "Millbridge — Board Communication Protocol, mockup de portada.",
         caption: "Portada",
@@ -898,7 +902,8 @@ export const projects: Project[] = [
         ...media("cover", "NEXO cover", "portrait"),
         src: nexoCovers.desktop,
         srcMobile: nexoCovers.mobile,
-        objectPosition: "center 35%",
+        fit: "contain",
+        objectPosition: "center center",
         alt: "NEXO — tapa de revista, edición 145.",
         caption: "Portada",
       },
@@ -987,25 +992,29 @@ export const projects: Project[] = [
         ...media("cover", "Patagonia packaging cover", "landscape"),
         src: packagingCovers.desktop,
         srcMobile: packagingCovers.mobile,
-        objectPosition: "center 55%",
+        fit: "contain",
+        objectPosition: "center center",
         alt: "Patagonia CNC — caja de alambre de soldadura, mockup en fila.",
         caption: "Portada",
       },
       {
         ...media("mockup-01", "Packaging mockup 01", "landscape"),
         src: packagingAsset("mockup-01"),
+        fit: "contain",
         alt: "Patagonia CNC — cajas de alambre en perspectiva.",
         caption: "Mockup 01",
       },
       {
         ...media("mockup-02", "Packaging mockup 02", "landscape"),
         src: packagingAsset("mockup-02"),
+        fit: "contain",
         alt: "Patagonia CNC — cajas de alambre, vista tres cuartos.",
         caption: "Mockup 02",
       },
       {
         ...media("mockup-03", "Packaging mockup 03", "landscape"),
         src: packagingAsset("mockup-03"),
+        fit: "contain",
         alt: "Patagonia CNC — familia de vistas del packaging.",
         caption: "Mockup 03",
       },
@@ -1054,9 +1063,29 @@ export function mediaById(project: Project, id: string): MediaSlot {
   return project.media.find((slot) => slot.id === id) ?? project.media[0];
 }
 
+/** Product/mockup covers that must show the full object (no crop) in listings & heroes. */
+const CONTAIN_COVER_SLUGS = new Set([
+  "nudos",
+  "nudos-web",
+  "patagonia",
+  "patagonia-web",
+  "patagonia-packaging",
+  "catalog-02",
+  "queer",
+]);
+
 /** Prefer `cover-home` when present (home slider / listings); else first media. */
 export function homeMedia(project: Project): MediaSlot {
-  return project.media.find((slot) => slot.id === "cover-home") ?? project.media[0];
+  const slot = project.media.find((s) => s.id === "cover-home") ?? project.media[0];
+  if (CONTAIN_COVER_SLUGS.has(project.slug)) {
+    return { ...slot, fit: "contain" };
+  }
+  return slot;
+}
+
+/** True when a slot should show the full product without cropping. */
+export function mediaShowsFullProduct(slot: MediaSlot | undefined): boolean {
+  return slot?.fit === "contain";
 }
 
 export function disciplineLine(project: Project) {

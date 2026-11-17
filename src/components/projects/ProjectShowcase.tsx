@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { homeMedia, projects, projectsByCategory } from "../../data/projects.ts";
+import { homeMedia, mediaShowsFullProduct, projects, projectsByCategory } from "../../data/projects.ts";
 import type { Project } from "../../data/projects.ts";
 import {
   localizeCategoryLabel,
@@ -92,6 +92,7 @@ function HaylerCard({
   const { mediaRef, onClick } = useProjectLaunch(project);
   const localizedTitle = localizeProjectTitle(project, lang).title;
   const slot = homeMedia(project);
+  const showFull = mediaShowsFullProduct(slot);
 
   return (
     <article className={cn("group", className)}>
@@ -101,16 +102,26 @@ function HaylerCard({
         onClick={onClick}
         className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8"
       >
-        <div ref={mediaRef} className={cn("w-full overflow-hidden", aspectClass)}>
+        <div
+          ref={mediaRef}
+          className={cn(
+            "w-full overflow-hidden",
+            // Landscape frames for product mockups so the object stays large + fully visible.
+            showFull ? "aspect-[16/10] bg-[#0a0a0a]" : aspectClass,
+          )}
+        >
           <ImageReveal variant={reveal} className="h-full w-full">
-            <ParallaxImage className="h-full w-full">
-              {/* Home previews always fill the frame so titles sit consistently under the media. */}
-              <ProjectVisual
-                project={project}
-                slot={{ ...slot, fit: "cover" }}
-                className="h-full w-full !object-cover"
-              />
-            </ParallaxImage>
+            {showFull ? (
+              <ProjectVisual project={project} slot={slot} className="h-full w-full" />
+            ) : (
+              <ParallaxImage className="h-full w-full">
+                <ProjectVisual
+                  project={project}
+                  slot={{ ...slot, fit: "cover" }}
+                  className="h-full w-full object-cover"
+                />
+              </ParallaxImage>
+            )}
           </ImageReveal>
         </div>
 
@@ -199,11 +210,7 @@ function EditorialSection({ items, lang }: { items: Project[]; lang: Locale }) {
                     ? "md:col-span-5 md:col-start-2"
                     : "md:col-span-6 md:col-start-7 md:-mt-12";
 
-            // Landscape frames for cover previews so titles sit tight under the image like VILA.
-            const aspectClass =
-              pattern === 0 || pattern === 1 || pattern === 3
-                ? "aspect-[16/10]"
-                : "aspect-[4/5]";
+            const aspectClass = "aspect-[16/10]";
 
             return (
               <HaylerCard
@@ -233,11 +240,16 @@ function EditorialSection({ items, lang }: { items: Project[]; lang: Locale }) {
           {activePreview ? (
             <div className="hidden md:col-span-4 md:col-start-9 md:block">
               <div className="sticky top-28">
-                <div className="aspect-[16/10] w-full overflow-hidden">
+                <div
+                  className={cn(
+                    "aspect-[16/10] w-full overflow-hidden",
+                    mediaShowsFullProduct(homeMedia(activePreview)) && "bg-[#0a0a0a]",
+                  )}
+                >
                   <ProjectVisual
                     project={activePreview}
-                    slot={{ ...homeMedia(activePreview), fit: "cover" }}
-                    className="h-full w-full !object-cover"
+                    slot={homeMedia(activePreview)}
+                    className="h-full w-full"
                   />
                 </div>
                 <div className="mt-4 flex items-center justify-between text-[12px] text-[var(--c-muted)]">
@@ -318,18 +330,18 @@ function WebSection({ items, lang }: { items: Project[]; lang: Locale }) {
         count={items.length}
       />
 
-      <div className="mt-12 grid items-start gap-y-14 md:mt-16 md:grid-cols-12 md:gap-x-8 md:gap-y-24">
+      <div className="mt-12 grid items-start gap-y-12 md:mt-16 md:grid-cols-12 md:gap-x-8 md:gap-y-20">
         {items.map((item, idx) => {
           const pattern = idx % 3;
           const colClass =
             pattern === 0
-              ? "md:col-span-6"
+              ? "md:col-span-7"
               : pattern === 1
-                ? "md:col-span-5 md:col-start-8 md:mt-28"
-                : "md:col-span-8 md:col-start-3";
+                ? "md:col-span-5 md:col-start-8 md:mt-16"
+                : "md:col-span-10 md:col-start-2";
 
-          const aspectClass =
-            pattern === 0 ? "aspect-[4/5]" : pattern === 1 ? "aspect-[16/11]" : "aspect-[16/9]";
+          // Wide landscape frames — web mockups stay large and fully visible.
+          const aspectClass = "aspect-[16/10]";
 
           return (
             <HaylerCard
@@ -337,7 +349,7 @@ function WebSection({ items, lang }: { items: Project[]; lang: Locale }) {
               project={item}
               lang={lang}
               aspectClass={aspectClass}
-              reveal={pattern === 1 ? "clip" : "vertical"}
+              reveal={pattern === 1 ? "clip" : "horizontal"}
               className={colClass}
             />
           );
@@ -365,13 +377,13 @@ function BrandingSection({ items, lang }: { items: Project[]; lang: Locale }) {
         count={items.length}
       />
 
-      <div className="mt-12 grid items-start gap-y-14 md:mt-16 md:grid-cols-12 md:gap-x-8 md:gap-y-24">
+      <div className="mt-12 grid items-start gap-y-12 md:mt-16 md:grid-cols-12 md:gap-x-8 md:gap-y-20">
         {items.map((item, idx) => {
           const isEven = idx % 2 === 0;
           const colClass = isEven
             ? "md:col-span-7"
-            : "md:col-span-4 md:col-start-9 md:mt-24";
-          const aspectClass = isEven ? "aspect-[16/10]" : "aspect-[4/5]";
+            : "md:col-span-5 md:col-start-8 md:mt-16";
+          const aspectClass = "aspect-[16/10]";
 
           return (
             <HaylerCard
@@ -379,7 +391,7 @@ function BrandingSection({ items, lang }: { items: Project[]; lang: Locale }) {
               project={item}
               lang={lang}
               aspectClass={aspectClass}
-              reveal={isEven ? "horizontal" : "vertical"}
+              reveal={isEven ? "horizontal" : "clip"}
               className={colClass}
             />
           );
