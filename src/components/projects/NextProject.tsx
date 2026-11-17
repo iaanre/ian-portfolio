@@ -10,6 +10,13 @@ export function NextProject({ project }: { project: Project }) {
   const copy = UI_COPY[lang].caseStudy;
   const { mediaRef, onClick } = useProjectLaunch(project);
   const localizedTitle = localizeProjectTitle(project, lang);
+  // Fill the portrait mask — contain letterboxes landscape covers and shrinks the product.
+  const preview = project.media.find((s) => s.id === "cover-home") ?? project.media[0];
+  const slot = {
+    ...preview,
+    fit: "cover" as const,
+    objectPosition: preview.objectPosition ?? "center center",
+  };
 
   return (
     <section data-header-theme="paper" className="border-t border-[var(--c-line)] px-[5vw] py-[12vh]">
@@ -33,8 +40,15 @@ export function NextProject({ project }: { project: Project }) {
             {localizeDisciplines(project, lang)}
           </p>
         </div>
-        <div ref={mediaRef} className="aspect-[4/5] md:col-span-4 md:col-start-9">
-          <ProjectVisual project={project} slot={project.media[0]} />
+        <div
+          ref={mediaRef}
+          className="aspect-[4/5] overflow-hidden md:col-span-4 md:col-start-9"
+        >
+          <ProjectVisual
+            project={project}
+            slot={slot}
+            className="h-full w-full scale-[1.18] origin-center"
+          />
         </div>
       </Link>
     </section>

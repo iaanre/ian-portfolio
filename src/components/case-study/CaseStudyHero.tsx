@@ -27,8 +27,8 @@ export function CaseStudyHero({ project }: { project: Project }) {
   const heroFrame = isVila
     ? "relative w-full bg-[#0a0a0a] h-[78svh] sm:h-[86svh] md:h-[94svh]"
     : showFullProduct
-      ? // Landscape-first so product mockups stay large + fully visible on all breakpoints.
-        "relative w-full bg-[#0a0a0a] aspect-[4/5] sm:aspect-[16/11] md:aspect-[16/10] md:max-h-[88svh]"
+      ? // Full-bleed width; height follows the image — no side letterbox bars.
+        "relative w-full overflow-hidden bg-[#0a0a0a]"
       : isTay
         ? "relative w-full bg-[#0a0a0a] aspect-[4/5] sm:aspect-[5/4] md:aspect-auto md:h-[100svh]"
         : "relative h-[72svh] sm:h-[82svh] md:h-[100svh]";
@@ -41,8 +41,11 @@ export function CaseStudyHero({ project }: { project: Project }) {
         ? "center center"
         : cover.objectPosition;
 
+  // Dark hero media → ink (white logo); light paper band below → paper (black logo).
+  const heroTheme = "ink";
+
   return (
-    <header data-header-theme="paper" className="relative isolate">
+    <header className="relative isolate">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[76svh]"
@@ -52,21 +55,45 @@ export function CaseStudyHero({ project }: { project: Project }) {
       />
 
       {/* Aspect-led heroes for image-heavy case studies; others keep tall cover */}
-      <div className={heroFrame}>
-        <ImageReveal variant={showFullProduct ? "fade" : "scale"} className="absolute inset-0 h-full w-full">
-          <ProjectVisual
-            project={project}
-            slot={{
-              ...cover,
-              fit: showFullProduct ? "contain" : cover.fit,
-              objectPosition,
-            }}
-            underNav
-            className="h-full w-full"
-          />
-        </ImageReveal>
+      <div data-header-theme={heroTheme} className={heroFrame}>
+        {showFullProduct && cover.src ? (
+          <ImageReveal variant="fade" naturalHeight className="w-full">
+            {cover.srcMobile && cover.srcMobile !== cover.src ? (
+              <>
+                <img
+                  src={cover.srcMobile}
+                  alt={cover.alt}
+                  className="block h-auto w-full md:hidden"
+                />
+                <img
+                  src={cover.src}
+                  alt=""
+                  aria-hidden="true"
+                  className="hidden h-auto w-full md:block"
+                />
+              </>
+            ) : (
+              <img src={cover.src} alt={cover.alt} className="block h-auto w-full" />
+            )}
+          </ImageReveal>
+        ) : (
+          <ImageReveal variant="scale" className="absolute inset-0 h-full w-full">
+            <ProjectVisual
+              project={project}
+              slot={{
+                ...cover,
+                objectPosition,
+              }}
+              underNav
+              className="h-full w-full"
+            />
+          </ImageReveal>
+        )}
 
-        <div className="absolute bottom-0 left-0 z-[1] bg-[var(--c-paper)] px-[5vw] pb-8 pt-5 md:w-fit md:max-w-[92vw] md:pr-[6vw]">
+        <div
+          data-header-theme="paper"
+          className="absolute bottom-0 left-0 z-[1] bg-[var(--c-paper)] px-[5vw] pb-8 pt-5 md:w-fit md:max-w-[92vw] md:pr-[6vw]"
+        >
           <p className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.2em] text-[var(--c-muted)]">
             <span
               className="inline-block h-2 w-2 rounded-[1px]"
@@ -83,7 +110,10 @@ export function CaseStudyHero({ project }: { project: Project }) {
         </div>
       </div>
 
-      <dl className="grid gap-6 border-t border-[var(--c-line)] px-[5vw] py-8 text-[11px] uppercase tracking-[0.16em] sm:grid-cols-3">
+      <dl
+        data-header-theme="paper"
+        className="grid gap-6 border-t border-[var(--c-line)] px-[5vw] py-8 text-[11px] uppercase tracking-[0.16em] sm:grid-cols-3"
+      >
         <div>
           <dt className="text-[var(--c-muted)]">{copy.discipline}</dt>
           <dd className="mt-2 text-[15px] normal-case tracking-normal">
