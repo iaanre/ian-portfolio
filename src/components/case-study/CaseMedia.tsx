@@ -29,10 +29,21 @@ export function CaseMedia({
   const { lang } = useLanguage();
   const copy = UI_COPY[lang].caseStudy;
   const captionText = slot.caption === "Caption pending." ? copy.captionPending : slot.caption;
+  const isSpread = slot.frame === "spread";
+  // Spreads / full sheets: taller mask (A4 landscape) so bottom of the page isn't cropped.
+  const frameAspect = slot.frame === "phone" ? "h-full" : isSpread ? "aspect-[297/210]" : aspectClass[slot.aspect];
 
   const visual = (
-    <ImageReveal variant={reveal} className={cn(slot.frame === "phone" ? "h-full" : aspectClass[slot.aspect], "w-full")}>
-      <ProjectVisual project={project} slot={slot} className="h-full min-h-full" />
+    <ImageReveal variant={reveal} className={cn(frameAspect, "w-full")}>
+      <ProjectVisual
+        project={project}
+        slot={slot}
+        className={
+          isSpread
+            ? "h-full min-h-full !object-contain object-center bg-[var(--c-paper)]"
+            : "h-full min-h-full"
+        }
+      />
     </ImageReveal>
   );
 

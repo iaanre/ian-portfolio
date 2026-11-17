@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
 import { Link } from "react-router-dom";
-import { featuredProjects } from "../../data/projects.ts";
+import { featuredProjects, homeMedia } from "../../data/projects.ts";
 import type { Project } from "../../data/projects.ts";
 import {
   localizeCategoryLabel,
@@ -107,32 +107,63 @@ export function HaylerHeroSlider() {
       return;
     }
 
-    const ctx = gsap.context(() => {
-      gsap.set(incomingEl, { zIndex: 2, xPercent: direction * 100 });
-      gsap.set(outgoingEl, { zIndex: 1, xPercent: 0 });
+    // Avoid gsap.context().revert() after a finished wipe — it snaps transforms
+    // back to the pre-tween state and causes the end-of-slide hitch.
+    let finished = false;
+    const inInner = incomingEl.querySelector<HTMLElement>(".slide-media-inner");
+    const outInner = outgoingEl.querySelector<HTMLElement>(".slide-media-inner");
 
-      const inInner = incomingEl.querySelector(".slide-media-inner");
-      const outInner = outgoingEl.querySelector(".slide-media-inner");
-      if (inInner) gsap.set(inInner, { xPercent: -direction * 32, scale: 1.06 });
+    gsap.killTweensOf([incomingEl, outgoingEl, inInner, outInner].filter(Boolean));
 
-      const tl = gsap.timeline({
-        onComplete: () => {
-          animatingRef.current = false;
-          setPrevIndex(null);
-        },
+    gsap.set(incomingEl, { zIndex: 2, xPercent: direction * 100, force3D: true });
+    gsap.set(outgoingEl, { zIndex: 1, xPercent: 0, force3D: true });
+    // Clear leftover drag `x` so it never fights xPercent mid-wipe.
+    if (inInner) {
+      gsap.set(inInner, {
+        x: 0,
+        xPercent: -direction * 28,
+        scale: 1.05,
+        force3D: true,
       });
+    }
+    if (outInner) {
+      gsap.set(outInner, { x: 0, xPercent: 0, scale: 1, force3D: true });
+    }
 
-      tl.to(incomingEl, { xPercent: 0, duration: 0.92, ease: ease.inOut }, 0);
-      if (inInner) {
-        tl.to(inInner, { xPercent: 0, scale: 1, duration: 0.92, ease: ease.inOut }, 0);
-      }
-      tl.to(outgoingEl, { xPercent: -direction * 35, duration: 0.92, ease: ease.inOut }, 0);
-      if (outInner) {
-        tl.to(outInner, { scale: 1.05, duration: 0.92, ease: ease.inOut }, 0);
-      }
+    const tl = gsap.timeline({
+      onComplete: () => {
+        finished = true;
+        gsap.set(incomingEl, { xPercent: 0, clearProps: "transform" });
+        if (inInner) {
+          gsap.set(inInner, { x: 0, xPercent: 0, scale: 1, clearProps: "transform" });
+        }
+        animatingRef.current = false;
+        setPrevIndex(null);
+      },
     });
 
-    return () => ctx.revert();
+    // Panel wipe settles with power3; inner parallax eases out a touch longer
+    // so both don't hard-stop on the same frame.
+    tl.to(incomingEl, { xPercent: 0, duration: 0.95, ease: "power3.inOut" }, 0);
+    if (inInner) {
+      tl.to(inInner, { xPercent: 0, scale: 1, duration: 1.12, ease: "power2.out" }, 0);
+    }
+    tl.to(outgoingEl, { xPercent: -direction * 28, duration: 0.95, ease: "power3.inOut" }, 0);
+    if (outInner) {
+      tl.to(outInner, { scale: 1.04, duration: 0.95, ease: "power3.inOut" }, 0);
+    }
+
+    return () => {
+      if (finished) {
+        tl.kill();
+        return;
+      }
+      tl.kill();
+      gsap.set(incomingEl, { xPercent: 0, clearProps: "transform" });
+      if (inInner) {
+        gsap.set(inInner, { x: 0, xPercent: 0, scale: 1, clearProps: "transform" });
+      }
+    };
   }, [activeIndex, direction, prevIndex, reduced]);
 
   useLayoutEffect(() => {
@@ -266,7 +297,14 @@ export function HaylerHeroSlider() {
     if (incomingEl) {
       const inner = incomingEl.querySelector<HTMLElement>(".slide-media-inner");
       if (inner) {
-        gsap.to(inner, { x: 0, scale: 1, duration: 0.45, ease: "power3.out" });
+        gsap.to(inner, {
+          x: 0,
+          xPercent: 0,
+          scale: 1,
+          duration: 0.45,
+          ease: "power3.out",
+          overwrite: "auto",
+        });
       }
     }
 
@@ -326,14 +364,14 @@ export function HaylerHeroSlider() {
       {outgoing ? (
         <div ref={outgoingSlideRef} className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="slide-media-inner h-full w-full will-change-transform">
-            <ProjectVisual project={outgoing} slot={outgoing.media[0]} hideOverlayMeta className="h-full w-full" />
+            <ProjectVisual project={outgoing} slot={homeMedia(outgoing)} hideOverlayMeta className="h-full w-full" />
           </div>
         </div>
       ) : null}
 
       <div ref={incomingSlideRef} className="pointer-events-none absolute inset-0 z-[2] overflow-hidden">
         <div className="slide-media-inner h-full w-full will-change-transform">
-          <ProjectVisual project={current} slot={current.media[0]} hideOverlayMeta className="h-full w-full" />
+          <ProjectVisual project={current} slot={homeMedia(current)} hideOverlayMeta className="h-full w-full" />
         </div>
         <div
           className="pointer-events-none absolute inset-0"
@@ -414,7 +452,10 @@ export function HaylerHeroSlider() {
 
         <div>
           <div
-            className="grid grid-cols-4 gap-3 sm:gap-6 md:gap-10"
+            className={cn(
+              "grid gap-3 sm:gap-6 md:gap-10",
+              slides.length <= 3 ? "grid-cols-3" : "grid-cols-4",
+            )}
             role="tablist"
             aria-label={copy.chooseProjectAria}
           >

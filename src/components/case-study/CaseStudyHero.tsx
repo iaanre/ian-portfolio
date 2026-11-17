@@ -16,18 +16,27 @@ export function CaseStudyHero({ project }: { project: Project }) {
   const localizedTitle = localizeProjectTitle(project, lang);
   const isTay = project.slug === "tay";
   const isNudos = project.slug === "nudos";
+  const isPatagonia = project.slug === "patagonia";
+  const isVila = project.slug === "editorial-02";
+  const isMockupHero = isNudos || isPatagonia;
 
-  const heroFrame = isNudos
-    ? "relative w-full bg-[#0a0a0a] aspect-[3/4] sm:aspect-[5/4] md:aspect-[16/10] md:max-h-[92svh]"
-    : isTay
-      ? "relative w-full bg-[#0a0a0a] aspect-[4/5] sm:aspect-[5/4] md:aspect-auto md:h-[100svh]"
-      : "h-[72svh] sm:h-[82svh] md:h-[100svh]";
+  const heroFrame = isVila
+    ? "relative w-full bg-[#0a0a0a] h-[78svh] sm:h-[86svh] md:h-[94svh]"
+    : isMockupHero
+      ? "relative w-full bg-[#0a0a0a] aspect-[3/4] sm:aspect-[5/4] md:aspect-[16/10] md:max-h-[92svh]"
+      : isTay
+        ? "relative w-full bg-[#0a0a0a] aspect-[4/5] sm:aspect-[5/4] md:aspect-auto md:h-[100svh]"
+        : "relative h-[72svh] sm:h-[82svh] md:h-[100svh]";
 
-  const objectPosition = isNudos
-    ? "center 42%"
-    : isTay
-      ? "center center"
-      : cover.objectPosition;
+  const objectPosition = isPatagonia
+    ? "62% 45%"
+    : isVila
+      ? "center 55%"
+      : isNudos
+        ? "center 42%"
+        : isTay
+          ? "center center"
+          : cover.objectPosition;
 
   return (
     <header data-header-theme="paper" className="relative isolate">
@@ -52,26 +61,36 @@ export function CaseStudyHero({ project }: { project: Project }) {
             className="block"
           />
         </ImageReveal>
-      </div>
 
-      <div className="relative z-[1] -mt-[8vh] bg-[var(--c-paper)] px-[5vw] pb-10 pt-6 md:-mt-[16vh] md:w-fit md:pr-[8vw]">
-        <p className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.2em] text-[var(--c-muted)]">
-          <span
-            className="inline-block h-2 w-2 rounded-[1px]"
-            style={{ backgroundColor: project.banner.accent }}
-          />
-          <span>
-            {copy.projectPrefix} {project.index}
-          </span>
-        </p>
-        <h1 className="mt-3 text-[clamp(3.4rem,11vw,10rem)] font-medium leading-[0.8] tracking-[-0.065em]">
-          {localizedTitle.lines.map((line) => (
-            <span key={line} className="block">
-              {line}
+        <div className="absolute bottom-0 left-0 z-[1] bg-[var(--c-paper)] px-[5vw] pb-8 pt-5 md:w-fit md:max-w-[92vw] md:pr-[6vw]">
+          <p className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.2em] text-[var(--c-muted)]">
+            <span
+              className="inline-block h-2 w-2 rounded-[1px]"
+              style={{ backgroundColor: project.banner.accent }}
+            />
+            <span>
+              {copy.projectPrefix} {project.index}
             </span>
-          ))}
-        </h1>
-        <p className="mt-5 text-sm text-[var(--c-muted)]">{localizeDisciplines(project, lang)}</p>
+          </p>
+          <h1
+            className={
+              isVila
+                ? "mt-2 whitespace-nowrap text-[clamp(1.6rem,4.2vw,3.6rem)] font-medium leading-[0.95] tracking-[-0.045em]"
+                : "mt-3 text-[clamp(3.4rem,11vw,10rem)] font-medium leading-[0.8] tracking-[-0.065em]"
+            }
+          >
+            {isVila ? (
+              localizedTitle.title
+            ) : (
+              localizedTitle.lines.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))
+            )}
+          </h1>
+          <p className="mt-4 text-sm text-[var(--c-muted)]">{localizeDisciplines(project, lang)}</p>
+        </div>
       </div>
 
       <dl className="grid gap-6 border-t border-[var(--c-line)] px-[5vw] py-8 text-[11px] uppercase tracking-[0.16em] sm:grid-cols-3">

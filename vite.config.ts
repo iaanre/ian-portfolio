@@ -11,4 +11,10 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  server: {
+    watch: {
+      // Avoid EBUSY crashes on large/locked catalog drop folders
+      ignored: ["**/src/assets/**/catalogo*/**"],
+    },
+  },
 });

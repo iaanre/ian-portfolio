@@ -240,7 +240,7 @@ export const UI_COPY = {
     },
     footer: {
       eyebrow: "Work with me",
-      headlineLines: ["Let’s create", "something", "together."],
+      headlineLines: ["Let’s create", "something together."],
       directContact: "Direct Contact",
       locationAvailability:
         "Buenos Aires, Argentina · Open to remote, hybrid & on-site · Freelance / Full-time",
@@ -474,7 +474,7 @@ export const UI_COPY = {
     },
     footer: {
       eyebrow: "Trabajemos juntos",
-      headlineLines: ["Creemos", "algo", "juntos."],
+      headlineLines: ["Creemos", "algo juntos."],
       directContact: "Contacto Directo",
       locationAvailability:
         "Buenos Aires, Argentina · Disponible para remoto, híbrido o presencial · Freelance / Full-time",
@@ -521,7 +521,9 @@ const CATEGORY_LABEL_ES: Record<string, string> = {
   "Brand Identity · Web Design": "Identidad de Marca · Diseño Web",
   "Web Design": "Diseño Web",
   "Editorial · B2B": "Editorial · B2B",
+  "Editorial · Web Design": "Editorial · Diseño Web",
   "Publication · Print": "Publicación · Impreso",
+  "Print & Digital": "Impreso y Digital",
   "Lookbook · Art Direction": "Lookbook · Dirección de Arte",
   "Book · Typography": "Libro · Tipografía",
   "Web Design · UI": "Diseño Web · UI",
@@ -550,6 +552,8 @@ const SECTION_TITLE_ES: Record<string, string> = {
   catalog: "Catálogo",
   editorial: "Sistema Editorial",
   product: "Comunicación de Producto",
+  edge: "Certificación EDGE",
+  plans: "Planos",
 };
 
 const PLACEHOLDER_TITLE_ES: Record<string, { title: string; lines: string[] }> = {
@@ -557,10 +561,15 @@ const PLACEHOLDER_TITLE_ES: Record<string, { title: string; lines: string[] }> =
 };
 
 export function localizeProjectTitle(project: Project, lang: Locale): { title: string; lines: string[] } {
-  if (lang === "es" && PLACEHOLDER_TITLE_ES[project.slug]) {
-    return PLACEHOLDER_TITLE_ES[project.slug];
-  }
-  return { title: project.title, lines: project.lines };
+  const raw =
+    lang === "es" && PLACEHOLDER_TITLE_ES[project.slug]
+      ? PLACEHOLDER_TITLE_ES[project.slug]
+      : { title: project.title, lines: project.lines };
+  // Project titles always render in uppercase.
+  return {
+    title: raw.title.toUpperCase(),
+    lines: raw.lines.map((line) => line.toUpperCase()),
+  };
 }
 
 export function localizeCategoryLabel(project: Project, lang: Locale): string {
@@ -580,9 +589,19 @@ export function localizeMetaValue(value: string, lang: Locale): string {
   // Project meta — keep Spanish when UI lang is ES
   if (lang === "es") {
     if (value === "2025 — 2026") return "2025 — 2026";
+    if (value === "2025") return "2025";
     if (value === "Product Design Lead · UX/UI") return "Lead de Diseño de Producto · UX/UI";
     if (value === "Founder · Brand & Product Design Lead") {
       return "Fundador · Lead de Marca y Diseño de Producto";
+    }
+    if (value === "Lead Designer · End-to-end") {
+      return "Diseñador Lead · Punta a punta";
+    }
+    if (value === "Full Design") {
+      return "Diseño completo";
+    }
+    if (value === "Art Direction · Editorial · Renders") {
+      return "Dirección de arte · Editorial · Renders";
     }
   }
   return value;

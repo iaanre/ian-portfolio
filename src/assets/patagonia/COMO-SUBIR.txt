@@ -1,0 +1,23 @@
+﻿PATAGONIA CNC — assets capturados (screens crudos)
+==================================================
+
+Carpeta: src/assets/patagonia/
+
+WEB (screens del sitio vivo — emprolijar luego)
+  cover 2.png            mockup fuente (original)
+  cover.png              hero recompuesto (notebook a la derecha)
+  cover-mobile.png       recorte mobile desde cover
+  site-home.png          home · 4 pilares de producto
+  site-solutions.png     otras soluciones (grid)
+  site-about-home.png    bloque Nuestra Empresa (home)
+  site-news.png          noticias / actualidad
+  site-laser.png         página Máquinas de Corte Láser
+  site-welding.png       página Soluciones de Soldadura
+  site-empresa.png       página Nuestra Empresa (instalaciones)
+  site-contact.png       página Contacto
+  site-mobile.png        home mobile
+
+EDITORIAL (aún pendiente — cuando tengas)
+  spread-01 / spread-02 / catalog / collateral
+
+Fuente: https://patagoniacnc.com/

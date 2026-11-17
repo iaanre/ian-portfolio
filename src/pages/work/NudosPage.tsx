@@ -2,6 +2,7 @@ import { getProject, mediaById } from "../../data/projects.ts";
 import { nudosSectionBody } from "../../data/nudosCopy.ts";
 import { useLanguage } from "../../context/LanguageContext.tsx";
 import { CaseMedia } from "../../components/case-study/CaseMedia.tsx";
+import { CaseStudyLabel } from "../../components/case-study/CaseStudyLabel.tsx";
 import { CaseStudyLayout } from "../../components/case-study/CaseStudyLayout.tsx";
 import { ImageReveal } from "../../components/motion/ImageReveal.tsx";
 import { AnimatedHeading } from "../../components/motion/AnimatedHeading.tsx";
@@ -18,9 +19,7 @@ export default function NudosPage() {
   return (
     <CaseStudyLayout project={project}>
       <section data-header-theme="paper" className="px-[5vw] pt-[8vh] pb-[6vh] md:pt-[10vh] md:pb-[8vh]">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--c-muted)]">
-          {lang === "es" ? "Resumen" : "Overview"}
-        </p>
+        <CaseStudyLabel>{lang === "es" ? "Resumen" : "Overview"}</CaseStudyLabel>
         <p className="mt-6 max-w-[40rem] text-[1.15rem] md:text-[1.3rem] leading-[1.65] text-[color:color-mix(in_srgb,var(--c-ink)_88%,transparent)]">
           {overview}
         </p>
@@ -34,7 +33,7 @@ export default function NudosPage() {
         <AnimatedHeading
           as="h2"
           text={statement}
-          className="max-w-[16ch] text-[clamp(2.2rem,5.5vw,4.8rem)] font-medium leading-[0.92] tracking-[-0.045em]"
+          className="max-w-[16ch] text-[clamp(2.2rem,5.5vw,4.8rem)] font-bold leading-[0.92] tracking-[-0.045em]"
         />
         <p className="mt-8 max-w-[36rem] text-[1.1rem] md:text-[1.2rem] leading-[1.65] text-[color:color-mix(in_srgb,var(--c-ink)_82%,transparent)]">
           {statementBody}
@@ -59,10 +58,8 @@ export default function NudosPage() {
       </div>
 
       <section data-header-theme="paper" className="px-[5vw] pt-[4vh] pb-[4vh] md:pt-[8vh]">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--c-muted)]">
-          {lang === "es" ? "Identidad" : "Identity"}
-        </p>
-        <h2 className="mt-4 max-w-[14ch] text-[clamp(2.2rem,5vw,4.2rem)] font-medium leading-[0.92] tracking-[-0.045em]">
+        <CaseStudyLabel>{lang === "es" ? "Identidad" : "Identity"}</CaseStudyLabel>
+        <h2 className="mt-4 max-w-[14ch] text-[clamp(2.2rem,5vw,4.2rem)] font-bold leading-[0.92] tracking-[-0.045em]">
           {lang === "es" ? "Marca y sistema." : "Brand and system."}
         </h2>
       </section>

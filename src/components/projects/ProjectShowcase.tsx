@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { projects, projectsByCategory } from "../../data/projects.ts";
+import { homeMedia, projects, projectsByCategory } from "../../data/projects.ts";
 import type { Project } from "../../data/projects.ts";
 import {
   localizeCategoryLabel,
@@ -103,7 +103,7 @@ function HaylerCard({
         <div ref={mediaRef} className={cn("w-full overflow-hidden", aspectClass)}>
           <ImageReveal variant={reveal} className="h-full w-full">
             <ParallaxImage className="h-full w-full">
-              <ProjectVisual project={project} slot={project.media[0]} className="h-full w-full" />
+              <ProjectVisual project={project} slot={homeMedia(project)} className="h-full w-full" />
             </ParallaxImage>
           </ImageReveal>
         </div>
@@ -225,7 +225,7 @@ function EditorialSection({ items, lang }: { items: Project[]; lang: Locale }) {
             <div className="hidden md:col-span-4 md:col-start-9 md:block">
               <div className="sticky top-28">
                 <div className="aspect-[4/5] w-full overflow-hidden">
-                  <ProjectVisual project={activePreview} slot={activePreview.media[0]} />
+                  <ProjectVisual project={activePreview} slot={homeMedia(activePreview)} />
                 </div>
                 <div className="mt-3 flex items-center justify-between text-[12px] text-[var(--c-muted)]">
                   <span>{localizeProjectTitle(activePreview, lang).title}</span>

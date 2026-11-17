@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { AnimatedHeading } from "../motion/AnimatedHeading.tsx";
+import { CaseStudyLabel } from "./CaseStudyLabel.tsx";
 import { cn } from "../../lib/cn.ts";
 
 export function CaseStudySection({
@@ -27,23 +27,17 @@ export function CaseStudySection({
       data-header-theme={dark ? "ink" : "paper"}
       className={cn(
         "px-[5vw]",
-        !hasCustomPadding && "py-[10vh] md:py-[14vh]",
+        !hasCustomPadding && "py-[6vh] md:py-[8vh]",
         dark && "tone-ink",
         className
       )}
     >
-      <AnimatedHeading
-        as="h2"
-        text={title}
-        className={cn(
-          "max-w-[14ch] text-[clamp(2.4rem,6vw,5.4rem)] font-medium leading-[0.9] tracking-[-0.05em]",
-          headingClassName
-        )}
-      />
+      <CaseStudyLabel className={headingClassName}>{title}</CaseStudyLabel>
       <div
         className={cn(
-          "mt-8 max-w-[38rem]",
-          bodyClassName ?? "text-[1.05rem] leading-[1.6] text-[color:color-mix(in_srgb,var(--c-ink)_82%,transparent)]"
+          "mt-5 max-w-[40rem]",
+          bodyClassName ??
+            "text-[1.1rem] md:text-[1.2rem] leading-[1.6] text-[color:color-mix(in_srgb,var(--c-ink)_88%,transparent)]"
         )}
       >
         {children}

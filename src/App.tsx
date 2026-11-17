@@ -16,8 +16,8 @@ const About = lazy(() => import("./pages/About.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const TayPage = lazy(() => import("./pages/work/TayPage.tsx"));
 const NudosPage = lazy(() => import("./pages/work/NudosPage.tsx"));
-const BrandingCoPage = lazy(() => import("./pages/work/BrandingCoPage.tsx"));
 const PatagoniaPage = lazy(() => import("./pages/work/PatagoniaPage.tsx"));
+const VilaPage = lazy(() => import("./pages/work/VilaPage.tsx"));
 const GenericCasePage = lazy(() => import("./pages/work/GenericCasePage.tsx"));
 
 const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
@@ -55,8 +55,8 @@ function AppShell() {
             <Route path="/work" element={<Work />} />
             <Route path="/work/tay" element={<TayPage />} />
             <Route path="/work/nudos" element={<NudosPage />} />
-            <Route path="/work/brandingco" element={<BrandingCoPage />} />
             <Route path="/work/patagonia" element={<PatagoniaPage />} />
+            <Route path="/work/editorial-02" element={<VilaPage />} />
             <Route path="/work/:slug" element={<GenericCasePage />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />

@@ -23,6 +23,6 @@ npm run preview
 - `src/data/projects.ts` — Centralized projects catalog (Editorial, Web & Product, Brand Identity)
 - `src/data/i18n.ts` — Complete English (`en`) and Spanish (`es`) copy dictionary
 - `src/data/site.ts` — Personal profile & contact metadata
-- `src/assets/` — Dedicated asset folders per project (`tay`, `nudos`, `brandingco`, `patagonia`, `global`)
+- `src/assets/` — Dedicated asset folders per project (`tay`, `nudos`, `patagonia`, `global`)
 - `public/404.html` & `index.html` — SPA deep-link routing support for GitHub Pages
 - `.github/workflows/deploy.yml` — Automated GitHub Actions build & deployment to GitHub Pages

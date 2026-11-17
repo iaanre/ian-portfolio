@@ -3,11 +3,20 @@ import { tayAsset, tayCover } from "./tayAssets.ts";
 import { TAY_COPY } from "./tayCopy.ts";
 import { nudosAsset, nudosCover } from "./nudosAssets.ts";
 import { NUDOS_COPY } from "./nudosCopy.ts";
+import { patagoniaAsset, patagoniaCover, patagoniaHomeCover } from "./patagoniaAssets.ts";
+import { PATAGONIA_COPY } from "./patagoniaCopy.ts";
+import { vilaAsset, vilaCover } from "./vilaAssets.ts";
+import { VILA_COPY } from "./vilaCopy.ts";
 
 const tayCovers = tayCover("es");
 const tayEn = TAY_COPY.en;
 const nudosCovers = nudosCover("es");
 const nudosEn = NUDOS_COPY.en;
+const patagoniaCovers = patagoniaCover("es");
+const patagoniaHomeCovers = patagoniaHomeCover("es");
+const patagoniaEn = PATAGONIA_COPY.en;
+const vilaCovers = vilaCover("es");
+const vilaEn = VILA_COPY.en;
 
 export type MediaFrame = "none" | "browser" | "phone" | "spread";
 
@@ -333,52 +342,17 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "brandingco",
-    index: "03",
-    title: "BRANDINGCO",
-    lines: ["BRANDINGCO"],
-    category: "web",
-    categoryLabel: "Web Design",
-    featured: true,
-    disciplines: ["Web Design", "Visual Design"],
-    year: "Pending",
-    role: "Pending",
-    tone: "paper",
-    banner: {
-      bg: "#e7e3f1",
-      secondary: "#d6cee8",
-      glow: "rgba(184, 128, 255, 0.32)",
-      accent: "#9b5cff",
-      headerTheme: "paper",
-    },
-    overview: PENDING_COPY,
-    sections: [
-      { id: "overview", title: "Overview", body: PENDING_COPY },
-      { id: "challenge", title: "Challenge", body: PENDING_COPY },
-      { id: "approach", title: "Approach", body: PENDING_COPY },
-      { id: "pages", title: "Website", body: PENDING_COPY },
-      { id: "visual", title: "Visual System", body: PENDING_COPY },
-      { id: "decisions", title: "Key Decisions", body: PENDING_COPY },
-      { id: "outcome", title: "Final Outcome", body: PENDING_COPY },
-    ],
-    media: [
-      media("cover.webp", "BrandingCo cover", "landscape"),
-      media("home.webp", "BrandingCo homepage", "landscape", "browser"),
-      media("page-02.webp", "BrandingCo inner page", "landscape", "browser"),
-      media("page-03.webp", "BrandingCo page detail", "portrait", "browser"),
-    ],
-  },
-  {
     slug: "patagonia",
-    index: "04",
+    index: "03",
     title: "PATAGONIA CNC MACHINES",
     lines: ["PATAGONIA", "CNC MACHINES"],
     category: "editorial",
-    categoryLabel: "Editorial · B2B",
+    alsoIn: ["web"],
+    categoryLabel: "Editorial · Web Design",
     featured: true,
-    disciplines: ["Editorial", "B2B", "Technical Communication"],
-    year: "Pending",
-    role: "Pending",
+    disciplines: ["Editorial", "Web Design", "B2B"],
+    year: patagoniaEn.year,
+    role: patagoniaEn.role,
     tone: "ink",
     banner: {
       bg: "#0b151a",
@@ -387,37 +361,77 @@ export const projects: Project[] = [
       accent: "#66d2ee",
       headerTheme: "ink",
     },
-    overview: PENDING_COPY,
+    overview: patagoniaEn.overview ?? PENDING_COPY,
     sections: [
-      { id: "overview", title: "Overview", body: PENDING_COPY },
-      { id: "challenge", title: "Challenge", body: PENDING_COPY },
-      { id: "approach", title: "Approach", body: PENDING_COPY },
-      { id: "catalog", title: "Catalog", body: PENDING_COPY },
-      { id: "editorial", title: "Editorial", body: PENDING_COPY },
-      { id: "product", title: "Product Communication", body: PENDING_COPY },
-      { id: "decisions", title: "Key Decisions", body: PENDING_COPY },
-      { id: "outcome", title: "Final Outcome", body: PENDING_COPY },
+      { id: "overview", title: "Overview", body: patagoniaEn.overview ?? PENDING_COPY },
+      { id: "challenge", title: "Challenge", body: patagoniaEn.challenge ?? PENDING_COPY },
+      { id: "approach", title: "Approach", body: patagoniaEn.approach ?? PENDING_COPY },
+      { id: "catalog", title: "Catalog", body: patagoniaEn.catalog ?? PENDING_COPY },
+      { id: "editorial", title: "Editorial", body: patagoniaEn.editorial ?? PENDING_COPY },
+      { id: "product", title: "Product Communication", body: patagoniaEn.product ?? PENDING_COPY },
+      { id: "decisions", title: "Key Decisions", body: patagoniaEn.decisions ?? PENDING_COPY },
+      { id: "outcome", title: "Final Outcome", body: patagoniaEn.outcome ?? PENDING_COPY },
     ],
     media: [
-      media("cover.webp", "Patagonia CNC cover", "landscape"),
-      media("spread-01.webp", "Catalog spread 01", "landscape", "spread"),
-      media("spread-02.webp", "Catalog spread 02", "landscape", "spread"),
-      media("spread-03.webp", "Catalog spread 03", "landscape", "spread"),
-      media("catalog.webp", "Technical catalog", "portrait"),
-      media("collateral.webp", "Marketing collateral", "landscape"),
+      {
+        ...media("cover", "Patagonia CNC cover", "landscape"),
+        src: patagoniaCovers.desktop,
+        srcMobile: patagoniaCovers.mobile,
+        objectPosition: "62% 45%",
+        alt: "Patagonia CNC Machines — catálogo Welding Solutions sobre roca.",
+        caption: "Portada",
+      },
+      {
+        ...media("cover-home", "Patagonia CNC home cover", "landscape"),
+        src: patagoniaHomeCovers.desktop,
+        srcMobile: patagoniaHomeCovers.mobile,
+        objectPosition: "68% 42%",
+        alt: "Patagonia CNC Machines — catálogo Welding Solutions sobre roca.",
+        caption: "Home cover",
+      },
+      {
+        ...media("spread-01", "Catalog spread 01", "landscape", "spread"),
+        src: patagoniaAsset("spread-01"),
+        alt: "Patagonia CNC — doble página editorial 12.",
+        caption: "Spread 01",
+      },
+      {
+        ...media("spread-02", "Catalog spread 02", "landscape", "spread"),
+        src: patagoniaAsset("spread-02"),
+        alt: "Patagonia CNC — doble página editorial 13.",
+        caption: "Spread 02",
+      },
+      {
+        ...media("spread-03", "Catalog spread 03", "landscape", "spread"),
+        src: patagoniaAsset("spread-03"),
+        alt: "Patagonia CNC — doble página editorial 14.",
+        caption: "Spread 03",
+      },
+      {
+        ...media("catalog", "Technical catalog", "portrait"),
+        src: patagoniaAsset("catalog"),
+        alt: "Patagonia CNC — pieza editorial 17.",
+        caption: "Catálogo",
+      },
+      {
+        ...media("collateral", "Marketing collateral", "landscape"),
+        src: patagoniaAsset("collateral"),
+        alt: "Patagonia CNC — pieza editorial 16.",
+        caption: "Collateral",
+      },
     ],
   },
   {
     slug: "editorial-02",
-    index: "05",
-    title: "EDITORIAL 02",
-    lines: ["EDITORIAL 02"],
+    index: "04",
+    title: "BROCHURE 01 VILA",
+    lines: ["BROCHURE 01 VILA"],
     category: "editorial",
     categoryLabel: "Publication · Print",
-    placeholder: true,
-    disciplines: ["Editorial Design", "Publication", "Print"],
-    year: "Pending",
-    role: "Pending",
+    placeholder: false,
+    disciplines: ["Editorial Design", "Art Direction", "Print & Digital"],
+    year: vilaEn.year,
+    role: vilaEn.role,
     tone: "paper",
     banner: {
       bg: "#1b1311",
@@ -426,21 +440,120 @@ export const projects: Project[] = [
       accent: "#e58668",
       headerTheme: "ink",
     },
-    overview: PENDING_COPY,
+    overview: vilaEn.overview ?? PENDING_COPY,
     sections: [
-      { id: "overview", title: "Overview", body: PENDING_COPY },
-      { id: "editorial", title: "Editorial System", body: PENDING_COPY },
-      { id: "outcome", title: "Final Outcome", body: PENDING_COPY },
+      { id: "overview", title: "Overview", body: vilaEn.overview ?? PENDING_COPY },
+      { id: "challenge", title: "Challenge", body: vilaEn.challenge ?? PENDING_COPY },
+      { id: "approach", title: "Approach", body: vilaEn.approach ?? PENDING_COPY },
+      { id: "editorial", title: "Editorial", body: vilaEn.editorial ?? PENDING_COPY },
+      { id: "edge", title: "EDGE Certification", body: vilaEn.edge ?? PENDING_COPY },
+      { id: "plans", title: "Plans", body: vilaEn.plans ?? PENDING_COPY },
+      { id: "product", title: "Units", body: vilaEn.product ?? PENDING_COPY },
+      { id: "outcome", title: "Final Outcome", body: vilaEn.outcome ?? PENDING_COPY },
     ],
     media: [
-      media("cover.webp", "Editorial 02 cover", "portrait"),
-      media("spread-01.webp", "Editorial 02 spread 01", "landscape", "spread"),
-      media("spread-02.webp", "Editorial 02 spread 02", "landscape", "spread"),
+      {
+        ...media("cover", "Brochure 01 VILA cover", "landscape"),
+        src: vilaCovers.desktop,
+        srcMobile: vilaCovers.mobile,
+        alt: "Brochure 01 VILA — portada sobre piedra y vegetación.",
+        caption: "Portada",
+      },
+      {
+        ...media("mockup-spread-01", "VILA mockup spread 01", "landscape", "spread"),
+        src: vilaAsset("mockup-spread-01"),
+        alt: "Brochure 01 VILA — doble página abierta sobre piedra.",
+        caption: "Mockup · Spread",
+      },
+      {
+        ...media("mockup-edge", "VILA mockup Edge", "landscape", "spread"),
+        src: vilaAsset("mockup-edge"),
+        alt: "Brochure 01 VILA — hoja Certificación Edge sobre piedra.",
+        caption: "Mockup · Edge",
+      },
+      {
+        ...media("mockup-planos", "VILA mockup planos", "landscape", "spread"),
+        src: vilaAsset("mockup-planos"),
+        alt: "Brochure 01 VILA — planos abiertos sobre piedra.",
+        caption: "Mockup · Planos",
+      },
+      {
+        ...media("mockup-spread-02", "VILA mockup spread 02", "landscape", "spread"),
+        src: vilaAsset("mockup-spread-02"),
+        alt: "Brochure 01 VILA — doble página editorial sobre piedra.",
+        caption: "Mockup · Spread 02",
+      },
+      {
+        ...media("mockup-stack", "VILA mockup stack", "landscape"),
+        src: vilaAsset("mockup-stack"),
+        alt: "Brochure 01 VILA — brochure cerrado sobre vegetación.",
+        caption: "Mockup · Stack",
+      },
+      {
+        ...media("mockup-angle", "VILA mockup angle", "landscape", "spread"),
+        src: vilaAsset("mockup-angle"),
+        alt: "Brochure 01 VILA — hoja landscape sobre piedra, otro ángulo.",
+        caption: "Mockup · Ángulo",
+      },
+      {
+        ...media("page-03", "VILA page 03", "landscape", "spread"),
+        src: vilaAsset("page-03"),
+        alt: "Brochure 01 VILA — hoja interior 03.",
+        caption: "Hoja 03",
+      },
+      {
+        ...media("page-04", "VILA page 04", "landscape", "spread"),
+        src: vilaAsset("page-04"),
+        alt: "Brochure 01 VILA — hoja interior 04.",
+        caption: "Hoja 04",
+      },
+      {
+        ...media("page-05", "VILA page 05", "landscape", "spread"),
+        src: vilaAsset("page-05"),
+        alt: "Brochure 01 VILA — hoja interior 05.",
+        caption: "Hoja 05",
+      },
+      {
+        ...media("page-08", "VILA page 08", "landscape", "spread"),
+        src: vilaAsset("page-08"),
+        alt: "Brochure 01 VILA — hoja Certificación Edge.",
+        caption: "Hoja 08",
+      },
+      {
+        ...media("page-11", "VILA page 11", "landscape", "spread"),
+        src: vilaAsset("page-11"),
+        alt: "Brochure 01 VILA — hoja interior 11.",
+        caption: "Hoja 11",
+      },
+      {
+        ...media("page-21", "VILA page 21", "landscape", "spread"),
+        src: vilaAsset("page-21"),
+        alt: "Brochure 01 VILA — plano subsuelo.",
+        caption: "Hoja 21",
+      },
+      {
+        ...media("page-22", "VILA page 22", "landscape", "spread"),
+        src: vilaAsset("page-22"),
+        alt: "Brochure 01 VILA — hoja de planos.",
+        caption: "Hoja 22",
+      },
+      {
+        ...media("page-35", "VILA page 35", "landscape", "spread"),
+        src: vilaAsset("page-35"),
+        alt: "Brochure 01 VILA — hoja interior 35.",
+        caption: "Hoja 35",
+      },
+      {
+        ...media("page-76", "VILA page 76", "landscape", "spread"),
+        src: vilaAsset("page-76"),
+        alt: "Brochure 01 VILA — hoja interior 76.",
+        caption: "Hoja 76",
+      },
     ],
   },
   {
     slug: "editorial-03",
-    index: "06",
+    index: "05",
     title: "EDITORIAL 03",
     lines: ["EDITORIAL 03"],
     category: "editorial",
@@ -470,7 +583,7 @@ export const projects: Project[] = [
   },
   {
     slug: "editorial-04",
-    index: "07",
+    index: "06",
     title: "EDITORIAL 04",
     lines: ["EDITORIAL 04"],
     category: "editorial",
@@ -500,7 +613,7 @@ export const projects: Project[] = [
   },
   {
     slug: "web-03",
-    index: "08",
+    index: "07",
     title: "WEB PROJECT 03",
     lines: ["WEB PROJECT 03"],
     category: "web",
@@ -530,7 +643,7 @@ export const projects: Project[] = [
   },
   {
     slug: "branding-02",
-    index: "09",
+    index: "08",
     title: "BRANDING 02",
     lines: ["BRANDING 02"],
     category: "branding",
@@ -581,6 +694,11 @@ export function getNextProject(slug: string) {
 
 export function mediaById(project: Project, id: string): MediaSlot {
   return project.media.find((slot) => slot.id === id) ?? project.media[0];
+}
+
+/** Prefer `cover-home` when present (home slider / listings); else first media. */
+export function homeMedia(project: Project): MediaSlot {
+  return project.media.find((slot) => slot.id === "cover-home") ?? project.media[0];
 }
 
 export function disciplineLine(project: Project) {
