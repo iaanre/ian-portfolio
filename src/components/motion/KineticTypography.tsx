@@ -9,11 +9,11 @@ export function KineticTypography({
   primary = PRIMARY,
   secondary = SECONDARY,
   label = "Scroll",
-  span = "210vh",
 }: {
   primary?: string;
   secondary?: string;
   label?: string;
+  /** @deprecated Ignored — band is content-height like Hayler marquee, not full-viewport. */
   span?: string;
 }) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -69,31 +69,31 @@ export function KineticTypography({
     <section
       ref={sectionRef}
       data-header-theme="paper"
-      className={reduced ? "overflow-hidden py-24" : "relative"}
-      style={reduced ? undefined : { height: span }}
+      className="relative py-[6vh] md:py-[8vh]"
       aria-label="Design disciplines"
     >
-      <div
-        className={
-          reduced
-            ? "flex flex-col gap-6 px-[5vw]"
-            : "sticky top-0 flex h-[100svh] flex-col justify-center gap-[2vh] overflow-hidden"
-        }
-      >
+      <div className="flex flex-col gap-2 md:gap-3">
         <p className="px-[5vw] text-[11px] uppercase tracking-[0.2em] text-[var(--c-muted)]">{label}</p>
-        <div
-          ref={lineA}
-          className="w-max whitespace-nowrap px-[5vw] text-[18vw] font-medium leading-[0.82] tracking-[-0.06em] md:text-[13vw]"
-        >
-          {primary.repeat(2)}
-        </div>
-        {secondary ? (
+
+        {/* Clip only horizontally so stroke/descenders stay fully visible */}
+        <div className="overflow-x-hidden">
           <div
-            ref={lineB}
-            className="w-max whitespace-nowrap px-[5vw] text-[11vw] font-medium leading-[0.86] tracking-[-0.05em] text-transparent md:text-[8vw]"
-            style={{ WebkitTextStroke: "1px var(--c-ink)" }}
+            ref={lineA}
+            className="w-max whitespace-nowrap px-[5vw] py-1 text-[clamp(2.6rem,7.2vw,5.8rem)] font-medium leading-none tracking-[-0.055em]"
           >
-            {secondary.repeat(2)}
+            {primary.repeat(2)}
+          </div>
+        </div>
+
+        {secondary ? (
+          <div className="overflow-x-hidden">
+            <div
+              ref={lineB}
+              className="w-max whitespace-nowrap px-[5vw] py-1.5 text-[clamp(1.7rem,4.8vw,3.8rem)] font-medium leading-none tracking-[-0.045em] text-transparent"
+              style={{ WebkitTextStroke: "1.25px var(--c-ink)" }}
+            >
+              {secondary.repeat(2)}
+            </div>
           </div>
         ) : null}
       </div>

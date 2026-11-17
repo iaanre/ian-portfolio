@@ -1,22 +1,37 @@
 import { PENDING_COPY } from "./site.ts";
 import { tayAsset, tayCover } from "./tayAssets.ts";
 import { TAY_COPY } from "./tayCopy.ts";
-import { nudosAsset, nudosCover } from "./nudosAssets.ts";
+import { nudosAsset, nudosBrandCover, nudosCover } from "./nudosAssets.ts";
 import { NUDOS_COPY } from "./nudosCopy.ts";
+import { NUDOS_WEB_COPY } from "./nudosWebCopy.ts";
 import { patagoniaAsset, patagoniaCover, patagoniaHomeCover } from "./patagoniaAssets.ts";
 import { PATAGONIA_COPY } from "./patagoniaCopy.ts";
 import { vilaAsset, vilaCover } from "./vilaAssets.ts";
 import { VILA_COPY } from "./vilaCopy.ts";
+import { catalog02Asset, catalog02Cover } from "./catalog02Assets.ts";
+import { nexoAsset, nexoCover } from "./nexoAssets.ts";
+import { NEXO_COPY } from "./nexoCopy.ts";
+import { packagingAsset, packagingCover } from "./packagingAssets.ts";
+import { PACKAGING_COPY } from "./packagingCopy.ts";
+import { patagoniaWebAsset, patagoniaWebCover } from "./patagoniaWebAssets.ts";
 
 const tayCovers = tayCover("es");
 const tayEn = TAY_COPY.en;
 const nudosCovers = nudosCover("es");
+const nudosBrandCovers = nudosBrandCover("es");
 const nudosEn = NUDOS_COPY.en;
+const nudosWebEn = NUDOS_WEB_COPY.en;
 const patagoniaCovers = patagoniaCover("es");
 const patagoniaHomeCovers = patagoniaHomeCover("es");
 const patagoniaEn = PATAGONIA_COPY.en;
 const vilaCovers = vilaCover("es");
 const vilaEn = VILA_COPY.en;
+const catalog02Covers = catalog02Cover("es");
+const nexoCovers = nexoCover("es");
+const nexoEn = NEXO_COPY.en;
+const packagingCovers = packagingCover("es");
+const packagingEn = PACKAGING_COPY.en;
+const patagoniaWebCovers = patagoniaWebCover("es");
 
 export type MediaFrame = "none" | "browser" | "phone" | "spread";
 
@@ -51,6 +66,8 @@ export type MediaSlot = {
   srcMobile?: string;
   /** CSS object-position when cropping (e.g. "center 30%"). */
   objectPosition?: string;
+  /** cover (default) crops to frame; contain shows the full image. */
+  fit?: "cover" | "contain";
 };
 
 export type CaseSection = {
@@ -105,19 +122,19 @@ export const CATEGORY_META: Record<
     id: "editorial",
     label: "Editorial Design",
     shortLabel: "Editorial",
-    subtitle: "Catalogs, publications, books, technical literature and print art direction.",
+    subtitle: "Brochures, catalogs, magazines and print art direction.",
   },
   web: {
     id: "web",
-    label: "Web & Digital Product",
-    shortLabel: "Web & Product",
-    subtitle: "Interactive websites, mobile applications, UX/UI systems and digital experiences.",
+    label: "Web & App",
+    shortLabel: "Web & App",
+    subtitle: "Websites and mobile product experiences.",
   },
   branding: {
     id: "branding",
     label: "Brand Identity",
     shortLabel: "Branding",
-    subtitle: "Visual identities, brand worlds, typography systems and guidelines.",
+    subtitle: "Brand guidelines, packaging and visual systems.",
   },
 };
 
@@ -128,7 +145,7 @@ export const projects: Project[] = [
     title: "TAY",
     lines: ["TAY"],
     category: "web",
-    categoryLabel: "Product · Mobile",
+    categoryLabel: "App · Product",
     featured: true,
     disciplines: ["Product Design", "UX/UI", "Mobile"],
     year: tayEn.year,
@@ -253,73 +270,80 @@ export const projects: Project[] = [
   },
   {
     slug: "nudos",
-    index: "02",
-    title: "NUDOS",
-    lines: ["NUDOS"],
+    index: "05",
+    title: "NUDOS BRAND",
+    lines: ["NUDOS BRAND"],
     category: "branding",
-    alsoIn: ["web"],
-    categoryLabel: "Brand Identity · Web Design",
+    categoryLabel: "Brand Guidelines",
     featured: true,
-    disciplines: ["Brand Identity", "Web Design", "Digital"],
+    disciplines: ["Brand Identity", "Visual System", "Guidelines"],
     year: nudosEn.year,
     role: nudosEn.role,
     tone: "ink",
     banner: {
-      bg: "#0a0a0a",
-      secondary: "#1a1a1a",
-      glow: "rgba(255, 255, 255, 0.1)",
-      accent: "#0a0a0a",
+      bg: "#12161c",
+      secondary: "#2a3440",
+      glow: "rgba(180, 200, 220, 0.28)",
+      accent: "#c8d4e0",
       headerTheme: "ink",
     },
     overview: nudosEn.overview ?? PENDING_COPY,
     sections: [
       { id: "overview", title: "Overview", body: nudosEn.overview ?? PENDING_COPY },
-      { id: "challenge", title: "Challenge", body: PENDING_COPY },
-      { id: "approach", title: "Approach", body: PENDING_COPY },
-      { id: "visual", title: "Visual System", body: PENDING_COPY },
-      { id: "website", title: "Website", body: PENDING_COPY },
-      { id: "process", title: "Process", body: PENDING_COPY },
-      { id: "decisions", title: "Key Decisions", body: PENDING_COPY },
-      { id: "outcome", title: "Final Outcome", body: PENDING_COPY },
+      { id: "concept", title: "Brand Mark", body: nudosEn.concept ?? PENDING_COPY },
+      { id: "lockups", title: "Lockups", body: nudosEn.lockups ?? PENDING_COPY },
+      { id: "outcome", title: "Final Outcome", body: nudosEn.outcome ?? PENDING_COPY },
     ],
     media: [
       {
-        ...media("cover", "NUDOS cover", "landscape"),
-        src: nudosCovers.desktop,
-        srcMobile: nudosCovers.mobile,
-        objectPosition: "center 42%",
-        alt: "NUDOS — Design & Technology. Portada del estudio con sitio en laptop.",
+        ...media("cover", "NUDOS brand cover", "landscape"),
+        src: nudosBrandCovers.desktop,
+        srcMobile: nudosBrandCovers.mobile,
+        objectPosition: "center center",
+        alt: "NUDOS — portada del manual de marca, mockup del logo.",
         caption: "Portada",
       },
       {
-        ...media("site-home", "NUDOS homepage", "landscape", "browser"),
-        src: nudosAsset("site-home"),
-        alt: "NUDOS — experiencia principal del sitio: Diseñamos. Desarrollamos. Conectamos.",
-        caption: "Homepage",
+        ...media("logo-mark", "NUDOS brand mark", "square"),
+        src: nudosAsset("logo-mark"),
+        alt: "NUDOS — isologo, versión positiva.",
+        caption: "Isologo · positivo",
+        fit: "contain",
       },
       {
-        ...media("site-system", "NUDOS visual system", "landscape"),
-        src: nudosAsset("site-system"),
-        alt: "NUDOS — sistema visual: tipografía Metropolis y color monocromo.",
-        caption: "Visual system",
+        ...media("logo-mark-neg", "NUDOS brand mark negative", "square"),
+        src: nudosAsset("logo-mark-neg"),
+        alt: "NUDOS — isologo, versión negativa.",
+        caption: "Isologo · negativo",
+        fit: "contain",
       },
       {
-        ...media("site-contact", "NUDOS contact", "landscape", "browser"),
-        src: nudosAsset("site-contact"),
-        alt: "NUDOS — bloque de contacto en superficie oscura.",
-        caption: "Contact",
+        ...media("logo-horizontal", "NUDOS horizontal lockup", "landscape"),
+        src: nudosAsset("logo-horizontal"),
+        alt: "NUDOS — lockup horizontal positivo.",
+        caption: "Lockup · horizontal",
+        fit: "contain",
       },
       {
-        ...media("site-projects", "NUDOS projects", "landscape", "browser"),
-        src: nudosAsset("site-projects"),
-        alt: "NUDOS — sección de proyectos en la web.",
-        caption: "Projects",
+        ...media("logo-horizontal-neg", "NUDOS horizontal lockup negative", "landscape"),
+        src: nudosAsset("logo-horizontal-neg"),
+        alt: "NUDOS — lockup horizontal negativo.",
+        caption: "Lockup · horizontal negativo",
+        fit: "contain",
       },
       {
-        ...media("site-mobile", "NUDOS mobile", "landscape"),
-        src: nudosAsset("site-mobile"),
-        alt: "NUDOS — experiencia responsive mobile.",
-        caption: "Mobile",
+        ...media("logo-vertical", "NUDOS vertical lockup", "portrait"),
+        src: nudosAsset("logo-vertical"),
+        alt: "NUDOS — lockup vertical positivo.",
+        caption: "Lockup · vertical",
+        fit: "contain",
+      },
+      {
+        ...media("logo-vertical-neg", "NUDOS vertical lockup negative", "portrait"),
+        src: nudosAsset("logo-vertical-neg"),
+        alt: "NUDOS — lockup vertical negativo.",
+        caption: "Lockup · vertical negativo",
+        fit: "contain",
       },
       {
         ...media("logo-board-positive", "NUDOS wordmark positive", "landscape"),
@@ -334,23 +358,94 @@ export const projects: Project[] = [
         caption: "Wordmark · negativo",
       },
       {
-        ...media("logo-board-icons", "NUDOS brand mark", "landscape"),
+        ...media("logo-board-icons", "NUDOS brand mark board", "landscape"),
         src: nudosAsset("logo-board-icons"),
         alt: "NUDOS — isologo positivo y negativo.",
-        caption: "Isologo",
+        caption: "Isologo · board",
+      },
+    ],
+  },
+  {
+    slug: "nudos-web",
+    index: "09",
+    title: "NUDOS WEB",
+    lines: ["NUDOS WEB"],
+    category: "web",
+    categoryLabel: "Web Design",
+    featured: true,
+    disciplines: ["Web Design", "UI", "Digital"],
+    year: nudosWebEn.year,
+    role: nudosWebEn.role,
+    tone: "ink",
+    banner: {
+      bg: "#0a0a0a",
+      secondary: "#1a1a1a",
+      glow: "rgba(255, 255, 255, 0.1)",
+      accent: "#c8d4e0",
+      headerTheme: "ink",
+    },
+    overview: nudosWebEn.overview ?? PENDING_COPY,
+    sections: [
+      { id: "overview", title: "Overview", body: nudosWebEn.overview ?? PENDING_COPY },
+      { id: "home", title: "Homepage", body: nudosWebEn.home ?? PENDING_COPY },
+      { id: "system", title: "Digital System", body: nudosWebEn.system ?? PENDING_COPY },
+      { id: "outcome", title: "Final Outcome", body: nudosWebEn.outcome ?? PENDING_COPY },
+    ],
+    media: [
+      {
+        ...media("cover", "NUDOS web cover", "landscape"),
+        src: nudosCovers.desktop,
+        srcMobile: nudosCovers.mobile,
+        objectPosition: "center 42%",
+        alt: "NUDOS — Design & Technology. Portada del estudio con sitio en laptop.",
+        caption: "Portada",
+      },
+      {
+        ...media("site-home", "NUDOS homepage", "landscape"),
+        src: nudosAsset("site-home"),
+        fit: "contain",
+        alt: "NUDOS — homepage: Diseñamos. Desarrollamos. Conectamos.",
+        caption: "Homepage · desktop",
+      },
+      {
+        ...media("site-system", "NUDOS visual system", "landscape"),
+        src: nudosAsset("site-system"),
+        fit: "contain",
+        alt: "NUDOS — Nosotros y sistema tipográfico/color en web.",
+        caption: "Sistema digital",
+      },
+      {
+        ...media("site-projects", "NUDOS projects", "landscape"),
+        src: nudosAsset("site-projects"),
+        fit: "contain",
+        alt: "NUDOS — proyectos seleccionados en el sitio (caso TAY).",
+        caption: "Proyectos",
+      },
+      {
+        ...media("site-contact", "NUDOS contact", "landscape"),
+        src: nudosAsset("site-contact"),
+        fit: "contain",
+        alt: "NUDOS — bloque de contacto en superficie oscura.",
+        caption: "Contacto",
+      },
+      {
+        ...media("site-mobile", "NUDOS mobile", "landscape"),
+        src: nudosAsset("site-mobile"),
+        fit: "contain",
+        alt: "NUDOS — experiencia responsive mobile.",
+        caption: "Mobile",
       },
     ],
   },
   {
     slug: "patagonia",
-    index: "03",
-    title: "PATAGONIA CNC MACHINES",
-    lines: ["PATAGONIA", "CNC MACHINES"],
+    index: "02",
+    title: "PATAGONIA CNC",
+    lines: ["PATAGONIA CNC"],
     category: "editorial",
-    alsoIn: ["web"],
-    categoryLabel: "Editorial · Web Design",
+    categoryLabel: "Catalog · Print",
     featured: true,
-    disciplines: ["Editorial", "Web Design", "B2B"],
+    disciplines: ["Editorial", "Catalog", "B2B"],
     year: patagoniaEn.year,
     role: patagoniaEn.role,
     tone: "ink",
@@ -377,7 +472,8 @@ export const projects: Project[] = [
         ...media("cover", "Patagonia CNC cover", "landscape"),
         src: patagoniaCovers.desktop,
         srcMobile: patagoniaCovers.mobile,
-        objectPosition: "62% 45%",
+        fit: "contain",
+        objectPosition: "center center",
         alt: "Patagonia CNC Machines — catálogo Welding Solutions sobre roca.",
         caption: "Portada",
       },
@@ -385,7 +481,7 @@ export const projects: Project[] = [
         ...media("cover-home", "Patagonia CNC home cover", "landscape"),
         src: patagoniaHomeCovers.desktop,
         srcMobile: patagoniaHomeCovers.mobile,
-        objectPosition: "68% 42%",
+        objectPosition: "center center",
         alt: "Patagonia CNC Machines — catálogo Welding Solutions sobre roca.",
         caption: "Home cover",
       },
@@ -422,12 +518,123 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "patagonia-web",
+    index: "10",
+    title: "PATAGONIA WEB",
+    lines: ["PATAGONIA WEB"],
+    category: "web",
+    categoryLabel: "Web Design · B2B",
+    featured: true,
+    disciplines: ["Web Design", "UI", "B2B"],
+    year: patagoniaEn.year,
+    role: patagoniaEn.role,
+    tone: "ink",
+    banner: {
+      bg: "#0b151a",
+      secondary: "#152b36",
+      glow: "rgba(94, 204, 232, 0.30)",
+      accent: "#66d2ee",
+      headerTheme: "ink",
+    },
+    overview: patagoniaEn.overview ?? PENDING_COPY,
+    sections: [
+      { id: "overview", title: "Overview", body: patagoniaEn.overview ?? PENDING_COPY },
+      { id: "website", title: "Website", body: PENDING_COPY },
+      { id: "outcome", title: "Final Outcome", body: PENDING_COPY },
+    ],
+    media: [
+      {
+        ...media("cover", "Patagonia web cover", "landscape"),
+        src: patagoniaWebCovers.desktop,
+        srcMobile: patagoniaWebCovers.mobile,
+        objectPosition: "58% 45%",
+        alt: "Patagonia CNC — homepage en laptop sobre roca.",
+        caption: "Portada",
+      },
+      {
+        ...media("mockup-devices", "Patagonia web devices", "landscape"),
+        src: patagoniaWebAsset("mockup-devices"),
+        alt: "Patagonia CNC — laptop y mobile sobre roca.",
+        caption: "Mockup · Devices",
+      },
+      {
+        ...media("mockup-02", "Patagonia web mockup 02", "landscape"),
+        src: patagoniaWebAsset("mockup-02"),
+        alt: "Patagonia CNC — página web en mockup sobre roca.",
+        caption: "Mockup",
+      },
+      {
+        ...media("mockup-contact", "Patagonia web contact mockup", "landscape"),
+        src: patagoniaWebAsset("mockup-contact"),
+        alt: "Patagonia CNC — contacto web en mockup.",
+        caption: "Mockup · Contacto",
+      },
+      {
+        ...media("screen-home", "Patagonia screen home", "landscape"),
+        src: patagoniaWebAsset("screen-home"),
+        fit: "contain",
+        alt: "Patagonia CNC — homepage completa.",
+        caption: "Home",
+      },
+      {
+        ...media("screen-02", "Patagonia screen 02", "landscape"),
+        src: patagoniaWebAsset("screen-02"),
+        fit: "contain",
+        alt: "Patagonia CNC — captura web.",
+        caption: "Pantalla 02",
+      },
+      {
+        ...media("screen-03", "Patagonia screen 03", "landscape"),
+        src: patagoniaWebAsset("screen-03"),
+        fit: "contain",
+        alt: "Patagonia CNC — captura web.",
+        caption: "Pantalla 03",
+      },
+      {
+        ...media("screen-04", "Patagonia screen 04", "landscape"),
+        src: patagoniaWebAsset("screen-04"),
+        fit: "contain",
+        alt: "Patagonia CNC — captura web.",
+        caption: "Pantalla 04",
+      },
+      {
+        ...media("screen-05", "Patagonia screen 05", "landscape"),
+        src: patagoniaWebAsset("screen-05"),
+        fit: "contain",
+        alt: "Patagonia CNC — captura web.",
+        caption: "Pantalla 05",
+      },
+      {
+        ...media("screen-06", "Patagonia screen 06", "landscape"),
+        src: patagoniaWebAsset("screen-06"),
+        fit: "contain",
+        alt: "Patagonia CNC — captura web.",
+        caption: "Pantalla 06",
+      },
+      {
+        ...media("screen-07", "Patagonia screen 07", "landscape"),
+        src: patagoniaWebAsset("screen-07"),
+        fit: "contain",
+        alt: "Patagonia CNC — captura web.",
+        caption: "Pantalla 07",
+      },
+      {
+        ...media("screen-contact", "Patagonia screen contact", "landscape"),
+        src: patagoniaWebAsset("screen-contact"),
+        fit: "contain",
+        alt: "Patagonia CNC — contacto.",
+        caption: "Contacto",
+      },
+    ],
+  },
+  {
     slug: "editorial-02",
-    index: "04",
-    title: "BROCHURE 01 VILA",
-    lines: ["BROCHURE 01 VILA"],
+    index: "03",
+    title: "01 VILA",
+    lines: ["01 VILA"],
     category: "editorial",
-    categoryLabel: "Publication · Print",
+    categoryLabel: "Brochure · Print",
+    featured: true,
     placeholder: false,
     disciplines: ["Editorial Design", "Art Direction", "Print & Digital"],
     year: vilaEn.year,
@@ -552,22 +759,22 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "editorial-03",
-    index: "05",
-    title: "EDITORIAL 03",
-    lines: ["EDITORIAL 03"],
+    slug: "catalog-02",
+    index: "04",
+    title: "MILLBRIDGE",
+    lines: ["MILLBRIDGE"],
     category: "editorial",
-    categoryLabel: "Lookbook · Art Direction",
-    placeholder: true,
-    disciplines: ["Editorial Design", "Art Direction", "Layout"],
+    categoryLabel: "Protocol · Editorial",
+    placeholder: false,
+    disciplines: ["Editorial Design", "Information Design", "Print"],
     year: "Pending",
-    role: "Pending",
+    role: "Full Design",
     tone: "paper",
     banner: {
-      bg: "#e1e6df",
-      secondary: "#ced7cb",
-      glow: "rgba(104, 148, 118, 0.28)",
-      accent: "#537a5f",
+      bg: "#dce6f5",
+      secondary: "#c5d4ee",
+      glow: "rgba(59, 113, 219, 0.28)",
+      accent: "#3b71db",
       headerTheme: "paper",
     },
     overview: PENDING_COPY,
@@ -577,110 +784,261 @@ export const projects: Project[] = [
       { id: "outcome", title: "Final Outcome", body: PENDING_COPY },
     ],
     media: [
-      media("cover.webp", "Editorial 03 cover", "portrait"),
-      media("spread-01.webp", "Editorial 03 spread 01", "landscape", "spread"),
+      {
+        ...media("cover", "Millbridge cover", "landscape"),
+        src: catalog02Covers.desktop,
+        srcMobile: catalog02Covers.mobile,
+        objectPosition: "center center",
+        alt: "Millbridge — Board Communication Protocol, mockup de portada.",
+        caption: "Portada",
+      },
+      {
+        ...media("mockup-01", "Millbridge mockup 01", "landscape"),
+        src: catalog02Asset("mockup-01"),
+        alt: "Millbridge — hoja Purpose and Scope en mockup.",
+        caption: "Mockup 01",
+      },
+      {
+        ...media("mockup-02", "Millbridge mockup 02", "landscape"),
+        src: catalog02Asset("mockup-02"),
+        alt: "Millbridge — ritmo trimestral en mockup.",
+        caption: "Mockup 02",
+      },
+      {
+        ...media("mockup-03", "Millbridge mockup 03", "landscape"),
+        src: catalog02Asset("mockup-03"),
+        alt: "Millbridge — hojas interiores en mockup.",
+        caption: "Mockup 03",
+      },
+      {
+        ...media("mockup-stack", "Millbridge mockup stack", "portrait"),
+        src: catalog02Asset("mockup-stack"),
+        alt: "Millbridge — protocolo cerrado en mockup.",
+        caption: "Mockup · Stack",
+      },
+      {
+        ...media("page-01", "Millbridge page 01", "portrait", "spread"),
+        src: catalog02Asset("page-01"),
+        alt: "Millbridge — Purpose and Scope.",
+        caption: "Hoja 01",
+      },
+      {
+        ...media("page-02", "Millbridge page 02", "portrait", "spread"),
+        src: catalog02Asset("page-02"),
+        alt: "Millbridge — hoja interior 02.",
+        caption: "Hoja 02",
+      },
+      {
+        ...media("page-03", "Millbridge page 03", "portrait", "spread"),
+        src: catalog02Asset("page-03"),
+        alt: "Millbridge — ritmo trimestral.",
+        caption: "Hoja 03",
+      },
+      {
+        ...media("page-04", "Millbridge page 04", "portrait", "spread"),
+        src: catalog02Asset("page-04"),
+        alt: "Millbridge — hoja interior 04.",
+        caption: "Hoja 04",
+      },
+      {
+        ...media("page-05", "Millbridge page 05", "portrait", "spread"),
+        src: catalog02Asset("page-05"),
+        alt: "Millbridge — hoja interior 05.",
+        caption: "Hoja 05",
+      },
+      {
+        ...media("page-06", "Millbridge page 06", "portrait", "spread"),
+        src: catalog02Asset("page-06"),
+        alt: "Millbridge — hoja interior 06.",
+        caption: "Hoja 06",
+      },
+      {
+        ...media("page-07", "Millbridge page 07", "portrait", "spread"),
+        src: catalog02Asset("page-07"),
+        alt: "Millbridge — hoja interior 07.",
+        caption: "Hoja 07",
+      },
+      {
+        ...media("page-08", "Millbridge page 08", "portrait", "spread"),
+        src: catalog02Asset("page-08"),
+        alt: "Millbridge — hoja interior 08.",
+        caption: "Hoja 08",
+      },
     ],
   },
   {
-    slug: "editorial-04",
-    index: "06",
-    title: "EDITORIAL 04",
-    lines: ["EDITORIAL 04"],
+    slug: "queer",
+    index: "05",
+    title: "NEXO",
+    lines: ["NEXO"],
     category: "editorial",
-    categoryLabel: "Book · Typography",
-    placeholder: true,
-    disciplines: ["Editorial Design", "Book Design", "Typography"],
-    year: "Pending",
-    role: "Pending",
+    categoryLabel: "Magazine · Editorial",
+    placeholder: false,
+    disciplines: ["Editorial Design", "Magazine", "Art Direction"],
+    year: nexoEn.year,
+    role: nexoEn.role,
     tone: "ink",
     banner: {
-      bg: "#171410",
-      secondary: "#2c2519",
-      glow: "rgba(218, 176, 108, 0.28)",
-      accent: "#dab06c",
+      bg: "#0d0d0d",
+      secondary: "#1a1a1a",
+      glow: "rgba(255, 242, 0, 0.28)",
+      accent: "#fff200",
       headerTheme: "ink",
     },
-    overview: PENDING_COPY,
+    overview: nexoEn.overview ?? PENDING_COPY,
     sections: [
-      { id: "overview", title: "Overview", body: PENDING_COPY },
-      { id: "editorial", title: "Editorial System", body: PENDING_COPY },
-      { id: "outcome", title: "Final Outcome", body: PENDING_COPY },
+      { id: "overview", title: "Overview", body: nexoEn.overview ?? PENDING_COPY },
+      { id: "challenge", title: "Challenge", body: nexoEn.challenge ?? PENDING_COPY },
+      { id: "approach", title: "Approach", body: nexoEn.approach ?? PENDING_COPY },
+      { id: "editorial", title: "Editorial", body: nexoEn.editorial ?? PENDING_COPY },
+      { id: "outcome", title: "Final Outcome", body: nexoEn.outcome ?? PENDING_COPY },
     ],
     media: [
-      media("cover.webp", "Editorial 04 cover", "landscape"),
-      media("spread-01.webp", "Editorial 04 spread 01", "landscape", "spread"),
+      {
+        ...media("cover", "NEXO cover", "portrait"),
+        src: nexoCovers.desktop,
+        srcMobile: nexoCovers.mobile,
+        objectPosition: "center 35%",
+        alt: "NEXO — tapa de revista, edición 145.",
+        caption: "Portada",
+      },
+      {
+        ...media("mockup-sumario", "NEXO mockup sumario", "landscape"),
+        src: nexoAsset("mockup-sumario"),
+        alt: "NEXO — sumario en mockup.",
+        caption: "Mockup · Sumario",
+      },
+      {
+        ...media("mockup-stack", "NEXO mockup stack", "portrait"),
+        src: nexoAsset("mockup-stack"),
+        alt: "NEXO — revista cerrada en mockup.",
+        caption: "Mockup · Stack",
+      },
+      {
+        ...media("mockup-resistencia", "NEXO mockup spread 112-113", "landscape"),
+        src: nexoAsset("mockup-resistencia"),
+        alt: "NEXO — doble página Revista 112 y 113.",
+        caption: "Mockup · Spread",
+      },
+      {
+        ...media("mockup-interior", "NEXO mockup spread 116-117", "landscape"),
+        src: nexoAsset("mockup-interior"),
+        alt: "NEXO — doble página Revista 116 y 117.",
+        caption: "Mockup · Spread",
+      },
+      {
+        ...media("indice-02", "NEXO staff intro", "portrait", "spread"),
+        src: nexoAsset("indice-02"),
+        alt: "NEXO — página de staff / intro.",
+        caption: "Staff",
+      },
+      {
+        ...media("indice-01", "NEXO sumario", "portrait", "spread"),
+        src: nexoAsset("indice-01"),
+        alt: "NEXO — sumario.",
+        caption: "Sumario",
+      },
+      {
+        ...media("back", "NEXO contratapa", "portrait", "spread"),
+        src: nexoAsset("back"),
+        alt: "NEXO — contratapa.",
+        caption: "Contratapa",
+      },
+      ...Array.from({ length: 24 }, (_, i) => {
+        const n = String(i + 1).padStart(2, "0");
+        return {
+          ...media(`page-${n}`, `NEXO page ${n}`, "portrait" as const, "spread" as const),
+          src: nexoAsset(`page-${n}`),
+          alt: `NEXO — hoja ${n}.`,
+          caption: `Hoja ${n}`,
+        };
+      }),
     ],
   },
   {
-    slug: "web-03",
-    index: "07",
-    title: "WEB PROJECT 03",
-    lines: ["WEB PROJECT 03"],
-    category: "web",
-    categoryLabel: "Web Design · UI",
-    placeholder: true,
-    disciplines: ["Web Design", "Interactive", "UI"],
-    year: "Pending",
-    role: "Pending",
-    tone: "paper",
-    banner: {
-      bg: "#121422",
-      secondary: "#212540",
-      glow: "rgba(164, 142, 255, 0.32)",
-      accent: "#a48eff",
-      headerTheme: "ink",
-    },
-    overview: PENDING_COPY,
-    sections: [
-      { id: "overview", title: "Overview", body: PENDING_COPY },
-      { id: "pages", title: "Website", body: PENDING_COPY },
-      { id: "outcome", title: "Final Outcome", body: PENDING_COPY },
-    ],
-    media: [
-      media("cover.webp", "Web Project 03 cover", "landscape"),
-      media("home.webp", "Web Project 03 homepage", "landscape", "browser"),
-    ],
-  },
-  {
-    slug: "branding-02",
-    index: "08",
-    title: "BRANDING 02",
-    lines: ["BRANDING 02"],
+    slug: "patagonia-packaging",
+    index: "06",
+    title: "PATAGONIA PACKAGING",
+    lines: ["PATAGONIA", "PACKAGING"],
     category: "branding",
-    categoryLabel: "Visual Identity",
-    placeholder: true,
-    disciplines: ["Brand Identity", "Visual System", "Guidelines"],
-    year: "Pending",
-    role: "Pending",
-    tone: "paper",
+    categoryLabel: "Packaging · Industrial",
+    placeholder: false,
+    disciplines: ["Packaging", "Brand Identity", "Industrial"],
+    year: packagingEn.year,
+    role: packagingEn.role,
+    tone: "ink",
     banner: {
-      bg: "#e6e2da",
-      secondary: "#d7d1c5",
-      glow: "rgba(104, 126, 238, 0.26)",
-      accent: "#5e74e8",
-      headerTheme: "paper",
+      bg: "#0b151a",
+      secondary: "#152b36",
+      glow: "rgba(94, 204, 232, 0.28)",
+      accent: "#66d2ee",
+      headerTheme: "ink",
     },
-    overview: PENDING_COPY,
+    overview: packagingEn.overview ?? PENDING_COPY,
     sections: [
-      { id: "overview", title: "Overview", body: PENDING_COPY },
-      { id: "visual", title: "Visual System", body: PENDING_COPY },
-      { id: "outcome", title: "Final Outcome", body: PENDING_COPY },
+      { id: "overview", title: "Overview", body: packagingEn.overview ?? PENDING_COPY },
+      { id: "challenge", title: "Challenge", body: packagingEn.challenge ?? PENDING_COPY },
+      { id: "approach", title: "Approach", body: packagingEn.approach ?? PENDING_COPY },
+      { id: "product", title: "Product", body: packagingEn.product ?? PENDING_COPY },
+      { id: "outcome", title: "Final Outcome", body: packagingEn.outcome ?? PENDING_COPY },
     ],
     media: [
-      media("cover.webp", "Branding 02 cover", "portrait"),
-      media("brand-01.webp", "Branding 02 system", "landscape"),
+      {
+        ...media("cover", "Patagonia packaging cover", "landscape"),
+        src: packagingCovers.desktop,
+        srcMobile: packagingCovers.mobile,
+        objectPosition: "center 55%",
+        alt: "Patagonia CNC — caja de alambre de soldadura, mockup en fila.",
+        caption: "Portada",
+      },
+      {
+        ...media("mockup-01", "Packaging mockup 01", "landscape"),
+        src: packagingAsset("mockup-01"),
+        alt: "Patagonia CNC — cajas de alambre en perspectiva.",
+        caption: "Mockup 01",
+      },
+      {
+        ...media("mockup-02", "Packaging mockup 02", "landscape"),
+        src: packagingAsset("mockup-02"),
+        alt: "Patagonia CNC — cajas de alambre, vista tres cuartos.",
+        caption: "Mockup 02",
+      },
+      {
+        ...media("mockup-03", "Packaging mockup 03", "landscape"),
+        src: packagingAsset("mockup-03"),
+        alt: "Patagonia CNC — familia de vistas del packaging.",
+        caption: "Mockup 03",
+      },
     ],
   },
 ];
 
-export const featuredProjects = projects.filter((project) => project.featured);
+/** Display order inside each home / work category section. */
+const CATEGORY_ORDER: Record<ProjectCategory, string[]> = {
+  editorial: ["editorial-02", "patagonia", "catalog-02", "queer"],
+  branding: ["nudos", "patagonia-packaging"],
+  web: ["nudos-web", "tay", "patagonia-web"],
+};
+
+const FEATURED_ORDER = ["tay", "patagonia", "editorial-02"];
+
+export const featuredProjects = FEATURED_ORDER.map((slug) =>
+  projects.find((project) => project.slug === slug),
+).filter((project): project is Project => Boolean(project));
 
 export function projectBelongsTo(project: Project, category: ProjectCategory) {
   return project.category === category || Boolean(project.alsoIn?.includes(category));
 }
 
 export function projectsByCategory(category: ProjectCategory) {
-  return projects.filter((project) => projectBelongsTo(project, category));
+  const order = CATEGORY_ORDER[category];
+  return projects
+    .filter((project) => projectBelongsTo(project, category))
+    .sort((a, b) => {
+      const ai = order.indexOf(a.slug);
+      const bi = order.indexOf(b.slug);
+      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+    });
 }
 
 export function getProject(slug: string | undefined) {

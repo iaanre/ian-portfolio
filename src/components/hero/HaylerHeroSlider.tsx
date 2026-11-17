@@ -398,7 +398,7 @@ export function HaylerHeroSlider() {
         ))}
       </div>
 
-      <div className="relative z-[4] flex h-full flex-col justify-between px-[5vw] pb-6 pt-28 sm:pb-8 sm:pt-32">
+      <div className="relative z-[4] flex h-full flex-col px-[5vw] pb-6 pt-28 sm:pb-8 sm:pt-32">
         <div className="flex items-center justify-between text-[11px] font-medium uppercase tracking-[0.16em] opacity-70">
           <span className="inline-flex items-center gap-2">
             <span
@@ -410,11 +410,14 @@ export function HaylerHeroSlider() {
           <span className="hidden sm:inline">{localizeCategoryLabel(current, lang)}</span>
         </div>
 
+        {/* Spacer pushes title + meta down, just above the 01 / 02 / 03 strip */}
+        <div className="min-h-0 flex-1" aria-hidden="true" />
+
         <div
           ref={titleWrapRef}
-          className="my-auto flex flex-col gap-6 py-4 md:flex-row md:items-end md:justify-between"
+          className="mb-4 flex flex-col gap-4 md:mb-5 md:flex-row md:items-end md:justify-between md:gap-6"
         >
-          <div className="max-w-[90vw] md:max-w-[75%]">
+          <div className="max-w-[90vw] md:max-w-[72%]">
             <Link
               to={`/work/${current.slug}`}
               data-cursor="project"
@@ -440,7 +443,7 @@ export function HaylerHeroSlider() {
             </Link>
           </div>
 
-          <div className="hero-slide-meta flex items-baseline gap-6 text-sm font-medium md:flex-col md:items-end md:gap-1.5 md:text-right">
+          <div className="hero-slide-meta flex items-baseline gap-6 pb-1 text-sm font-medium md:flex-col md:items-end md:gap-1.5 md:pb-2 md:text-right">
             <span className="text-[12px] uppercase tracking-[0.16em] opacity-65">
               {current.year === "Pending" ? `${copy.projectPrefix} ${current.index}` : current.year}
             </span>

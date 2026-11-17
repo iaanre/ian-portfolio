@@ -46,7 +46,7 @@ export function ParallaxImage({
     <div ref={rootRef} className={cn("h-full overflow-hidden", className)}>
       <div ref={shiftRef} className="h-full w-full">
         <div ref={frameRef} className="h-full w-full overflow-hidden">
-          <div className="h-[114%] w-full -translate-y-[7%]">
+          <div className="h-[108%] w-full -translate-y-[4%]">
             <div ref={innerRef} className="h-full w-full will-change-transform">
               {children}
             </div>

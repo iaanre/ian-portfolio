@@ -59,13 +59,24 @@ export function Navigation() {
     };
   }, [pathname, evaluateTheme]);
 
+  const contactTo = `${pathname}#contact`;
+
   const navItems = [
     { label: copy.index, to: "/" },
     { label: copy.works, to: "/work" },
-    { label: copy.editorial, to: "/#editorial" },
     { label: copy.studio, to: "/about" },
-    { label: copy.contact, to: "/#contact" },
-  ];
+    { label: copy.contact, to: contactTo, isContact: true },
+  ] as const;
+
+  const scrollToContact = () => {
+    const node = document.getElementById("contact");
+    if (node) {
+      node.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (hash !== "#contact") {
+        window.history.replaceState(null, "", contactTo);
+      }
+    }
+  };
 
   return (
     <header
@@ -99,8 +110,9 @@ export function Navigation() {
             compact
           />
           <MagneticLink
-            to="/#contact"
+            to={contactTo}
             strength={0.18}
+            onClick={scrollToContact}
             className={cn(
               "pointer-events-auto inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium tracking-[-0.01em] transition-colors duration-300",
               ink
@@ -125,24 +137,23 @@ export function Navigation() {
         )}
       >
         {navItems.map((item) => {
-          const isCurrent =
-            item.to === "/"
+          const isContact = "isContact" in item && item.isContact;
+          const isCurrent = isContact
+            ? hash === "#contact"
+            : item.to === "/"
               ? pathname === "/" && !hash
               : item.to === "/work"
-                ? pathname === "/work" || pathname.startsWith("/work/")
+                ? (pathname === "/work" || pathname.startsWith("/work/")) && hash !== "#contact"
                 : item.to === "/about"
-                  ? pathname === "/about"
-                  : item.to === "/#editorial"
-                    ? pathname === "/" && hash === "#editorial"
-                    : item.to === "/#contact"
-                      ? hash === "#contact"
-                      : false;
+                  ? pathname === "/about" && hash !== "#contact"
+                  : false;
 
           return (
             <MagneticLink
-              key={item.to}
+              key={item.label}
               to={item.to}
               strength={0.18}
+              onClick={isContact ? scrollToContact : undefined}
               aria-current={isCurrent ? "page" : undefined}
               className={cn(
                 "rounded-full px-2.5 py-1.5 text-center text-[11px] font-medium tracking-[-0.01em] transition-all duration-250 sm:px-3.5 sm:py-1.5 sm:text-[12px] lg:px-4",
@@ -171,8 +182,9 @@ export function Navigation() {
         />
 
         <MagneticLink
-          to="/#contact"
+          to={contactTo}
           strength={0.22}
+          onClick={scrollToContact}
           className={cn(
             "pointer-events-auto inline-flex items-center gap-2.5 rounded-full border px-4 py-2 text-[12px] font-medium tracking-[-0.01em] backdrop-blur-sm transition-colors duration-300",
             ink

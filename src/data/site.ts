@@ -38,9 +38,8 @@ export const site = {
   nav: [
     { label: "Home", to: "/" },
     { label: "Works", to: "/work" },
-    { label: "Editorial", to: "/#editorial" },
-    { label: "Studio", to: "/about" },
-    { label: "Contact", to: "/#contact" },
+    { label: "Experience", to: "/about" },
+    { label: "Contact", to: "#contact" },
   ],
 };
 

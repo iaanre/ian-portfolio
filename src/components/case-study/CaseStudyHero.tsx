@@ -15,10 +15,13 @@ export function CaseStudyHero({ project }: { project: Project }) {
   const cover = project.media[0];
   const localizedTitle = localizeProjectTitle(project, lang);
   const isTay = project.slug === "tay";
-  const isNudos = project.slug === "nudos";
-  const isPatagonia = project.slug === "patagonia";
+  const isNudos = project.slug === "nudos" || project.slug === "nudos-web";
+  const isPatagonia = project.slug === "patagonia" || project.slug === "patagonia-web";
   const isVila = project.slug === "editorial-02";
-  const isMockupHero = isNudos || isPatagonia;
+  const isCatalog02 = project.slug === "catalog-02";
+  const isNexo = project.slug === "queer";
+  const isPackaging = project.slug === "patagonia-packaging";
+  const isMockupHero = isNudos || isPatagonia || isCatalog02 || isNexo || isPackaging;
 
   const heroFrame = isVila
     ? "relative w-full bg-[#0a0a0a] h-[78svh] sm:h-[86svh] md:h-[94svh]"
@@ -30,13 +33,19 @@ export function CaseStudyHero({ project }: { project: Project }) {
 
   const objectPosition = isPatagonia
     ? "62% 45%"
-    : isVila
-      ? "center 55%"
-      : isNudos
-        ? "center 42%"
-        : isTay
-          ? "center center"
-          : cover.objectPosition;
+    : isCatalog02
+      ? "center 40%"
+      : isNexo
+        ? "center 30%"
+        : isPackaging
+          ? "center 55%"
+          : isVila
+            ? "center 55%"
+            : isNudos
+              ? "center center"
+              : isTay
+                ? "center center"
+                : cover.objectPosition;
 
   return (
     <header data-header-theme="paper" className="relative isolate">
@@ -72,22 +81,8 @@ export function CaseStudyHero({ project }: { project: Project }) {
               {copy.projectPrefix} {project.index}
             </span>
           </p>
-          <h1
-            className={
-              isVila
-                ? "mt-2 whitespace-nowrap text-[clamp(1.6rem,4.2vw,3.6rem)] font-medium leading-[0.95] tracking-[-0.045em]"
-                : "mt-3 text-[clamp(3.4rem,11vw,10rem)] font-medium leading-[0.8] tracking-[-0.065em]"
-            }
-          >
-            {isVila ? (
-              localizedTitle.title
-            ) : (
-              localizedTitle.lines.map((line) => (
-                <span key={line} className="block">
-                  {line}
-                </span>
-              ))
-            )}
+          <h1 className="mt-2 max-w-[92vw] text-[clamp(1.6rem,4.2vw,3.6rem)] font-medium leading-[0.95] tracking-[-0.045em]">
+            {localizedTitle.title}
           </h1>
           <p className="mt-4 text-sm text-[var(--c-muted)]">{localizeDisciplines(project, lang)}</p>
         </div>

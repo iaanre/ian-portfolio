@@ -47,7 +47,13 @@ export function ProjectVisual({
 
   if (slot?.src) {
     const position = slot.objectPosition ? { objectPosition: slot.objectPosition } : undefined;
-    const imgClass = cn("h-full w-full object-cover", className);
+    const fitContain = slot.fit === "contain";
+    const imgClass = cn(
+      fitContain
+        ? "h-full w-full object-contain object-center"
+        : "h-full w-full object-cover",
+      className,
+    );
 
     if (slot.srcMobile && slot.srcMobile !== slot.src) {
       return (

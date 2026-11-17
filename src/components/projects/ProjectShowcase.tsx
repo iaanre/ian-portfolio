@@ -91,6 +91,7 @@ function HaylerCard({
 }) {
   const { mediaRef, onClick } = useProjectLaunch(project);
   const localizedTitle = localizeProjectTitle(project, lang).title;
+  const slot = homeMedia(project);
 
   return (
     <article className={cn("group", className)}>
@@ -103,7 +104,12 @@ function HaylerCard({
         <div ref={mediaRef} className={cn("w-full overflow-hidden", aspectClass)}>
           <ImageReveal variant={reveal} className="h-full w-full">
             <ParallaxImage className="h-full w-full">
-              <ProjectVisual project={project} slot={homeMedia(project)} className="h-full w-full" />
+              {/* Home previews always fill the frame so titles sit consistently under the media. */}
+              <ProjectVisual
+                project={project}
+                slot={{ ...slot, fit: "cover" }}
+                className="h-full w-full !object-cover"
+              />
             </ParallaxImage>
           </ImageReveal>
         </div>
@@ -188,13 +194,16 @@ function EditorialSection({ items, lang }: { items: Project[]; lang: Locale }) {
               pattern === 0
                 ? "md:col-span-7"
                 : pattern === 1
-                  ? "md:col-span-4 md:col-start-9 md:mt-20"
+                  ? "md:col-span-5 md:col-start-8 md:mt-16"
                   : pattern === 2
-                    ? "md:col-span-4 md:col-start-2"
+                    ? "md:col-span-5 md:col-start-2"
                     : "md:col-span-6 md:col-start-7 md:-mt-12";
 
+            // Landscape frames for cover previews so titles sit tight under the image like VILA.
             const aspectClass =
-              pattern === 0 || pattern === 3 ? "aspect-[16/10]" : "aspect-[4/5]";
+              pattern === 0 || pattern === 1 || pattern === 3
+                ? "aspect-[16/10]"
+                : "aspect-[4/5]";
 
             return (
               <HaylerCard
@@ -224,10 +233,14 @@ function EditorialSection({ items, lang }: { items: Project[]; lang: Locale }) {
           {activePreview ? (
             <div className="hidden md:col-span-4 md:col-start-9 md:block">
               <div className="sticky top-28">
-                <div className="aspect-[4/5] w-full overflow-hidden">
-                  <ProjectVisual project={activePreview} slot={homeMedia(activePreview)} />
+                <div className="aspect-[16/10] w-full overflow-hidden">
+                  <ProjectVisual
+                    project={activePreview}
+                    slot={{ ...homeMedia(activePreview), fit: "cover" }}
+                    className="h-full w-full !object-cover"
+                  />
                 </div>
-                <div className="mt-3 flex items-center justify-between text-[12px] text-[var(--c-muted)]">
+                <div className="mt-4 flex items-center justify-between text-[12px] text-[var(--c-muted)]">
                   <span>{localizeProjectTitle(activePreview, lang).title}</span>
                   <span>{localizeDisciplines(activePreview, lang)}</span>
                 </div>

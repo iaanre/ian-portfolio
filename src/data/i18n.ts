@@ -32,7 +32,7 @@ export const UI_COPY = {
       index: "Home",
       works: "Works",
       editorial: "Editorial",
-      studio: "Studio",
+      studio: "Experience",
       contact: "Contact",
       letsTalk: "Let’s Talk",
       switchLangAria: "Switch website language",
@@ -55,7 +55,7 @@ export const UI_COPY = {
       carouselAria: "Featured works showcase",
     },
     home: {
-      statementHeading: "Design that goes\nbeyond surface\nand format.",
+      statementHeading: "Design that goes\nbeyond surface and format.",
       role: "Senior Graphic, Visual & Digital Designer",
       intro:
         "Senior Graphic & Digital Designer holding a B.A. in Graphic Design & Visual Communication, with 6+ years of experience crafting brand identities, editorial systems, websites and digital products.",
@@ -86,24 +86,24 @@ export const UI_COPY = {
       editorial: {
         label: "Editorial Design",
         shortLabel: "Editorial",
-        subtitle: "Catalogs, publications, books, technical literature and print art direction.",
+        subtitle: "Brochures, catalogs, magazines and print art direction.",
       },
       web: {
-        label: "Web & Digital Product",
-        shortLabel: "Web & Product",
-        subtitle: "Interactive websites, mobile applications, UX/UI systems and digital experiences.",
+        label: "Web & App",
+        shortLabel: "Web & App",
+        subtitle: "Websites and mobile product experiences.",
       },
       branding: {
         label: "Brand Identity",
         shortLabel: "Branding",
-        subtitle: "Visual identities, brand worlds, typography systems and guidelines.",
+        subtitle: "Brand guidelines, packaging and visual systems.",
       },
     } satisfies Record<ProjectCategory, { label: string; shortLabel: string; subtitle: string }>,
     works: {
       heading: "Selected Works",
-      subline: "Editorial · Web & Product · Brand Identity",
+      subline: "Editorial · Web & App · Brand Identity",
       description:
-        "Curated works spanning printed publications, interactive websites, mobile products and brand systems.",
+        "Curated works spanning printed publications, websites, mobile products and brand systems.",
       scrollToExplore: "Scroll to Explore",
       filterAll: "All",
       filterAria: "Filter works by discipline",
@@ -239,8 +239,6 @@ export const UI_COPY = {
         "Placeholder. Replace this with the real text. No research, metrics, clients, responsibilities, or outcomes have been written here.",
     },
     footer: {
-      eyebrow: "Work with me",
-      headlineLines: ["Let’s create", "something together."],
       directContact: "Direct Contact",
       locationAvailability:
         "Buenos Aires, Argentina · Open to remote, hybrid & on-site · Freelance / Full-time",
@@ -266,7 +264,7 @@ export const UI_COPY = {
       index: "Inicio",
       works: "Trabajos",
       editorial: "Editorial",
-      studio: "Estudio",
+      studio: "Experiencia",
       contact: "Contacto",
       letsTalk: "Hablemos",
       switchLangAria: "Cambiar idioma del sitio",
@@ -289,7 +287,7 @@ export const UI_COPY = {
       carouselAria: "Carrusel de proyectos destacados",
     },
     home: {
-      statementHeading: "Diseño que trasciende\nla superficie\ny el formato.",
+      statementHeading: "Diseño que trasciende\nla superficie y el formato.",
       role: "Diseñador Gráfico Senior · Visual y Digital",
       intro:
         "Diseñador Gráfico Senior y Licenciado en Diseño Gráfico y Comunicación Visual, con más de 6 años de experiencia creando identidades de marca, sistemas editoriales, sitios web y productos digitales.",
@@ -320,22 +318,22 @@ export const UI_COPY = {
       editorial: {
         label: "Diseño Editorial",
         shortLabel: "Editorial",
-        subtitle: "Catálogos, publicaciones, libros, literatura técnica y dirección de arte impresa.",
+        subtitle: "Brochures, catálogos, revistas y dirección de arte impresa.",
       },
       web: {
-        label: "Web y Producto Digital",
-        shortLabel: "Web y Producto",
-        subtitle: "Sitios web interactivos, aplicaciones mobile, sistemas UX/UI y experiencias digitales.",
+        label: "Web y App",
+        shortLabel: "Web y App",
+        subtitle: "Sitios web y experiencias de producto mobile.",
       },
       branding: {
         label: "Identidad de Marca",
         shortLabel: "Branding",
-        subtitle: "Identidades visuales, universos de marca, sistemas tipográficos y manuales.",
+        subtitle: "Manuales de marca, packaging y sistemas visuales.",
       },
     } satisfies Record<ProjectCategory, { label: string; shortLabel: string; subtitle: string }>,
     works: {
       heading: "Trabajos Seleccionados",
-      subline: "Editorial · Web y Producto · Identidad de Marca",
+      subline: "Editorial · Web y App · Identidad de Marca",
       description:
         "Selección curada de publicaciones impresas, sitios web interactivos, productos mobile y sistemas de marca.",
       scrollToExplore: "Scrolleá para explorar",
@@ -473,8 +471,6 @@ export const UI_COPY = {
         "Espacio reservado. Reemplazar con el texto real del proyecto. No se inventaron métricas, investigación, clientes ni resultados.",
     },
     footer: {
-      eyebrow: "Trabajemos juntos",
-      headlineLines: ["Creemos", "algo juntos."],
       directContact: "Contacto Directo",
       locationAvailability:
         "Buenos Aires, Argentina · Disponible para remoto, híbrido o presencial · Freelance / Full-time",
@@ -513,15 +509,30 @@ const DISCIPLINE_ES: Record<string, string> = {
   UI: "UI",
   "Visual System": "Sistema Visual",
   Guidelines: "Manual de Marca",
+  Catalog: "Catálogo",
+  Magazine: "Revista",
+  Packaging: "Packaging",
+  Industrial: "Industrial",
+  "Information Design": "Diseño de Información",
 };
 
 const CATEGORY_LABEL_ES: Record<string, string> = {
   "Product · Mobile": "Producto · Mobile",
+  "App · Product": "App · Producto",
   "Brand Identity": "Identidad de Marca",
   "Brand Identity · Web Design": "Identidad de Marca · Diseño Web",
+  "Brand Guidelines · Web": "Manual de Marca · Web",
+  "Brand Guidelines": "Manual de Marca",
   "Web Design": "Diseño Web",
+  "Web Design · B2B": "Diseño Web · B2B",
   "Editorial · B2B": "Editorial · B2B",
   "Editorial · Web Design": "Editorial · Diseño Web",
+  "Catalog · Web": "Catálogo · Web",
+  "Brochure · Print": "Brochure · Impreso",
+  "Catalog · Print": "Catálogo · Impreso",
+  "Protocol · Editorial": "Protocolo · Editorial",
+  "Magazine · Editorial": "Revista · Editorial",
+  "Packaging · Industrial": "Packaging · Industrial",
   "Publication · Print": "Publicación · Impreso",
   "Print & Digital": "Impreso y Digital",
   "Lookbook · Art Direction": "Lookbook · Dirección de Arte",
@@ -557,7 +568,9 @@ const SECTION_TITLE_ES: Record<string, string> = {
 };
 
 const PLACEHOLDER_TITLE_ES: Record<string, { title: string; lines: string[] }> = {
-  "web-03": { title: "PROYECTO WEB 03", lines: ["PROYECTO WEB 03"] },
+  "catalog-02": { title: "MILLBRIDGE", lines: ["MILLBRIDGE"] },
+  queer: { title: "NEXO", lines: ["NEXO"] },
+  "patagonia-packaging": { title: "PATAGONIA PACKAGING", lines: ["PATAGONIA", "PACKAGING"] },
 };
 
 export function localizeProjectTitle(project: Project, lang: Locale): { title: string; lines: string[] } {
@@ -602,6 +615,12 @@ export function localizeMetaValue(value: string, lang: Locale): string {
     }
     if (value === "Art Direction · Editorial · Renders") {
       return "Dirección de arte · Editorial · Renders";
+    }
+    if (value === "Art Direction · Editorial Design") {
+      return "Dirección de arte · Diseño editorial";
+    }
+    if (value === "Packaging Design · Brand Application") {
+      return "Diseño de packaging · Aplicación de marca";
     }
   }
   return value;

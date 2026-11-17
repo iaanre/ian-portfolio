@@ -30,20 +30,45 @@ export function CaseMedia({
   const copy = UI_COPY[lang].caseStudy;
   const captionText = slot.caption === "Caption pending." ? copy.captionPending : slot.caption;
   const isSpread = slot.frame === "spread";
-  // Spreads / full sheets: taller mask (A4 landscape) so bottom of the page isn't cropped.
-  const frameAspect = slot.frame === "phone" ? "h-full" : isSpread ? "aspect-[297/210]" : aspectClass[slot.aspect];
+  const fitContain = slot.fit === "contain";
+  // Spreads / full sheets: A4 mask matching page orientation so edges aren't cropped.
+  // contain: no fixed crop box — image keeps its natural proportions at full width.
+  const frameAspect =
+    slot.frame === "phone"
+      ? "h-full"
+      : fitContain
+        ? "w-full"
+        : isSpread
+          ? slot.aspect === "portrait"
+            ? "aspect-[210/297]"
+            : "aspect-[297/210]"
+          : aspectClass[slot.aspect];
 
   const visual = (
-    <ImageReveal variant={reveal} className={cn(frameAspect, "w-full")}>
-      <ProjectVisual
-        project={project}
-        slot={slot}
-        className={
-          isSpread
-            ? "h-full min-h-full !object-contain object-center bg-[var(--c-paper)]"
-            : "h-full min-h-full"
-        }
-      />
+    <ImageReveal
+      variant={reveal}
+      naturalHeight={fitContain}
+      className={cn(frameAspect, "w-full", fitContain && "bg-[var(--c-paper)]")}
+    >
+      {fitContain && slot.src ? (
+        <img
+          src={slot.src}
+          alt={slot.alt}
+          className="block h-auto w-full max-w-none"
+          loading="eager"
+          decoding="async"
+        />
+      ) : (
+        <ProjectVisual
+          project={project}
+          slot={slot}
+          className={
+            isSpread
+              ? "h-full min-h-full !object-contain object-center bg-[var(--c-paper)]"
+              : "h-full min-h-full"
+          }
+        />
+      )}
     </ImageReveal>
   );
 

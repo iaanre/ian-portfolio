@@ -12,23 +12,9 @@ export function Footer() {
     <footer
       id="contact"
       data-header-theme="paper"
-      className="hayler-grid-bg relative overflow-hidden border-t border-[var(--c-line)] px-[5vw] pb-10 pt-[14vh] md:pt-[18vh]"
+      className="hayler-grid-bg relative overflow-hidden border-t border-[var(--c-line)] px-[5vw] pb-10 pt-10 md:pt-14"
     >
-      <p className="flex items-center gap-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--c-muted)]">
-        <span className="h-2 w-2 rounded-[1px] bg-[var(--c-accent)]" />
-        <span>{copy.eyebrow}</span>
-      </p>
-
-      <h2 className="mt-6 max-w-[12ch] text-[clamp(3.2rem,10.5vw,9.6rem)] font-semibold leading-[0.86] tracking-[-0.055em]">
-        {copy.headlineLines.map((line, idx) => (
-          <span key={line}>
-            {line}
-            {idx < copy.headlineLines.length - 1 ? <br /> : null}
-          </span>
-        ))}
-      </h2>
-
-      <div className="mt-16 grid gap-10 border-t border-[var(--c-line)] pt-10 md:mt-24 md:grid-cols-12">
+      <div className="grid gap-10 md:grid-cols-12">
         <div className="md:col-span-5">
           <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--c-muted)]">{copy.directContact}</p>
           <MagneticLink
@@ -72,8 +58,10 @@ export function Footer() {
           <div className="mt-3 flex flex-col items-start gap-2 text-[13px] font-medium">
             <MagneticLink to="/">{navCopy.index}</MagneticLink>
             <MagneticLink to="/work">{navCopy.works}</MagneticLink>
-            <MagneticLink to="/#editorial">{navCopy.editorial}</MagneticLink>
             <MagneticLink to="/about">{navCopy.studio}</MagneticLink>
+            <MagneticLink to="#contact" onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
+              {navCopy.contact}
+            </MagneticLink>
           </div>
         </div>
       </div>

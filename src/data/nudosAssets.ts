@@ -1,7 +1,8 @@
 /**
  * NUDOS assets — drop files into src/assets/nudos/
  * Basenames (any .jpg / .png / .webp):
- *   cover, cover-mobile,
+ *   cover, cover-mobile,                 ← NUDOS Web portada
+ *   brand-cover, brand-cover-mobile,     ← NUDOS Branding portada
  *   site-home, site-system, site-contact, site-projects, site-mobile,
  *   logo-horizontal, logo-horizontal-neg, logo-vertical, logo-vertical-neg,
  *   logo-mark, logo-mark-neg,
@@ -29,6 +30,7 @@ export function nudosAsset(name: string, _lang: Lang = "es"): string | undefined
   return index.get(name.toLowerCase());
 }
 
+/** Portada de NUDOS Web (no compartir con branding). */
 export function nudosCover(lang: Lang = "es") {
   return {
     desktop: nudosAsset("cover", lang) ?? nudosAsset("portada nudos", lang),
@@ -36,5 +38,16 @@ export function nudosCover(lang: Lang = "es") {
       nudosAsset("cover-mobile", lang) ??
       nudosAsset("cover", lang) ??
       nudosAsset("portada nudos", lang),
+  };
+}
+
+/** Portada de NUDOS Branding (atmosfera grain; archivo aparte). */
+export function nudosBrandCover(lang: Lang = "es") {
+  return {
+    desktop: nudosAsset("brand-cover", lang) ?? nudosAsset("cover", lang),
+    mobile:
+      nudosAsset("brand-cover-mobile", lang) ??
+      nudosAsset("brand-cover", lang) ??
+      nudosAsset("cover-mobile", lang),
   };
 }

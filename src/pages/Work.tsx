@@ -218,8 +218,12 @@ export default function Work() {
           </div>
           <div className="hidden md:col-span-4 md:col-start-9 md:block">
             <div className="sticky top-28">
-              <div ref={visualRef} className="aspect-[4/5] overflow-hidden">
-                <ProjectVisual project={current} slot={current.media[0]} />
+              <div ref={visualRef} className="aspect-[16/10] overflow-hidden">
+                <ProjectVisual
+                  project={current}
+                  slot={{ ...current.media[0], fit: "cover" }}
+                  className="h-full w-full !object-cover"
+                />
               </div>
               <div className="mt-4 flex items-center justify-between text-[12px] text-[var(--c-muted)]">
                 <span className="font-medium text-[var(--c-ink)]">
@@ -261,7 +265,11 @@ function WorkGridCard({
         <div ref={mediaRef} className={cn("w-full overflow-hidden", aspectClass)}>
           <ImageReveal variant="vertical" className="h-full w-full">
             <ParallaxImage className="h-full w-full">
-              <ProjectVisual project={project} slot={project.media[0]} className="h-full w-full" />
+              <ProjectVisual
+                project={project}
+                slot={{ ...project.media[0], fit: "cover" }}
+                className="h-full w-full !object-cover"
+              />
             </ParallaxImage>
           </ImageReveal>
         </div>

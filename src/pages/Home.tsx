@@ -63,7 +63,6 @@ export default function Home() {
         label={copy.kineticLabel}
         primary={copy.kineticPrimary}
         secondary={copy.kineticSecondary}
-        span="185vh"
       />
 
       {/* Categorized Sections: 01 Editorial, 02 Web & Product, 03 Brand Identity */}

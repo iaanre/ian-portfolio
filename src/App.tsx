@@ -17,7 +17,12 @@ const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const TayPage = lazy(() => import("./pages/work/TayPage.tsx"));
 const NudosPage = lazy(() => import("./pages/work/NudosPage.tsx"));
 const PatagoniaPage = lazy(() => import("./pages/work/PatagoniaPage.tsx"));
+const PatagoniaWebPage = lazy(() => import("./pages/work/PatagoniaWebPage.tsx"));
+const NudosWebPage = lazy(() => import("./pages/work/NudosWebPage.tsx"));
 const VilaPage = lazy(() => import("./pages/work/VilaPage.tsx"));
+const Catalog02Page = lazy(() => import("./pages/work/Catalog02Page.tsx"));
+const NexoPage = lazy(() => import("./pages/work/NexoPage.tsx"));
+const PatagoniaPackagingPage = lazy(() => import("./pages/work/PatagoniaPackagingPage.tsx"));
 const GenericCasePage = lazy(() => import("./pages/work/GenericCasePage.tsx"));
 
 const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
@@ -55,8 +60,13 @@ function AppShell() {
             <Route path="/work" element={<Work />} />
             <Route path="/work/tay" element={<TayPage />} />
             <Route path="/work/nudos" element={<NudosPage />} />
+            <Route path="/work/nudos-web" element={<NudosWebPage />} />
             <Route path="/work/patagonia" element={<PatagoniaPage />} />
+            <Route path="/work/patagonia-web" element={<PatagoniaWebPage />} />
             <Route path="/work/editorial-02" element={<VilaPage />} />
+            <Route path="/work/catalog-02" element={<Catalog02Page />} />
+            <Route path="/work/queer" element={<NexoPage />} />
+            <Route path="/work/patagonia-packaging" element={<PatagoniaPackagingPage />} />
             <Route path="/work/:slug" element={<GenericCasePage />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
@@ -103,9 +113,14 @@ function ScrollManager() {
         }
         return false;
       };
+      // Footer mounts with the page; retry briefly so Contact works from any route.
       if (!scrollToTarget()) {
         const timer = window.setTimeout(scrollToTarget, 120);
-        return () => window.clearTimeout(timer);
+        const timer2 = window.setTimeout(scrollToTarget, 360);
+        return () => {
+          window.clearTimeout(timer);
+          window.clearTimeout(timer2);
+        };
       }
       return;
     }

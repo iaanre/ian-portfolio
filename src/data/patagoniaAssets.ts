@@ -42,14 +42,12 @@ export function patagoniaCover(lang: Lang = "es") {
 }
 
 export function patagoniaHomeCover(lang: Lang = "es") {
+  // Prefer Cover (cover.png) for listings / home — same portada asset.
   return {
-    desktop:
-      patagoniaAsset("cover-home", lang) ??
-      patagoniaAsset("cover home editorial 2", lang) ??
-      patagoniaCover(lang).desktop,
+    desktop: patagoniaAsset("cover", lang) ?? patagoniaAsset("cover-home", lang),
     mobile:
-      patagoniaAsset("cover-home-mobile", lang) ??
-      patagoniaAsset("cover-home", lang) ??
-      patagoniaCover(lang).mobile,
+      patagoniaAsset("cover-mobile", lang) ??
+      patagoniaAsset("cover", lang) ??
+      patagoniaAsset("cover-home", lang),
   };
 }
