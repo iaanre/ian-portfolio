@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { homeMedia, mediaShowsFullProduct, projects, projectsByCategory } from "../../data/projects.ts";
+import { homeMedia, projects, projectsByCategory } from "../../data/projects.ts";
 import type { Project } from "../../data/projects.ts";
 import {
   localizeCategoryLabel,
@@ -92,7 +92,6 @@ function HaylerCard({
   const { mediaRef, onClick } = useProjectLaunch(project);
   const localizedTitle = localizeProjectTitle(project, lang).title;
   const slot = homeMedia(project);
-  const showFull = mediaShowsFullProduct(slot);
 
   return (
     <article className={cn("group", className)}>
@@ -102,26 +101,15 @@ function HaylerCard({
         onClick={onClick}
         className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8"
       >
-        <div
-          ref={mediaRef}
-          className={cn(
-            "w-full overflow-hidden",
-            // Landscape frames for product mockups so the object stays large + fully visible.
-            showFull ? "aspect-[16/10] bg-[#0a0a0a]" : aspectClass,
-          )}
-        >
+        <div ref={mediaRef} className={cn("w-full overflow-hidden", aspectClass)}>
           <ImageReveal variant={reveal} className="h-full w-full">
-            {showFull ? (
-              <ProjectVisual project={project} slot={slot} className="h-full w-full" />
-            ) : (
-              <ParallaxImage className="h-full w-full">
-                <ProjectVisual
-                  project={project}
-                  slot={{ ...slot, fit: "cover" }}
-                  className="h-full w-full object-cover"
-                />
-              </ParallaxImage>
-            )}
+            <ParallaxImage className="h-full w-full">
+              <ProjectVisual
+                project={project}
+                slot={slot}
+                className="h-full w-full origin-center object-cover scale-[1.14]"
+              />
+            </ParallaxImage>
           </ImageReveal>
         </div>
 
@@ -240,16 +228,11 @@ function EditorialSection({ items, lang }: { items: Project[]; lang: Locale }) {
           {activePreview ? (
             <div className="hidden md:col-span-4 md:col-start-9 md:block">
               <div className="sticky top-28">
-                <div
-                  className={cn(
-                    "aspect-[16/10] w-full overflow-hidden",
-                    mediaShowsFullProduct(homeMedia(activePreview)) && "bg-[#0a0a0a]",
-                  )}
-                >
+                <div className="aspect-[16/10] w-full overflow-hidden">
                   <ProjectVisual
                     project={activePreview}
                     slot={homeMedia(activePreview)}
-                    className="h-full w-full"
+                    className="h-full w-full origin-center object-cover scale-[1.14]"
                   />
                 </div>
                 <div className="mt-4 flex items-center justify-between text-[12px] text-[var(--c-muted)]">

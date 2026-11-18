@@ -2,10 +2,12 @@ import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { ScrollTrigger } from "./lib/gsap.ts";
 import { runtime } from "./lib/runtime.ts";
+import { scrollToId, scrollToTop } from "./lib/scroll.ts";
 import { usePrefers } from "./hooks/usePrefers.ts";
 import { LanguageProvider, useLanguage } from "./context/LanguageContext.tsx";
 import { UI_COPY } from "./data/i18n.ts";
 import { TransitionProvider, useTransition } from "./context/TransitionContext.tsx";
+import { SoftNavProvider, useSoftNav } from "./context/SoftNavContext.tsx";
 import { CustomCursor } from "./components/cursor/CustomCursor.tsx";
 import { Navigation } from "./components/navigation/Navigation.tsx";
 import { PageCurtain } from "./components/motion/PageCurtain.tsx";
@@ -32,7 +34,9 @@ export default function App() {
     <LanguageProvider>
       <BrowserRouter basename={routerBasename}>
         <TransitionProvider>
-          <AppShell />
+          <SoftNavProvider>
+            <AppShell />
+          </SoftNavProvider>
         </TransitionProvider>
       </BrowserRouter>
     </LanguageProvider>
@@ -96,36 +100,35 @@ function PointerBridge() {
 function ScrollManager() {
   const { pathname, hash } = useLocation();
   const { flight } = useTransition();
+  const { transitioning } = useSoftNav();
 
   useEffect(() => {
-    document.fonts?.ready.then(() => ScrollTrigger.refresh());
-  }, [pathname]);
-
-  useEffect(() => {
-    if (flight || runtime.flying) return;
-    if (hash) {
-      const targetId = hash.slice(1);
-      const scrollToTarget = () => {
-        const node = document.getElementById(targetId);
-        if (node) {
-          node.scrollIntoView({ behavior: "smooth", block: "start" });
-          return true;
-        }
-        return false;
-      };
-      // Footer mounts with the page; retry briefly so Contact works from any route.
-      if (!scrollToTarget()) {
-        const timer = window.setTimeout(scrollToTarget, 120);
-        const timer2 = window.setTimeout(scrollToTarget, 360);
-        return () => {
-          window.clearTimeout(timer);
-          window.clearTimeout(timer2);
-        };
-      }
-      return;
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
     }
-    window.scrollTo(0, 0);
-  }, [pathname, hash, flight]);
+  }, []);
+
+  useEffect(() => {
+    // Soft nav / project flight own scroll while their overlays are active.
+    if (flight || runtime.flying || transitioning) return;
+
+    // One clean jump — multiple competing scrolls were causing the stutter.
+    if (hash) {
+      scrollToId(hash.slice(1), 16, { immediate: true });
+    } else {
+      scrollToTop({ immediate: true });
+    }
+
+    const refresh = window.setTimeout(() => {
+      // Keep top after layout settles; don't start a second animated scroll.
+      if (!hash && window.scrollY > 1) scrollToTop({ immediate: true });
+      ScrollTrigger.refresh();
+    }, 120);
+
+    return () => {
+      window.clearTimeout(refresh);
+    };
+  }, [pathname, hash, flight, transitioning]);
 
   return null;
 }

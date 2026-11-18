@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext.tsx";
 import { UI_COPY } from "../data/i18n.ts";
 import { site } from "../data/site.ts";
+import portrait from "../assets/about/ian-rebuffo.jpg";
 import { Footer } from "../components/footer/Footer.tsx";
 import { AnimatedHeading } from "../components/motion/AnimatedHeading.tsx";
 import { MagneticLink } from "../components/navigation/MagneticLink.tsx";
@@ -18,24 +19,38 @@ export default function About() {
   return (
     <>
       <article data-header-theme="paper" className="hayler-grid-bg px-[5vw] pb-[10vh] pt-32 md:pt-40">
-        <p className="flex items-center gap-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--c-muted)]">
-          <span className="h-2 w-2 rounded-[1px] bg-[var(--c-accent)]" />
-          <span>{copy.eyebrow}</span>
-        </p>
+        <div className="grid items-end gap-10 md:grid-cols-12 md:gap-x-10">
+          <div className="md:col-span-4 lg:col-span-3">
+            <div className="aspect-[4/5] w-full max-w-[280px] overflow-hidden md:max-w-none">
+              <img
+                src={portrait}
+                alt={`${site.name} — ${homeCopy.role}`}
+                className="h-full w-full object-cover object-[center_18%]"
+              />
+            </div>
+          </div>
 
-        <h1 className="mt-4 max-w-[12ch] text-[clamp(3.2rem,8vw,7.2rem)] font-semibold leading-[0.86] tracking-[-0.055em]">
-          {site.name}
-        </h1>
+          <div className="md:col-span-8 lg:col-span-9">
+            <p className="flex items-center gap-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--c-muted)]">
+              <span className="h-2 w-2 rounded-[1px] bg-[var(--c-accent)]" />
+              <span>{copy.eyebrow}</span>
+            </p>
 
-        <AnimatedHeading
-          as="h2"
-          text={homeCopy.role}
-          className="mt-8 max-w-[20ch] text-[clamp(1.7rem,3.6vw,3.1rem)] font-medium leading-[1.04] tracking-[-0.04em]"
-        />
+            <h1 className="mt-4 max-w-[12ch] text-[clamp(3.2rem,8vw,7.2rem)] font-semibold leading-[0.86] tracking-[-0.055em]">
+              {site.name}
+            </h1>
 
-        <p className="mt-5 text-[13px] font-medium tracking-[-0.01em] text-[var(--c-muted)] md:text-[14px]">
-          {copy.availability}
-        </p>
+            <AnimatedHeading
+              as="h2"
+              text={homeCopy.role}
+              className="mt-8 max-w-[20ch] text-[clamp(1.7rem,3.6vw,3.1rem)] font-medium leading-[1.04] tracking-[-0.04em]"
+            />
+
+            <p className="mt-5 text-[13px] font-medium tracking-[-0.01em] text-[var(--c-muted)] md:text-[14px]">
+              {copy.availability}
+            </p>
+          </div>
+        </div>
 
         {/* ── PROFILE / BIO ── */}
         <section className="mt-16 grid gap-10 border-t border-[var(--c-line)] pt-10 md:grid-cols-12">

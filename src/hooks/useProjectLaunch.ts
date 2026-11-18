@@ -27,6 +27,7 @@ export function useProjectLaunch(project: Project) {
     const rect = visual.getBoundingClientRect();
     if (rect.width < 8 || rect.height < 8) return;
     event.preventDefault();
+    visual.setAttribute("data-project-launch-source", "");
     launch({
       slug: project.slug,
       rect: {

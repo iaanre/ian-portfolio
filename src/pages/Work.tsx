@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { MouseEvent, RefObject } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { getProject, homeMedia, mediaShowsFullProduct, projectBelongsTo, projects } from "../data/projects.ts";
+import { getProject, homeMedia, projectBelongsTo, projects } from "../data/projects.ts";
 import type { Project, ProjectCategory } from "../data/projects.ts";
 import {
   localizeCategoryLabel,
@@ -185,11 +185,8 @@ export default function Work() {
                       : "md:col-span-6 md:col-start-7 md:-mt-8";
 
               const slot = homeMedia(project);
-              const aspect = mediaShowsFullProduct(slot)
-                ? "aspect-[16/10]"
-                : slot.aspect === "landscape"
-                  ? "aspect-[16/10]"
-                  : "aspect-[4/5]";
+              const aspect =
+                slot.aspect === "landscape" ? "aspect-[16/10]" : "aspect-[4/5]";
 
               return (
                 <WorkGridCard
@@ -222,19 +219,11 @@ export default function Work() {
           </div>
           <div className="hidden md:col-span-4 md:col-start-9 md:block">
             <div className="sticky top-28">
-              <div
-                ref={visualRef}
-                className={cn(
-                  "overflow-hidden",
-                  mediaShowsFullProduct(homeMedia(current))
-                    ? "aspect-[16/10] bg-[#0a0a0a]"
-                    : "aspect-[16/10]",
-                )}
-              >
+              <div ref={visualRef} className="aspect-[16/10] overflow-hidden">
                 <ProjectVisual
                   project={current}
                   slot={homeMedia(current)}
-                  className="h-full w-full"
+                  className="h-full w-full origin-center object-cover scale-[1.14]"
                 />
               </div>
               <div className="mt-4 flex items-center justify-between text-[12px] text-[var(--c-muted)]">
@@ -266,7 +255,6 @@ function WorkGridCard({
 }) {
   const { mediaRef, onClick } = useProjectLaunch(project);
   const slot = homeMedia(project);
-  const showFull = mediaShowsFullProduct(slot);
 
   return (
     <article className={cn("group", className)}>
@@ -276,25 +264,15 @@ function WorkGridCard({
         onClick={onClick}
         className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8"
       >
-        <div
-          ref={mediaRef}
-          className={cn(
-            "w-full overflow-hidden",
-            showFull ? "aspect-[16/10] bg-[#0a0a0a]" : aspectClass,
-          )}
-        >
+        <div ref={mediaRef} className={cn("w-full overflow-hidden", aspectClass)}>
           <ImageReveal variant="vertical" className="h-full w-full">
-            {showFull ? (
-              <ProjectVisual project={project} slot={slot} className="h-full w-full" />
-            ) : (
-              <ParallaxImage className="h-full w-full">
-                <ProjectVisual
-                  project={project}
-                  slot={{ ...slot, fit: "cover" }}
-                  className="h-full w-full object-cover"
-                />
-              </ParallaxImage>
-            )}
+            <ParallaxImage className="h-full w-full">
+              <ProjectVisual
+                project={project}
+                slot={slot}
+                className="h-full w-full origin-center object-cover scale-[1.14]"
+              />
+            </ParallaxImage>
           </ImageReveal>
         </div>
 
@@ -352,6 +330,7 @@ function WorkRow({
     const rect = visual.getBoundingClientRect();
     if (rect.width < 8) return;
     event.preventDefault();
+    visual.setAttribute("data-project-launch-source", "");
     launch({
       slug: project.slug,
       rect: { top: rect.top, left: rect.left, width: rect.width, height: rect.height },

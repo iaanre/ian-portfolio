@@ -299,7 +299,7 @@ export const projects: Project[] = [
         ...media("cover", "NUDOS brand cover", "landscape"),
         src: nudosBrandCovers.desktop,
         srcMobile: nudosBrandCovers.mobile,
-        fit: "contain",
+        fit: "cover",
         objectPosition: "center center",
         alt: "NUDOS — portada del manual de marca, mockup del logo.",
         caption: "Portada",
@@ -309,42 +309,42 @@ export const projects: Project[] = [
         src: nudosAsset("logo-mark"),
         alt: "NUDOS — isologo, versión positiva.",
         caption: "Isologo · positivo",
-        fit: "contain",
+        fit: "cover",
       },
       {
         ...media("logo-mark-neg", "NUDOS brand mark negative", "square"),
         src: nudosAsset("logo-mark-neg"),
         alt: "NUDOS — isologo, versión negativa.",
         caption: "Isologo · negativo",
-        fit: "contain",
+        fit: "cover",
       },
       {
         ...media("logo-horizontal", "NUDOS horizontal lockup", "landscape"),
         src: nudosAsset("logo-horizontal"),
         alt: "NUDOS — lockup horizontal positivo.",
         caption: "Lockup · horizontal",
-        fit: "contain",
+        fit: "cover",
       },
       {
         ...media("logo-horizontal-neg", "NUDOS horizontal lockup negative", "landscape"),
         src: nudosAsset("logo-horizontal-neg"),
         alt: "NUDOS — lockup horizontal negativo.",
         caption: "Lockup · horizontal negativo",
-        fit: "contain",
+        fit: "cover",
       },
       {
         ...media("logo-vertical", "NUDOS vertical lockup", "portrait"),
         src: nudosAsset("logo-vertical"),
         alt: "NUDOS — lockup vertical positivo.",
         caption: "Lockup · vertical",
-        fit: "contain",
+        fit: "cover",
       },
       {
         ...media("logo-vertical-neg", "NUDOS vertical lockup negative", "portrait"),
         src: nudosAsset("logo-vertical-neg"),
         alt: "NUDOS — lockup vertical negativo.",
         caption: "Lockup · vertical negativo",
-        fit: "contain",
+        fit: "cover",
       },
       {
         ...media("logo-board-positive", "NUDOS wordmark positive", "landscape"),
@@ -397,7 +397,7 @@ export const projects: Project[] = [
         ...media("cover", "NUDOS web cover", "landscape"),
         src: nudosCovers.desktop,
         srcMobile: nudosCovers.mobile,
-        fit: "contain",
+        fit: "cover",
         objectPosition: "center center",
         alt: "NUDOS — Design & Technology. Portada del estudio con sitio en laptop.",
         caption: "Portada",
@@ -405,35 +405,35 @@ export const projects: Project[] = [
       {
         ...media("site-home", "NUDOS homepage", "landscape"),
         src: nudosAsset("site-home"),
-        fit: "contain",
+        fit: "cover",
         alt: "NUDOS — homepage: Diseñamos. Desarrollamos. Conectamos.",
         caption: "Homepage · desktop",
       },
       {
         ...media("site-system", "NUDOS visual system", "landscape"),
         src: nudosAsset("site-system"),
-        fit: "contain",
+        fit: "cover",
         alt: "NUDOS — Nosotros y sistema tipográfico/color en web.",
         caption: "Sistema digital",
       },
       {
         ...media("site-projects", "NUDOS projects", "landscape"),
         src: nudosAsset("site-projects"),
-        fit: "contain",
+        fit: "cover",
         alt: "NUDOS — proyectos seleccionados en el sitio (caso TAY).",
         caption: "Proyectos",
       },
       {
         ...media("site-contact", "NUDOS contact", "landscape"),
         src: nudosAsset("site-contact"),
-        fit: "contain",
+        fit: "cover",
         alt: "NUDOS — bloque de contacto en superficie oscura.",
         caption: "Contacto",
       },
       {
         ...media("site-mobile", "NUDOS mobile", "landscape"),
         src: nudosAsset("site-mobile"),
-        fit: "contain",
+        fit: "cover",
         alt: "NUDOS — experiencia responsive mobile.",
         caption: "Mobile",
       },
@@ -550,7 +550,7 @@ export const projects: Project[] = [
         ...media("cover", "Patagonia web cover", "landscape"),
         src: patagoniaWebCovers.desktop,
         srcMobile: patagoniaWebCovers.mobile,
-        fit: "contain",
+        fit: "cover",
         objectPosition: "center center",
         alt: "Patagonia CNC — homepage en laptop sobre roca.",
         caption: "Portada",
@@ -576,56 +576,56 @@ export const projects: Project[] = [
       {
         ...media("screen-home", "Patagonia screen home", "landscape"),
         src: patagoniaWebAsset("screen-home"),
-        fit: "contain",
+        fit: "cover",
         alt: "Patagonia CNC — homepage completa.",
         caption: "Home",
       },
       {
         ...media("screen-02", "Patagonia screen 02", "landscape"),
         src: patagoniaWebAsset("screen-02"),
-        fit: "contain",
+        fit: "cover",
         alt: "Patagonia CNC — captura web.",
         caption: "Pantalla 02",
       },
       {
         ...media("screen-03", "Patagonia screen 03", "landscape"),
         src: patagoniaWebAsset("screen-03"),
-        fit: "contain",
+        fit: "cover",
         alt: "Patagonia CNC — captura web.",
         caption: "Pantalla 03",
       },
       {
         ...media("screen-04", "Patagonia screen 04", "landscape"),
         src: patagoniaWebAsset("screen-04"),
-        fit: "contain",
+        fit: "cover",
         alt: "Patagonia CNC — captura web.",
         caption: "Pantalla 04",
       },
       {
         ...media("screen-05", "Patagonia screen 05", "landscape"),
         src: patagoniaWebAsset("screen-05"),
-        fit: "contain",
+        fit: "cover",
         alt: "Patagonia CNC — captura web.",
         caption: "Pantalla 05",
       },
       {
         ...media("screen-06", "Patagonia screen 06", "landscape"),
         src: patagoniaWebAsset("screen-06"),
-        fit: "contain",
+        fit: "cover",
         alt: "Patagonia CNC — captura web.",
         caption: "Pantalla 06",
       },
       {
         ...media("screen-07", "Patagonia screen 07", "landscape"),
         src: patagoniaWebAsset("screen-07"),
-        fit: "contain",
+        fit: "cover",
         alt: "Patagonia CNC — captura web.",
         caption: "Pantalla 07",
       },
       {
         ...media("screen-contact", "Patagonia screen contact", "landscape"),
         src: patagoniaWebAsset("screen-contact"),
-        fit: "contain",
+        fit: "cover",
         alt: "Patagonia CNC — contacto.",
         caption: "Contacto",
       },
@@ -792,7 +792,7 @@ export const projects: Project[] = [
         ...media("cover", "Millbridge cover", "landscape"),
         src: catalog02Covers.desktop,
         srcMobile: catalog02Covers.mobile,
-        fit: "contain",
+        fit: "cover",
         objectPosition: "center center",
         alt: "Millbridge — Board Communication Protocol, mockup de portada.",
         caption: "Portada",
@@ -903,7 +903,7 @@ export const projects: Project[] = [
         ...media("cover", "NEXO cover", "portrait"),
         src: nexoCovers.desktop,
         srcMobile: nexoCovers.mobile,
-        fit: "contain",
+        fit: "cover",
         objectPosition: "center center",
         alt: "NEXO — tapa de revista, edición 145.",
         caption: "Portada",
@@ -993,7 +993,7 @@ export const projects: Project[] = [
         ...media("cover", "Patagonia packaging cover", "landscape"),
         src: packagingCovers.desktop,
         srcMobile: packagingCovers.mobile,
-        fit: "contain",
+        fit: "cover",
         objectPosition: "center center",
         alt: "Patagonia CNC — caja de alambre de soldadura, mockup en fila.",
         caption: "Portada",
@@ -1001,21 +1001,21 @@ export const projects: Project[] = [
       {
         ...media("mockup-01", "Packaging mockup 01", "landscape"),
         src: packagingAsset("mockup-01"),
-        fit: "contain",
+        fit: "cover",
         alt: "Patagonia CNC — cajas de alambre en perspectiva.",
         caption: "Mockup 01",
       },
       {
         ...media("mockup-02", "Packaging mockup 02", "landscape"),
         src: packagingAsset("mockup-02"),
-        fit: "contain",
+        fit: "cover",
         alt: "Patagonia CNC — cajas de alambre, vista tres cuartos.",
         caption: "Mockup 02",
       },
       {
         ...media("mockup-03", "Packaging mockup 03", "landscape"),
         src: packagingAsset("mockup-03"),
-        fit: "contain",
+        fit: "cover",
         alt: "Patagonia CNC — familia de vistas del packaging.",
         caption: "Mockup 03",
       },
@@ -1064,23 +1064,11 @@ export function mediaById(project: Project, id: string): MediaSlot {
   return project.media.find((slot) => slot.id === id) ?? project.media[0];
 }
 
-/** Product/mockup covers that must show the full object (no crop) in listings & heroes. */
-const CONTAIN_COVER_SLUGS = new Set([
-  "nudos",
-  "nudos-web",
-  "patagonia-web",
-  "patagonia-packaging",
-  "catalog-02",
-  "queer",
-]);
-
-/** Prefer `cover-home` when present (home slider / listings); else first media. */
+/** Prefer `cover-home` when present (home slider / listings); else first media.
+ *  Listings always fill the frame — never letterbox with black bars. */
 export function homeMedia(project: Project): MediaSlot {
   const slot = project.media.find((s) => s.id === "cover-home") ?? project.media[0];
-  if (CONTAIN_COVER_SLUGS.has(project.slug)) {
-    return { ...slot, fit: "contain" };
-  }
-  return slot;
+  return { ...slot, fit: "cover" };
 }
 
 /** True when a slot should show the full product without cropping. */

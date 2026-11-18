@@ -231,3 +231,8 @@ html.using-keyboard * {
 #branding {
   scroll-margin-top: 24px;
 }
+
+/* While a project shared-element flight is expanding, mute the source card. */
+html.project-flying [data-project-launch-source] {
+  opacity: 0 !important;
+}

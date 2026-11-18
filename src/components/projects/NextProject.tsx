@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { Project } from "../../data/projects.ts";
+import { homeMedia } from "../../data/projects.ts";
 import { localizeDisciplines, localizeProjectTitle, UI_COPY } from "../../data/i18n.ts";
 import { useLanguage } from "../../context/LanguageContext.tsx";
 import { useProjectLaunch } from "../../hooks/useProjectLaunch.ts";
@@ -10,12 +11,11 @@ export function NextProject({ project }: { project: Project }) {
   const copy = UI_COPY[lang].caseStudy;
   const { mediaRef, onClick } = useProjectLaunch(project);
   const localizedTitle = localizeProjectTitle(project, lang);
-  // Fill the portrait mask — contain letterboxes landscape covers and shrinks the product.
-  const preview = project.media.find((s) => s.id === "cover-home") ?? project.media[0];
+  // Cover fills the mask (no black letterbox). Position keeps the mockup/product centered.
   const slot = {
-    ...preview,
+    ...homeMedia(project),
     fit: "cover" as const,
-    objectPosition: preview.objectPosition ?? "center center",
+    objectPosition: "center center",
   };
 
   return (
@@ -40,14 +40,15 @@ export function NextProject({ project }: { project: Project }) {
             {localizeDisciplines(project, lang)}
           </p>
         </div>
+        {/* Landscape-leaning mask so laptop/web mockups stay readable when covered. */}
         <div
           ref={mediaRef}
-          className="aspect-[4/5] overflow-hidden md:col-span-4 md:col-start-9"
+          className="aspect-[5/4] overflow-hidden md:col-span-4 md:col-start-9"
         >
           <ProjectVisual
             project={project}
             slot={slot}
-            className="h-full w-full scale-[1.18] origin-center"
+            className="h-full w-full origin-center object-cover"
           />
         </div>
       </Link>

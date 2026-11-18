@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProjectTransition } from "../components/projects/ProjectTransition.tsx";
 import { runtime } from "../lib/runtime.ts";
+import { scrollToTop } from "../lib/scroll.ts";
 
 export type Flight = {
   slug: string;
@@ -26,6 +27,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
       launch: (next) => {
         if (runtime.flying) return;
         runtime.flying = true;
+        runtime.handoff = true;
         setFlight(next);
       },
     }),
@@ -38,11 +40,20 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
       <ProjectTransition
         flight={flight}
         onArrive={(slug) => {
-          window.scrollTo(0, 0);
+          scrollToTop({ immediate: true });
           navigate(`/work/${slug}`);
+          requestAnimationFrame(() => scrollToTop({ immediate: true }));
+          window.setTimeout(() => scrollToTop({ immediate: true }), 32);
         }}
         onDone={() => {
+          scrollToTop({ immediate: true });
           runtime.flying = false;
+          // Keep handoff one frame so hero doesn't flash an entrance animation
+          // the instant the overlay is removed.
+          requestAnimationFrame(() => {
+            runtime.handoff = false;
+            window.dispatchEvent(new Event("ir-handoff-done"));
+          });
           setFlight(null);
         }}
       />

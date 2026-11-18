@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
-import { getProject } from "../../data/projects.ts";
+import { getProject, homeMedia } from "../../data/projects.ts";
 import { ease, gsap } from "../../lib/gsap.ts";
+import { runtime } from "../../lib/runtime.ts";
 import type { Flight } from "../../context/TransitionContext.tsx";
 import { ProjectVisual } from "../media/ProjectVisual.tsx";
 
@@ -22,8 +23,21 @@ export function ProjectTransition({
   useLayoutEffect(() => {
     const el = ref.current;
     if (!flight || !el) return;
+
     const { rect, slug } = flight;
-    const tween = gsap.fromTo(
+    runtime.handoff = true;
+    document.documentElement.classList.add("project-flying");
+
+    // Element is always full-viewport; we scale it down to the preview rect.
+    // End state === case-study hero (100svh cover) → no crop jump on handoff.
+    const tw = gsap.timeline({
+      onComplete: () => {
+        document.documentElement.classList.remove("project-flying");
+        doneRef.current();
+      },
+    });
+
+    tw.fromTo(
       el,
       {
         x: rect.left,
@@ -37,22 +51,27 @@ export function ProjectTransition({
         y: 0,
         scaleX: 1,
         scaleY: 1,
-        duration: 0.95,
+        duration: 1.1,
         ease: ease.inOut,
-        onComplete: () => {
-          arriveRef.current(slug);
-          gsap.to(el, {
-            opacity: 0,
-            duration: 0.38,
-            delay: 0.12,
-            ease: "power2.out",
-            onComplete: () => doneRef.current(),
-          });
-        },
       },
     );
+
+    // Mount destination under the overlay near the end of the expand.
+    tw.add(() => {
+      arriveRef.current(slug);
+    }, "-=0.22");
+
+    // Brief hold so the identical hero paints underneath, then dissolve.
+    tw.to({}, { duration: 0.18 });
+    tw.to(el, {
+      opacity: 0,
+      duration: 0.22,
+      ease: "power1.out",
+    });
+
     return () => {
-      tween.kill();
+      tw.kill();
+      document.documentElement.classList.remove("project-flying");
     };
   }, [flight]);
 
@@ -60,12 +79,20 @@ export function ProjectTransition({
   const project = getProject(flight.slug);
   if (!project) return null;
 
+  const slot = { ...homeMedia(project), fit: "cover" as const };
+
   return (
     <div
       ref={ref}
       className="pointer-events-none fixed inset-0 z-[70] origin-top-left overflow-hidden will-change-transform"
     >
-      <ProjectVisual project={project} slot={project.media[0]} underNav className="h-full w-full" />
+      <ProjectVisual
+        project={project}
+        slot={slot}
+        underNav
+        hideOverlayMeta
+        className="h-full w-full object-cover"
+      />
     </div>
   );
 }

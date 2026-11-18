@@ -59,9 +59,7 @@ export function Footer() {
             <MagneticLink to="/">{navCopy.index}</MagneticLink>
             <MagneticLink to="/work">{navCopy.works}</MagneticLink>
             <MagneticLink to="/about">{navCopy.studio}</MagneticLink>
-            <MagneticLink to="#contact" onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
-              {navCopy.contact}
-            </MagneticLink>
+            <MagneticLink to="#contact">{navCopy.contact}</MagneticLink>
           </div>
         </div>
       </div>

@@ -4,6 +4,44 @@ import { UI_COPY } from "../../data/i18n.ts";
 import { ease, gsap } from "../../lib/gsap.ts";
 import { usePrefers } from "../../hooks/usePrefers.ts";
 
+const MIN_MS = 2400;
+
+function sleep(ms: number) {
+  return new Promise<void>((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
+async function waitForWindowLoad(timeoutMs = 4000) {
+  if (document.readyState === "complete") return;
+  await Promise.race([
+    new Promise<void>((resolve) => {
+      window.addEventListener("load", () => resolve(), { once: true });
+    }),
+    sleep(timeoutMs),
+  ]);
+}
+
+async function waitForImages(limit = 10) {
+  const imgs = [...document.images].slice(0, limit);
+  await Promise.all(
+    imgs.map(async (img) => {
+      if (img.complete && img.naturalWidth > 0) return;
+      try {
+        if (typeof img.decode === "function") await img.decode();
+      } catch {
+        /* ignore decode errors */
+      }
+      if (img.complete) return;
+      await new Promise<void>((resolve) => {
+        img.addEventListener("load", () => resolve(), { once: true });
+        img.addEventListener("error", () => resolve(), { once: true });
+        window.setTimeout(resolve, 1200);
+      });
+    }),
+  );
+}
+
 export function PageCurtain() {
   const { reduced } = usePrefers();
   const { lang } = useLanguage();
@@ -27,7 +65,28 @@ export function PageCurtain() {
     const countEl = countRef.current;
     if (!root || !countEl) return;
 
+    let cancelled = false;
+    const counter = { val: 0 };
+    const progress = { val: 0 };
+
+    const setProgress = (next: number) => {
+      if (cancelled) return;
+      progress.val = Math.min(100, Math.max(progress.val, next));
+      gsap.to(counter, {
+        val: progress.val,
+        duration: 0.55,
+        ease: "power2.out",
+        overwrite: "auto",
+        onUpdate: () => {
+          if (!cancelled) {
+            countEl.textContent = String(Math.round(counter.val)).padStart(3, "0");
+          }
+        },
+      });
+    };
+
     const finish = () => {
+      if (cancelled) return;
       document.documentElement.classList.remove("intro-pending");
       document.documentElement.classList.add("intro-done");
       try {
@@ -38,42 +97,67 @@ export function PageCurtain() {
       setVisible(false);
     };
 
-    const counter = { val: 0 };
     const ctx = gsap.context(() => {
+      /* loading sequence driven below */
+    }, root);
+
+    const run = async () => {
+      const started = performance.now();
+      setProgress(6);
+
+      try {
+        await document.fonts?.ready;
+      } catch {
+        /* ignore */
+      }
+      if (cancelled) return;
+      setProgress(32);
+
+      await waitForWindowLoad();
+      if (cancelled) return;
+      setProgress(62);
+
+      await waitForImages(12);
+      if (cancelled) return;
+      setProgress(88);
+
+      const elapsed = performance.now() - started;
+      if (elapsed < MIN_MS) await sleep(MIN_MS - elapsed);
+      if (cancelled) return;
+
+      setProgress(100);
+      await sleep(280);
+      if (cancelled) return;
+
       const tl = gsap.timeline({ onComplete: finish });
-      tl.to(counter, {
-        val: 100,
-        duration: 0.72,
-        ease: "power2.inOut",
-        onUpdate: () => {
-          countEl.textContent = String(Math.round(counter.val)).padStart(3, "0");
-        },
+      tl.to(".curtain-caption", {
+        yPercent: -55,
+        autoAlpha: 0,
+        duration: 0.42,
+        ease: "power2.in",
       });
-      tl.to(
-        ".curtain-caption",
-        {
-          yPercent: -60,
-          autoAlpha: 0,
-          duration: 0.34,
-          ease: "power2.in",
-        },
-        0.64,
-      );
       tl.to(
         ".curtain-col",
         {
           scaleY: 0,
           transformOrigin: "center top",
-          duration: 0.68,
-          stagger: 0.045,
+          duration: 0.9,
+          stagger: 0.055,
           ease: ease.inOut,
         },
-        0.68,
+        "-=0.12",
       );
-    }, root);
+    };
 
-    const safety = window.setTimeout(finish, 1800);
+    void run();
+
+    const safety = window.setTimeout(() => {
+      // If something stalls, jump progress so the exit can still play.
+      setProgress(100);
+    }, 7000);
+
     return () => {
+      cancelled = true;
       window.clearTimeout(safety);
       ctx.revert();
     };

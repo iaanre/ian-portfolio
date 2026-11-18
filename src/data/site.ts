@@ -9,7 +9,6 @@ export const site = {
   location: "Buenos Aires, Argentina",
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/ian-rebuffo-929b84383/" },
-    { label: "Behance", href: "https://www.behance.net/ianrebuffo2" },
   ],
   intro:
     "Senior Graphic & Digital Designer holding a B.A. in Graphic Design & Visual Communication, with 6+ years of experience crafting brand identities, editorial systems, websites and digital products.",

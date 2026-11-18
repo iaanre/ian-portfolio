@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { featuredProjects, homeMedia } from "../../data/projects.ts";
 import type { Project } from "../../data/projects.ts";
 import {
@@ -23,6 +23,7 @@ export function HaylerHeroSlider() {
   const slides = featuredProjects;
   const { lang } = useLanguage();
   const copy = UI_COPY[lang].hero;
+  const navigate = useNavigate();
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
@@ -315,24 +316,16 @@ export function HaylerHeroSlider() {
     }
   };
 
-  const launchCurrentProject = (event: ReactMouseEvent<HTMLAnchorElement>) => {
-    if (
-      dragState.current.moved ||
-      reduced ||
-      runtime.flying ||
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey ||
-      event.button !== 0
-    ) {
-      if (dragState.current.moved) event.preventDefault();
+  const openCurrentProject = () => {
+    if (runtime.flying) return;
+    if (reduced) {
+      navigate(`/work/${current.slug}`);
       return;
     }
     const hero = sectionRef.current;
     if (!hero) return;
     const rect = hero.getBoundingClientRect();
-    event.preventDefault();
+    hero.setAttribute("data-project-launch-source", "");
     launch({
       slug: current.slug,
       rect: {
@@ -344,16 +337,43 @@ export function HaylerHeroSlider() {
     });
   };
 
+  const launchCurrentProject = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+    if (
+      dragState.current.moved ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    ) {
+      if (dragState.current.moved) event.preventDefault();
+      return;
+    }
+    if (reduced) return;
+    event.preventDefault();
+    openCurrentProject();
+  };
+
+  const onHeroClick = (event: ReactMouseEvent<HTMLElement>) => {
+    if (dragState.current.moved) {
+      dragState.current.moved = false;
+      return;
+    }
+    const target = event.target as HTMLElement | null;
+    if (target?.closest("a, button")) return;
+    openCurrentProject();
+  };
+
   return (
     <section
       ref={sectionRef}
       data-header-theme={current.banner.headerTheme}
-      data-cursor="drag"
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
       onPointerLeave={endDrag}
+      onClick={onHeroClick}
       className={cn(
         "relative h-[100svh] w-full select-none overflow-hidden transition-colors duration-500",
         isInk ? "bg-[#0b0b0e] text-[#f5f4f0]" : "bg-[#e7e4ef] text-[#0d0d0d]",
@@ -368,7 +388,7 @@ export function HaylerHeroSlider() {
               project={outgoing}
               slot={homeMedia(outgoing)}
               hideOverlayMeta
-              className="h-full w-full"
+              className="h-full w-full origin-center object-cover scale-[1.08]"
             />
           </div>
         </div>
@@ -380,7 +400,7 @@ export function HaylerHeroSlider() {
             project={current}
             slot={homeMedia(current)}
             hideOverlayMeta
-            className="h-full w-full"
+            className="h-full w-full origin-center object-cover scale-[1.08]"
           />
         </div>
         <div
@@ -430,7 +450,6 @@ export function HaylerHeroSlider() {
           <div className="max-w-[90vw] md:max-w-[72%]">
             <Link
               to={`/work/${current.slug}`}
-              data-cursor="project"
               onClick={launchCurrentProject}
               onPointerEnter={() => setPaused(true)}
               onPointerLeave={() => setPaused(false)}
@@ -567,7 +586,6 @@ export function HaylerHeroSlider() {
 
             <Link
               to={`/work/${current.slug}`}
-              data-cursor="project"
               onClick={launchCurrentProject}
               className="inline-flex items-center gap-2 opacity-85 transition-opacity hover:opacity-100"
             >

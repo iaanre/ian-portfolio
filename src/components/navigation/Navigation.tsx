@@ -68,16 +68,6 @@ export function Navigation() {
     { label: copy.contact, to: contactTo, isContact: true },
   ] as const;
 
-  const scrollToContact = () => {
-    const node = document.getElementById("contact");
-    if (node) {
-      node.scrollIntoView({ behavior: "smooth", block: "start" });
-      if (hash !== "#contact") {
-        window.history.replaceState(null, "", contactTo);
-      }
-    }
-  };
-
   return (
     <header
       data-site-nav
@@ -112,7 +102,6 @@ export function Navigation() {
           <MagneticLink
             to={contactTo}
             strength={0.18}
-            onClick={scrollToContact}
             className={cn(
               "pointer-events-auto inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium tracking-[-0.01em] transition-colors duration-300",
               ink
@@ -153,7 +142,6 @@ export function Navigation() {
               key={item.label}
               to={item.to}
               strength={0.18}
-              onClick={isContact ? scrollToContact : undefined}
               aria-current={isCurrent ? "page" : undefined}
               className={cn(
                 "rounded-full px-2.5 py-1.5 text-center text-[11px] font-medium tracking-[-0.01em] transition-all duration-250 sm:px-3.5 sm:py-1.5 sm:text-[12px] lg:px-4",
@@ -184,7 +172,6 @@ export function Navigation() {
         <MagneticLink
           to={contactTo}
           strength={0.22}
-          onClick={scrollToContact}
           className={cn(
             "pointer-events-auto inline-flex items-center gap-2.5 rounded-full border px-4 py-2 text-[12px] font-medium tracking-[-0.01em] backdrop-blur-sm transition-colors duration-300",
             ink

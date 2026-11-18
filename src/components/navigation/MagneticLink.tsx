@@ -1,9 +1,11 @@
 import { useEffect, useRef } from "react";
-import type { ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "../../lib/gsap.ts";
 import { usePrefers } from "../../hooks/usePrefers.ts";
 import { cn } from "../../lib/cn.ts";
+import { useSoftNav } from "../../context/SoftNavContext.tsx";
+import { scrollToTop } from "../../lib/scroll.ts";
 
 type MagneticProps = {
   children: ReactNode;
@@ -14,6 +16,8 @@ type MagneticProps = {
   rel?: string;
   strength?: number;
   onClick?: () => void;
+  /** Skip soft page curtain (e.g. project launch already animates). */
+  hardNav?: boolean;
   "aria-current"?: "page" | undefined;
   "data-cursor"?: string;
 };
@@ -27,11 +31,13 @@ export function MagneticLink({
   rel,
   strength = 0.28,
   onClick,
+  hardNav = false,
   "aria-current": ariaCurrent,
   "data-cursor": dataCursor,
 }: MagneticProps) {
   const ref = useRef<HTMLAnchorElement>(null);
   const { fine, reduced } = usePrefers();
+  const { softNavigate } = useSoftNav();
 
   useEffect(() => {
     const element = ref.current;
@@ -61,14 +67,28 @@ export function MagneticLink({
     };
   }, [fine, reduced, strength]);
 
-  const cls = cn("inline-block", className);
+  const cls = cn(className);
+
   if (to) {
+    const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+      onClick?.();
+      if (hardNav) return;
+      const isHash = to.startsWith("#") || to.includes("#");
+      if (isHash) {
+        event.preventDefault();
+        softNavigate(to);
+        return;
+      }
+      // Instant top before/with route change — avoids smooth-scroll stutter.
+      scrollToTop({ immediate: true });
+    };
+
     return (
       <Link
         ref={ref}
         to={to}
         className={cls}
-        onClick={onClick}
+        onClick={handleClick}
         aria-current={ariaCurrent}
         data-cursor={dataCursor}
       >
