@@ -3,6 +3,7 @@ import { UI_COPY } from "../../data/i18n.ts";
 import { nexoSectionBody } from "../../data/nexoCopy.ts";
 import { useLanguage } from "../../context/LanguageContext.tsx";
 import { CaseMedia } from "../../components/case-study/CaseMedia.tsx";
+import { CaseMediaGallery } from "../../components/case-study/CaseMediaGallery.tsx";
 import { CaseStudyLabel } from "../../components/case-study/CaseStudyLabel.tsx";
 import { CaseStudyLayout } from "../../components/case-study/CaseStudyLayout.tsx";
 import { HorizontalScroll } from "../../components/motion/HorizontalScroll.tsx";
@@ -18,6 +19,7 @@ export default function NexoPage() {
   const pages = Array.from({ length: 24 }, (_, i) =>
     mediaById(project, `page-${String(i + 1).padStart(2, "0")}`),
   );
+  const mockupIds = ["mockup-sumario", "mockup-stack", "mockup-resistencia", "mockup-interior"] as const;
 
   return (
     <CaseStudyLayout project={project}>
@@ -53,22 +55,30 @@ export default function NexoPage() {
         </CaseStudyLabel>
       </section>
 
-      <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-12 md:gap-8 md:pb-[7vh]">
-        <div className="md:col-span-7">
-          <CaseMedia project={project} slot={mediaById(project, "mockup-sumario")} reveal="horizontal" />
-        </div>
-        <div className="md:col-span-5 md:mt-[6vh]">
-          <CaseMedia project={project} slot={mediaById(project, "mockup-stack")} reveal="clip" />
-        </div>
-      </div>
-
-      <div className="px-[5vw] pb-[5vh] md:pb-[7vh]">
-        <CaseMedia project={project} slot={mediaById(project, "mockup-resistencia")} reveal="vertical" />
-      </div>
-
-      <div className="px-[5vw] pb-[6vh] md:pb-[8vh]">
-        <CaseMedia project={project} slot={mediaById(project, "mockup-interior")} reveal="expand" />
-      </div>
+      <CaseMediaGallery
+        label={lang === "es" ? "Galería de mockups" : "Mockup gallery"}
+        slides={mockupIds.map((id) => (
+          <CaseMedia key={id} project={project} slot={mediaById(project, id)} reveal="horizontal" />
+        ))}
+        desktop={
+          <>
+            <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-12 md:gap-8 md:pb-[7vh]">
+              <div className="md:col-span-7">
+                <CaseMedia project={project} slot={mediaById(project, "mockup-sumario")} reveal="horizontal" />
+              </div>
+              <div className="md:col-span-5 md:mt-[6vh]">
+                <CaseMedia project={project} slot={mediaById(project, "mockup-stack")} reveal="clip" />
+              </div>
+            </div>
+            <div className="px-[5vw] pb-[5vh] md:pb-[7vh]">
+              <CaseMedia project={project} slot={mediaById(project, "mockup-resistencia")} reveal="vertical" />
+            </div>
+            <div className="px-[5vw] pb-[6vh] md:pb-[8vh]">
+              <CaseMedia project={project} slot={mediaById(project, "mockup-interior")} reveal="expand" />
+            </div>
+          </>
+        }
+      />
 
       <section data-header-theme="paper" className="px-[5vw] pb-[3vh]">
         <CaseStudyLabel className="tracking-[0.18em]">
@@ -76,10 +86,19 @@ export default function NexoPage() {
         </CaseStudyLabel>
       </section>
 
-      <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-2 md:gap-8 md:pb-[7vh]">
-        <CaseMedia project={project} slot={mediaById(project, "indice-02")} reveal="clip" />
-        <CaseMedia project={project} slot={mediaById(project, "indice-01")} reveal="clip" />
-      </div>
+      <CaseMediaGallery
+        label={lang === "es" ? "Sumario" : "Contents"}
+        slides={[
+          <CaseMedia key="indice-02" project={project} slot={mediaById(project, "indice-02")} reveal="clip" />,
+          <CaseMedia key="indice-01" project={project} slot={mediaById(project, "indice-01")} reveal="clip" />,
+        ]}
+        desktop={
+          <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-2 md:gap-8 md:pb-[7vh]">
+            <CaseMedia project={project} slot={mediaById(project, "indice-02")} reveal="clip" />
+            <CaseMedia project={project} slot={mediaById(project, "indice-01")} reveal="clip" />
+          </div>
+        }
+      />
 
       <section data-header-theme="paper" className="px-[5vw] pb-[3vh]">
         <CaseStudyLabel className="tracking-[0.18em]">

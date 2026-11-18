@@ -21,7 +21,7 @@ function withInstantCss(run: () => void) {
 
 /** Smooth or instant scroll to top. */
 export function scrollToTop(opts?: { duration?: number; immediate?: boolean }) {
-  const duration = opts?.immediate ? 0 : (opts?.duration ?? 0.9);
+  const duration = opts?.immediate ? 0 : (opts?.duration ?? 1);
   killActive();
   if (duration <= 0) {
     withInstantCss(() => {
@@ -31,17 +31,21 @@ export function scrollToTop(opts?: { duration?: number; immediate?: boolean }) {
     });
     return;
   }
-  // Disable css smooth while GSAP owns the tween — avoids fighting animations.
-  withInstantCss(() => {
-    activeTween = gsap.to(window, {
-      duration,
-      ease: "power3.inOut",
-      scrollTo: { y: 0, autoKill: false },
-      overwrite: true,
-      onComplete: () => {
-        activeTween = null;
-      },
-    });
+  // If already near top, skip.
+  if (window.scrollY < 4) return;
+
+  // GSAP owns the scroll — css smooth stays off for the tween lifetime.
+  const html = document.documentElement;
+  html.style.scrollBehavior = "auto";
+  activeTween = gsap.to(window, {
+    duration,
+    ease: "power3.inOut",
+    scrollTo: { y: 0, autoKill: false },
+    overwrite: true,
+    onComplete: () => {
+      activeTween = null;
+      html.style.scrollBehavior = "";
+    },
   });
 }
 
@@ -49,7 +53,7 @@ export function scrollToTop(opts?: { duration?: number; immediate?: boolean }) {
 export function scrollToId(id: string, offset = 16, opts?: { duration?: number; immediate?: boolean }) {
   const node = document.getElementById(id);
   if (!node) return false;
-  const duration = opts?.immediate ? 0 : (opts?.duration ?? 0.9);
+  const duration = opts?.immediate ? 0 : (opts?.duration ?? 1);
   const top = Math.max(0, node.getBoundingClientRect().top + window.scrollY - offset);
   killActive();
   if (duration <= 0) {
@@ -60,16 +64,17 @@ export function scrollToId(id: string, offset = 16, opts?: { duration?: number; 
     });
     return true;
   }
-  withInstantCss(() => {
-    activeTween = gsap.to(window, {
-      duration,
-      ease: "power3.inOut",
-      scrollTo: { y: top, autoKill: false },
-      overwrite: true,
-      onComplete: () => {
-        activeTween = null;
-      },
-    });
+  const html = document.documentElement;
+  html.style.scrollBehavior = "auto";
+  activeTween = gsap.to(window, {
+    duration,
+    ease: "power3.inOut",
+    scrollTo: { y: top, autoKill: false },
+    overwrite: true,
+    onComplete: () => {
+      activeTween = null;
+      html.style.scrollBehavior = "";
+    },
   });
   return true;
 }

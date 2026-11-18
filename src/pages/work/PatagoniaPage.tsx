@@ -3,6 +3,7 @@ import { UI_COPY } from "../../data/i18n.ts";
 import { patagoniaSectionBody } from "../../data/patagoniaCopy.ts";
 import { useLanguage } from "../../context/LanguageContext.tsx";
 import { CaseMedia } from "../../components/case-study/CaseMedia.tsx";
+import { CaseMediaGallery } from "../../components/case-study/CaseMediaGallery.tsx";
 import { CaseStudyLabel } from "../../components/case-study/CaseStudyLabel.tsx";
 import { CaseStudyLayout } from "../../components/case-study/CaseStudyLayout.tsx";
 import { HorizontalScroll } from "../../components/motion/HorizontalScroll.tsx";
@@ -63,14 +64,23 @@ export default function PatagoniaPage() {
         </p>
       </section>
 
-      <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-12 md:gap-8 md:pb-[7vh]">
-        <div className="md:col-span-5">
-          <CaseMedia project={project} slot={mediaById(project, "catalog")} reveal="vertical" />
-        </div>
-        <div className="md:col-span-6 md:col-start-7 md:mt-[6vh]">
-          <CaseMedia project={project} slot={mediaById(project, "collateral")} reveal="clip" />
-        </div>
-      </div>
+      <CaseMediaGallery
+        label={lang === "es" ? "Catálogo y piezas" : "Catalog and collateral"}
+        slides={[
+          <CaseMedia key="catalog" project={project} slot={mediaById(project, "catalog")} reveal="vertical" />,
+          <CaseMedia key="collateral" project={project} slot={mediaById(project, "collateral")} reveal="clip" />,
+        ]}
+        desktop={
+          <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-12 md:gap-8 md:pb-[7vh]">
+            <div className="md:col-span-5">
+              <CaseMedia project={project} slot={mediaById(project, "catalog")} reveal="vertical" />
+            </div>
+            <div className="md:col-span-6 md:col-start-7 md:mt-[6vh]">
+              <CaseMedia project={project} slot={mediaById(project, "collateral")} reveal="clip" />
+            </div>
+          </div>
+        }
+      />
 
       <section data-header-theme="paper" className="px-[5vw] pb-[5vh] md:pb-[7vh]">
         <div className="grid gap-8 md:grid-cols-2 md:gap-10">

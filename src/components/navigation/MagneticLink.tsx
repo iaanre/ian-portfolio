@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { MouseEvent, ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { gsap } from "../../lib/gsap.ts";
 import { usePrefers } from "../../hooks/usePrefers.ts";
 import { cn } from "../../lib/cn.ts";
@@ -38,6 +38,7 @@ export function MagneticLink({
   const ref = useRef<HTMLAnchorElement>(null);
   const { fine, reduced } = usePrefers();
   const { softNavigate } = useSoftNav();
+  const location = useLocation();
 
   useEffect(() => {
     const element = ref.current;
@@ -79,8 +80,13 @@ export function MagneticLink({
         softNavigate(to);
         return;
       }
-      // Instant top before/with route change — avoids smooth-scroll stutter.
-      scrollToTop({ immediate: true });
+      const targetPath = to.split("#")[0] || "/";
+      if (targetPath === location.pathname) {
+        // Same section: still ease back to top.
+        event.preventDefault();
+        scrollToTop({ duration: 1 });
+      }
+      // Different route: ScrollManager runs one smooth scroll-to-top.
     };
 
     return (

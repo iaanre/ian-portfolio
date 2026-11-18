@@ -32,20 +32,21 @@ export function SoftNavProvider({ children }: { children: ReactNode }) {
       const targetPath = path || "/";
       const samePath = targetPath === location.pathname;
 
-      if (hash && samePath) {
-        scrollToId(hash.slice(1));
+      if (samePath && hash) {
+        scrollToId(hash.slice(1), 16, { duration: 1 });
         if (location.hash !== hash) {
           window.history.replaceState(null, "", `${location.pathname}${hash}`);
         }
         return;
       }
 
-      navigate(targetPath + hash);
-      if (hash) {
-        window.setTimeout(() => scrollToId(hash.slice(1), 16, { immediate: true }), 40);
-      } else {
-        scrollToTop({ immediate: true });
+      if (samePath) {
+        scrollToTop({ duration: 1 });
+        return;
       }
+
+      // ScrollManager owns the post-route smooth scroll (one tween only).
+      navigate(targetPath + hash);
     },
     [location.hash, location.pathname, navigate],
   );

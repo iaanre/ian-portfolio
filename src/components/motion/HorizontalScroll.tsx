@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { gsap } from "../../lib/gsap.ts";
 import { usePrefers } from "../../hooks/usePrefers.ts";
 import { cn } from "../../lib/cn.ts";
+import { SnapCarousel } from "./SnapCarousel.tsx";
 
 export function HorizontalScroll({
   children,
@@ -16,12 +17,13 @@ export function HorizontalScroll({
   const wrapRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const { reduced, mobile } = usePrefers();
-  const stack = reduced || mobile;
+  // Pin scrub only on desktop with motion. Mobile / reduced → snap carousel.
+  const usePin = !reduced && !mobile;
 
   useLayoutEffect(() => {
     const wrap = wrapRef.current;
     const track = trackRef.current;
-    if (!wrap || !track || stack) return;
+    if (!wrap || !track || !usePin) return;
 
     const ctx = gsap.context(() => {
       const distance = () => Math.max(track.scrollWidth - window.innerWidth, 0);
@@ -41,13 +43,14 @@ export function HorizontalScroll({
     }, wrap);
 
     return () => ctx.revert();
-  }, [stack]);
+  }, [usePin]);
 
-  if (stack) {
+  if (!usePin) {
+    // Children already set slide width (e.g. w-[78vw]); keep that and snap.
     return (
-      <section className={cn("px-[5vw] py-16", className)} aria-label={label}>
-        <div className="flex flex-col gap-8">{children}</div>
-      </section>
+      <SnapCarousel className={cn("py-10", className)} label={label} itemClassName="shrink-0">
+        {children}
+      </SnapCarousel>
     );
   }
 

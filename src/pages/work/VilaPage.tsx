@@ -3,6 +3,7 @@ import { UI_COPY } from "../../data/i18n.ts";
 import { vilaSectionBody } from "../../data/vilaCopy.ts";
 import { useLanguage } from "../../context/LanguageContext.tsx";
 import { CaseMedia } from "../../components/case-study/CaseMedia.tsx";
+import { CaseMediaGallery } from "../../components/case-study/CaseMediaGallery.tsx";
 import { CaseStudyLabel } from "../../components/case-study/CaseStudyLabel.tsx";
 import { CaseStudyLayout } from "../../components/case-study/CaseStudyLayout.tsx";
 import { HorizontalScroll } from "../../components/motion/HorizontalScroll.tsx";
@@ -66,58 +67,68 @@ export default function VilaPage() {
         </p>
       </section>
 
-      <div className="px-[5vw] pb-[5vh] md:pb-[7vh]">
-        <CaseStudyLabel className="mb-3 tracking-[0.18em]">
-          {lang === "es" ? "Doble página" : "Spread"}
-        </CaseStudyLabel>
-        <CaseMedia project={project} slot={mediaById(project, "mockup-spread-01")} reveal="expand" />
-      </div>
+      <CaseMediaGallery
+        label={lang === "es" ? "Galería de mockups" : "Mockup gallery"}
+        slides={mockups.map((slot) => (
+          <CaseMedia key={slot.id} project={project} slot={slot} reveal="horizontal" />
+        ))}
+        desktop={
+          <>
+            <div className="px-[5vw] pb-[5vh] md:pb-[7vh]">
+              <CaseStudyLabel className="mb-3 tracking-[0.18em]">
+                {lang === "es" ? "Doble página" : "Spread"}
+              </CaseStudyLabel>
+              <CaseMedia project={project} slot={mediaById(project, "mockup-spread-01")} reveal="expand" />
+            </div>
 
-      <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-12 md:gap-8 md:pb-[7vh]">
-        <div className="md:col-span-7">
-          <CaseStudyLabel className="mb-3 tracking-[0.18em]">
-            {lang === "es" ? "Certificación EDGE" : "EDGE Certification"}
-          </CaseStudyLabel>
-          <p className="mb-4 max-w-[34rem] text-[0.95rem] md:text-[1.02rem] leading-[1.55] text-[color:color-mix(in_srgb,var(--c-ink)_78%,transparent)]">
-            {t("edge")}
-          </p>
-          <CaseMedia project={project} slot={mediaById(project, "mockup-edge")} reveal="horizontal" />
-        </div>
-        <div className="md:col-span-5 md:mt-[8vh]">
-          <CaseMedia project={project} slot={mediaById(project, "mockup-stack")} reveal="clip" />
-        </div>
-      </div>
+            <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-12 md:gap-8 md:pb-[7vh]">
+              <div className="md:col-span-7">
+                <CaseStudyLabel className="mb-3 tracking-[0.18em]">
+                  {lang === "es" ? "Certificación EDGE" : "EDGE Certification"}
+                </CaseStudyLabel>
+                <p className="mb-4 max-w-[34rem] text-[0.95rem] md:text-[1.02rem] leading-[1.55] text-[color:color-mix(in_srgb,var(--c-ink)_78%,transparent)]">
+                  {t("edge")}
+                </p>
+                <CaseMedia project={project} slot={mediaById(project, "mockup-edge")} reveal="horizontal" />
+              </div>
+              <div className="md:col-span-5 md:mt-[8vh]">
+                <CaseMedia project={project} slot={mediaById(project, "mockup-stack")} reveal="clip" />
+              </div>
+            </div>
 
-      <section data-header-theme="paper" className="px-[5vw] pb-[3vh]">
-        <CaseStudyLabel className="tracking-[0.18em]">
-          {lang === "es" ? "Planos" : "Plans"}
-        </CaseStudyLabel>
-        <p className="mt-3 max-w-[38rem] text-[0.98rem] md:text-[1.05rem] leading-[1.55] text-[color:color-mix(in_srgb,var(--c-ink)_82%,transparent)]">
-          {t("plans")}
-        </p>
-      </section>
+            <section data-header-theme="paper" className="px-[5vw] pb-[3vh]">
+              <CaseStudyLabel className="tracking-[0.18em]">
+                {lang === "es" ? "Planos" : "Plans"}
+              </CaseStudyLabel>
+              <p className="mt-3 max-w-[38rem] text-[0.98rem] md:text-[1.05rem] leading-[1.55] text-[color:color-mix(in_srgb,var(--c-ink)_82%,transparent)]">
+                {t("plans")}
+              </p>
+            </section>
 
-      <div className="px-[5vw] pb-[5vh] md:pb-[7vh]">
-        <CaseMedia project={project} slot={mediaById(project, "mockup-planos")} reveal="vertical" />
-      </div>
+            <div className="px-[5vw] pb-[5vh] md:pb-[7vh]">
+              <CaseMedia project={project} slot={mediaById(project, "mockup-planos")} reveal="vertical" />
+            </div>
 
-      <section data-header-theme="paper" className="px-[5vw] pb-[3vh]">
-        <CaseStudyLabel className="tracking-[0.18em]">
-          {lang === "es" ? "Unidades" : "Units"}
-        </CaseStudyLabel>
-        <p className="mt-3 max-w-[38rem] text-[0.98rem] md:text-[1.05rem] leading-[1.55] text-[color:color-mix(in_srgb,var(--c-ink)_82%,transparent)]">
-          {t("product")}
-        </p>
-      </section>
+            <section data-header-theme="paper" className="px-[5vw] pb-[3vh]">
+              <CaseStudyLabel className="tracking-[0.18em]">
+                {lang === "es" ? "Unidades" : "Units"}
+              </CaseStudyLabel>
+              <p className="mt-3 max-w-[38rem] text-[0.98rem] md:text-[1.05rem] leading-[1.55] text-[color:color-mix(in_srgb,var(--c-ink)_82%,transparent)]">
+                {t("product")}
+              </p>
+            </section>
 
-      <div className="grid gap-6 px-[5vw] pb-[6vh] md:grid-cols-12 md:gap-8 md:pb-[8vh]">
-        <div className="md:col-span-5">
-          <CaseMedia project={project} slot={mediaById(project, "mockup-angle")} reveal="clip" />
-        </div>
-        <div className="md:col-span-7 md:mt-[4vh]">
-          <CaseMedia project={project} slot={mediaById(project, "mockup-spread-02")} reveal="expand" />
-        </div>
-      </div>
+            <div className="grid gap-6 px-[5vw] pb-[6vh] md:grid-cols-12 md:gap-8 md:pb-[8vh]">
+              <div className="md:col-span-5">
+                <CaseMedia project={project} slot={mediaById(project, "mockup-angle")} reveal="clip" />
+              </div>
+              <div className="md:col-span-7 md:mt-[4vh]">
+                <CaseMedia project={project} slot={mediaById(project, "mockup-spread-02")} reveal="expand" />
+              </div>
+            </div>
+          </>
+        }
+      />
 
       <section data-header-theme="paper" className="px-[5vw] pb-[3vh]">
         <CaseStudyLabel className="tracking-[0.18em]">
@@ -164,11 +175,20 @@ export default function VilaPage() {
         <p className="mt-5 max-w-[38rem] text-[1.05rem] md:text-[1.12rem] leading-[1.55] text-[color:color-mix(in_srgb,var(--c-ink)_84%,transparent)]">
           {t("outcome")}
         </p>
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
-          {mockups.slice(0, 3).map((slot) => (
+        <CaseMediaGallery
+          className="mt-10"
+          label={lang === "es" ? "Selección de mockups" : "Mockup selection"}
+          slides={mockups.slice(0, 3).map((slot) => (
             <CaseMedia key={slot.id} project={project} slot={slot} reveal="clip" />
           ))}
-        </div>
+          desktop={
+            <div className="grid gap-4 md:grid-cols-3">
+              {mockups.slice(0, 3).map((slot) => (
+                <CaseMedia key={slot.id} project={project} slot={slot} reveal="clip" />
+              ))}
+            </div>
+          }
+        />
       </section>
     </CaseStudyLayout>
   );

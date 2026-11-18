@@ -112,18 +112,16 @@ function ScrollManager() {
     // Soft nav / project flight own scroll while their overlays are active.
     if (flight || runtime.flying || transitioning) return;
 
-    // One clean jump — multiple competing scrolls were causing the stutter.
+    // One smooth scroll only — no competing jumps.
     if (hash) {
-      scrollToId(hash.slice(1), 16, { immediate: true });
+      scrollToId(hash.slice(1), 16, { duration: 1 });
     } else {
-      scrollToTop({ immediate: true });
+      scrollToTop({ duration: 1 });
     }
 
     const refresh = window.setTimeout(() => {
-      // Keep top after layout settles; don't start a second animated scroll.
-      if (!hash && window.scrollY > 1) scrollToTop({ immediate: true });
       ScrollTrigger.refresh();
-    }, 120);
+    }, 1100);
 
     return () => {
       window.clearTimeout(refresh);

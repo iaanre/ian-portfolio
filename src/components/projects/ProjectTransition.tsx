@@ -57,19 +57,39 @@ export function ProjectTransition({
     );
 
     // Mount destination under the overlay near the end of the expand.
+    // Overlay stays fully opaque until the hero banner paints the same image,
+    // then drops in one frame — no fade, no blink.
     tw.add(() => {
       arriveRef.current(slug);
-    }, "-=0.22");
+    }, "-=0.28");
 
-    // Brief hold so the identical hero paints underneath, then dissolve.
-    tw.to({}, { duration: 0.18 });
-    tw.to(el, {
-      opacity: 0,
-      duration: 0.22,
-      ease: "power1.out",
+    let waitCleanup: (() => void) | null = null;
+
+    tw.add(() => {
+      tw.pause();
+      let settled = false;
+      const resume = () => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(fallback);
+        window.removeEventListener("ir-hero-ready", resume);
+        waitCleanup = null;
+        // One paint after hero signals ready, then continue.
+        requestAnimationFrame(() => tw.resume());
+      };
+      window.addEventListener("ir-hero-ready", resume);
+      const fallback = window.setTimeout(resume, 900);
+      waitCleanup = () => {
+        settled = true;
+        window.clearTimeout(fallback);
+        window.removeEventListener("ir-hero-ready", resume);
+      };
     });
 
+    tw.to({}, { duration: 0.05 });
+
     return () => {
+      waitCleanup?.();
       tw.kill();
       document.documentElement.classList.remove("project-flying");
     };

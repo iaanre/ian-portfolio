@@ -2,6 +2,7 @@ import { getProject, mediaById } from "../../data/projects.ts";
 import { packagingSectionBody } from "../../data/packagingCopy.ts";
 import { useLanguage } from "../../context/LanguageContext.tsx";
 import { CaseMedia } from "../../components/case-study/CaseMedia.tsx";
+import { CaseMediaGallery } from "../../components/case-study/CaseMediaGallery.tsx";
 import { CaseStudyLabel } from "../../components/case-study/CaseStudyLabel.tsx";
 import { CaseStudyLayout } from "../../components/case-study/CaseStudyLayout.tsx";
 import { AnimatedHeading } from "../../components/motion/AnimatedHeading.tsx";
@@ -50,18 +51,27 @@ export default function PatagoniaPackagingPage() {
         </p>
       </section>
 
-      <div className="px-[5vw] pb-[5vh] md:pb-[7vh]">
-        <CaseMedia project={project} slot={mediaById(project, "mockup-01")} reveal="expand" />
-      </div>
-
-      <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-12 md:gap-8 md:pb-[7vh]">
-        <div className="md:col-span-7">
-          <CaseMedia project={project} slot={mediaById(project, "mockup-02")} reveal="horizontal" />
-        </div>
-        <div className="md:col-span-5 md:mt-[8vh]">
-          <CaseMedia project={project} slot={mediaById(project, "mockup-03")} reveal="clip" />
-        </div>
-      </div>
+      <CaseMediaGallery
+        label={lang === "es" ? "Galería de mockups" : "Mockup gallery"}
+        slides={["mockup-01", "mockup-02", "mockup-03"].map((id) => (
+          <CaseMedia key={id} project={project} slot={mediaById(project, id)} reveal="horizontal" />
+        ))}
+        desktop={
+          <>
+            <div className="px-[5vw] pb-[5vh] md:pb-[7vh]">
+              <CaseMedia project={project} slot={mediaById(project, "mockup-01")} reveal="expand" />
+            </div>
+            <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-12 md:gap-8 md:pb-[7vh]">
+              <div className="md:col-span-7">
+                <CaseMedia project={project} slot={mediaById(project, "mockup-02")} reveal="horizontal" />
+              </div>
+              <div className="md:col-span-5 md:mt-[8vh]">
+                <CaseMedia project={project} slot={mediaById(project, "mockup-03")} reveal="clip" />
+              </div>
+            </div>
+          </>
+        }
+      />
 
       <section data-header-theme="paper" className="px-[5vw] pb-[10vh] md:pb-[14vh]">
         <AnimatedHeading

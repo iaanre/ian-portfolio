@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import type { Project } from "../../data/projects.ts";
 import {
   localizeDisciplines,
@@ -19,10 +19,46 @@ export function CaseStudyHero({ project }: { project: Project }) {
   const localizedTitle = localizeProjectTitle(project, lang);
   // Same crop as listing / flight overlay — keeps preview → banner continuous.
   const slot = { ...homeMedia(project), fit: "cover" as const };
+  // If we arrived via the expand flight, never remount/fade the banner image.
+  const [fromFlight, setFromFlight] = useState(() => runtime.flying || runtime.handoff);
   const [handoff, setHandoff] = useState(() => runtime.flying || runtime.handoff);
 
+  useLayoutEffect(() => {
+    const viaFlight = runtime.flying || runtime.handoff;
+    setFromFlight(viaFlight);
+    setHandoff(viaFlight);
+    if (!viaFlight) return;
+
+    // Tell the flight overlay the identical banner is painted underneath.
+    const signal = () => window.dispatchEvent(new Event("ir-hero-ready"));
+    const imgs = Array.from(
+      document.querySelectorAll<HTMLImageElement>(
+        `[data-case-hero="${project.slug}"] img`,
+      ),
+    );
+    const pending = imgs.filter((img) => !img.complete);
+    if (pending.length === 0) {
+      requestAnimationFrame(signal);
+      return;
+    }
+    let left = pending.length;
+    const onLoad = () => {
+      left -= 1;
+      if (left <= 0) requestAnimationFrame(signal);
+    };
+    pending.forEach((img) => {
+      img.addEventListener("load", onLoad, { once: true });
+      img.addEventListener("error", onLoad, { once: true });
+    });
+    return () => {
+      pending.forEach((img) => {
+        img.removeEventListener("load", onLoad);
+        img.removeEventListener("error", onLoad);
+      });
+    };
+  }, [project.slug]);
+
   useEffect(() => {
-    setHandoff(runtime.flying || runtime.handoff);
     const onDone = () => setHandoff(false);
     window.addEventListener("ir-handoff-done", onDone);
     return () => window.removeEventListener("ir-handoff-done", onDone);
@@ -51,9 +87,10 @@ export function CaseStudyHero({ project }: { project: Project }) {
       {/* Full-viewport cover banner — matches ProjectTransition end state exactly. */}
       <div
         data-header-theme="ink"
-        className="relative h-[100svh] w-full overflow-hidden bg-[#0a0a0a]"
+        data-case-hero={project.slug}
+        className="relative h-[100svh] w-full overflow-hidden bg-[var(--c-paper)]"
       >
-        {handoff ? (
+        {fromFlight ? (
           <div className="absolute inset-0">{media}</div>
         ) : (
           <ImageReveal variant="fade" className="absolute inset-0 h-full w-full">

@@ -2,6 +2,7 @@ import { getProject, mediaById } from "../../data/projects.ts";
 import { UI_COPY } from "../../data/i18n.ts";
 import { useLanguage } from "../../context/LanguageContext.tsx";
 import { CaseMedia } from "../../components/case-study/CaseMedia.tsx";
+import { CaseMediaGallery } from "../../components/case-study/CaseMediaGallery.tsx";
 import { CaseStudyLabel } from "../../components/case-study/CaseStudyLabel.tsx";
 import { CaseStudyLayout } from "../../components/case-study/CaseStudyLayout.tsx";
 import { HorizontalScroll } from "../../components/motion/HorizontalScroll.tsx";
@@ -16,6 +17,7 @@ export default function Catalog02Page() {
   const pages = ["page-01", "page-02", "page-03", "page-04", "page-05", "page-06", "page-07", "page-08"].map(
     (id) => mediaById(project, id),
   );
+  const mockupIds = ["mockup-01", "mockup-stack", "mockup-02", "mockup-03"] as const;
 
   return (
     <CaseStudyLayout project={project}>
@@ -34,22 +36,30 @@ export default function Catalog02Page() {
         </CaseStudyLabel>
       </section>
 
-      <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-12 md:gap-8 md:pb-[7vh]">
-        <div className="md:col-span-7">
-          <CaseMedia project={project} slot={mediaById(project, "mockup-01")} reveal="horizontal" />
-        </div>
-        <div className="md:col-span-5 md:mt-[6vh]">
-          <CaseMedia project={project} slot={mediaById(project, "mockup-stack")} reveal="clip" />
-        </div>
-      </div>
-
-      <div className="px-[5vw] pb-[5vh] md:pb-[7vh]">
-        <CaseMedia project={project} slot={mediaById(project, "mockup-02")} reveal="vertical" />
-      </div>
-
-      <div className="px-[5vw] pb-[6vh] md:pb-[8vh]">
-        <CaseMedia project={project} slot={mediaById(project, "mockup-03")} reveal="expand" />
-      </div>
+      <CaseMediaGallery
+        label={lang === "es" ? "Galería de mockups" : "Mockup gallery"}
+        slides={mockupIds.map((id) => (
+          <CaseMedia key={id} project={project} slot={mediaById(project, id)} reveal="horizontal" />
+        ))}
+        desktop={
+          <>
+            <div className="grid gap-6 px-[5vw] pb-[5vh] md:grid-cols-12 md:gap-8 md:pb-[7vh]">
+              <div className="md:col-span-7">
+                <CaseMedia project={project} slot={mediaById(project, "mockup-01")} reveal="horizontal" />
+              </div>
+              <div className="md:col-span-5 md:mt-[6vh]">
+                <CaseMedia project={project} slot={mediaById(project, "mockup-stack")} reveal="clip" />
+              </div>
+            </div>
+            <div className="px-[5vw] pb-[5vh] md:pb-[7vh]">
+              <CaseMedia project={project} slot={mediaById(project, "mockup-02")} reveal="vertical" />
+            </div>
+            <div className="px-[5vw] pb-[6vh] md:pb-[8vh]">
+              <CaseMedia project={project} slot={mediaById(project, "mockup-03")} reveal="expand" />
+            </div>
+          </>
+        }
+      />
 
       <section data-header-theme="paper" className="px-[5vw] pb-[3vh]">
         <CaseStudyLabel className="tracking-[0.18em]">

@@ -1,6 +1,7 @@
 import { getProject, mediaById } from "../../data/projects.ts";
 import { useLanguage } from "../../context/LanguageContext.tsx";
 import { CaseMedia } from "../../components/case-study/CaseMedia.tsx";
+import { CaseMediaGallery } from "../../components/case-study/CaseMediaGallery.tsx";
 import { CaseStudyLabel } from "../../components/case-study/CaseStudyLabel.tsx";
 import { CaseStudyLayout } from "../../components/case-study/CaseStudyLayout.tsx";
 import { HorizontalScroll } from "../../components/motion/HorizontalScroll.tsx";
@@ -89,8 +90,10 @@ export default function PatagoniaWebPage() {
         </p>
       </section>
 
-      <div className="flex flex-col gap-8 px-[5vw] pb-[16vh] md:gap-10 md:pb-[22vh]">
-        {mockups.map((item, index) => (
+      <CaseMediaGallery
+        className="pb-[16vh] md:pb-[22vh]"
+        label={lang === "es" ? "Galería de mockups" : "Mockup gallery"}
+        slides={mockups.map((item, index) => (
           <div key={item.id}>
             <CaseStudyLabel className="mb-3 tracking-[0.18em]">
               Mockup {String(index + 1).padStart(2, "0")} · {item.label}
@@ -98,7 +101,19 @@ export default function PatagoniaWebPage() {
             <CaseMedia project={project} slot={mediaById(project, item.id)} reveal="expand" />
           </div>
         ))}
-      </div>
+        desktop={
+          <div className="flex flex-col gap-8 px-[5vw] md:gap-10">
+            {mockups.map((item, index) => (
+              <div key={item.id}>
+                <CaseStudyLabel className="mb-3 tracking-[0.18em]">
+                  Mockup {String(index + 1).padStart(2, "0")} · {item.label}
+                </CaseStudyLabel>
+                <CaseMedia project={project} slot={mediaById(project, item.id)} reveal="expand" />
+              </div>
+            ))}
+          </div>
+        }
+      />
     </CaseStudyLayout>
   );
 }
