@@ -46,13 +46,19 @@ export function ProjectVisual({
   }
 
   if (slot?.src) {
-    const position = slot.objectPosition ? { objectPosition: slot.objectPosition } : undefined;
     const fitContain = slot.fit === "contain";
+    const style = {
+      ...(slot.objectPosition ? { objectPosition: slot.objectPosition } : {}),
+      ...(slot.scale != null
+        ? { transform: `scale(${slot.scale})`, transformOrigin: "center center" }
+        : {}),
+    };
 
     // Never letterbox with a dark frame — always fill the mask, centered on the subject.
     const imgClass = cn(
       "h-full w-full object-cover",
       fitContain && "object-center",
+      slot.scale != null && "origin-center",
       className,
     );
 
@@ -63,20 +69,20 @@ export function ProjectVisual({
             src={slot.srcMobile}
             alt={slot.alt}
             className={cn(imgClass, "md:hidden")}
-            style={position}
+            style={style}
           />
           <img
             src={slot.src}
             alt=""
             aria-hidden="true"
             className={cn(imgClass, "hidden md:block")}
-            style={position}
+            style={style}
           />
         </>
       );
     }
 
-    return <img src={slot.src} alt={slot.alt} className={imgClass} style={position} />;
+    return <img src={slot.src} alt={slot.alt} className={imgClass} style={style} />;
   }
 
   const banner = project.banner ?? DEFAULT_BANNER;

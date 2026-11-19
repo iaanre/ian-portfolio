@@ -388,7 +388,10 @@ export function HaylerHeroSlider() {
               project={outgoing}
               slot={homeMedia(outgoing)}
               hideOverlayMeta
-              className="h-full w-full origin-center object-cover scale-[1.08]"
+              className={cn(
+                "h-full w-full origin-center object-cover",
+                homeMedia(outgoing).scale == null && "scale-[1.08]",
+              )}
             />
           </div>
         </div>
@@ -400,7 +403,10 @@ export function HaylerHeroSlider() {
             project={current}
             slot={homeMedia(current)}
             hideOverlayMeta
-            className="h-full w-full origin-center object-cover scale-[1.08]"
+            className={cn(
+              "h-full w-full origin-center object-cover",
+              homeMedia(current).scale == null && "scale-[1.08]",
+            )}
           />
         </div>
         <div
@@ -411,21 +417,6 @@ export function HaylerHeroSlider() {
               : "linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 45%, rgba(235,232,244,0.46) 100%)",
           }}
         />
-      </div>
-
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[3] hidden sm:grid sm:grid-cols-5"
-      >
-        {[0, 1, 2, 3, 4].map((col) => (
-          <div
-            key={col}
-            className={cn(
-              "h-full",
-              col > 0 && (isInk ? "border-l border-white/[0.06]" : "border-l border-black/[0.06]"),
-            )}
-          />
-        ))}
       </div>
 
       <div className="relative z-[4] flex h-full flex-col px-[5vw] pb-6 pt-28 sm:pb-8 sm:pt-32">
@@ -494,13 +485,14 @@ export function HaylerHeroSlider() {
             {slides.map((slide, idx) => {
               const isActive = idx === activeIndex;
               const slideTitle = localizeProjectTitle(slide, lang).title;
+              const slideNumber = String(idx + 1).padStart(2, "0");
               return (
                 <button
                   key={slide.slug}
                   type="button"
                   role="tab"
                   aria-selected={isActive}
-                  aria-label={`${slide.index}: ${slideTitle}`}
+                  aria-label={`${slideNumber}: ${slideTitle}`}
                   onClick={() => goTo(idx)}
                   onPointerEnter={() => setPaused(true)}
                   onPointerLeave={() => setPaused(false)}
@@ -513,7 +505,7 @@ export function HaylerHeroSlider() {
                         isActive ? "opacity-100" : "opacity-28 group-hover:opacity-65",
                       )}
                     >
-                      {slide.index}.
+                      {slideNumber}.
                     </span>
                     <span
                       className={cn(

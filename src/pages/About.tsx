@@ -18,7 +18,7 @@ export default function About() {
 
   return (
     <>
-      <article data-header-theme="paper" className="hayler-grid-bg px-[5vw] pb-[10vh] pt-32 md:pt-40">
+      <article data-header-theme="paper" className="px-[5vw] pb-[10vh] pt-32 md:pt-40">
         <div className="grid items-end gap-10 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-4 lg:col-span-3">
             <div className="aspect-[4/5] w-full max-w-[280px] overflow-hidden md:max-w-none">
@@ -199,6 +199,12 @@ export default function About() {
               className="text-[clamp(1.5rem,3vw,2.4rem)] font-medium tracking-[-0.035em] transition-colors hover:text-[var(--c-accent)]"
             >
               {site.email}
+            </MagneticLink>
+            <MagneticLink
+              href={site.phoneHref}
+              className="mt-3 block text-[clamp(1.15rem,2.2vw,1.65rem)] font-medium tracking-[-0.025em] transition-colors hover:text-[var(--c-accent)]"
+            >
+              {site.phone}
             </MagneticLink>
             <p className="mt-3 text-[13px] text-[var(--c-muted)]">{copy.availability}</p>
 

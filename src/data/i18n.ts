@@ -514,6 +514,7 @@ const DISCIPLINE_ES: Record<string, string> = {
   Packaging: "Packaging",
   Industrial: "Industrial",
   "Information Design": "Diseño de Información",
+  Stationery: "Papelería",
 };
 
 const CATEGORY_LABEL_ES: Record<string, string> = {
@@ -571,6 +572,7 @@ const PLACEHOLDER_TITLE_ES: Record<string, { title: string; lines: string[] }> =
   "catalog-02": { title: "MILLBRIDGE", lines: ["MILLBRIDGE"] },
   queer: { title: "NEXO", lines: ["NEXO"] },
   "patagonia-packaging": { title: "PATAGONIA PACKAGING", lines: ["PATAGONIA", "PACKAGING"] },
+  "planeta-acero": { title: "PLANETA ACERO", lines: ["PLANETA ACERO"] },
 };
 
 export function localizeProjectTitle(project: Project, lang: Locale): { title: string; lines: string[] } {
@@ -621,6 +623,9 @@ export function localizeMetaValue(value: string, lang: Locale): string {
     }
     if (value === "Packaging Design · Brand Application") {
       return "Diseño de packaging · Aplicación de marca";
+    }
+    if (value === "Brand Identity · Visual System") {
+      return "Identidad de marca · Sistema visual";
     }
   }
   return value;

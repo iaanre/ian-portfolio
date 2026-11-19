@@ -107,7 +107,10 @@ function HaylerCard({
               <ProjectVisual
                 project={project}
                 slot={slot}
-                className="h-full w-full origin-center object-cover scale-[1.14]"
+                className={cn(
+                  "h-full w-full origin-center object-cover",
+                  slot.scale == null && "scale-[1.14]",
+                )}
               />
             </ParallaxImage>
           </ImageReveal>
@@ -143,7 +146,7 @@ function EditorialSection({ items, lang }: { items: Project[]; lang: Locale }) {
     <section
       id="editorial"
       data-header-theme="paper"
-      className="hayler-grid-bg px-[5vw] py-[12vh] md:py-[18vh]"
+      className="px-[5vw] py-[12vh] md:py-[18vh]"
     >
       <SectionHeader
         number="01"
@@ -232,7 +235,10 @@ function EditorialSection({ items, lang }: { items: Project[]; lang: Locale }) {
                   <ProjectVisual
                     project={activePreview}
                     slot={homeMedia(activePreview)}
-                    className="h-full w-full origin-center object-cover scale-[1.14]"
+                    className={cn(
+                      "h-full w-full origin-center object-cover",
+                      homeMedia(activePreview).scale == null && "scale-[1.14]",
+                    )}
                   />
                 </div>
                 <div className="mt-4 flex items-center justify-between text-[12px] text-[var(--c-muted)]">
@@ -303,7 +309,7 @@ function WebSection({ items, lang }: { items: Project[]; lang: Locale }) {
     <section
       id="web"
       data-header-theme="paper"
-      className="hayler-grid-bg px-[5vw] py-[12vh] md:py-[18vh]"
+      className="px-[5vw] py-[12vh] md:py-[18vh]"
     >
       <SectionHeader
         number="02"
@@ -316,12 +322,15 @@ function WebSection({ items, lang }: { items: Project[]; lang: Locale }) {
       <div className="mt-12 grid items-start gap-y-12 md:mt-16 md:grid-cols-12 md:gap-x-8 md:gap-y-20">
         {items.map((item, idx) => {
           const pattern = idx % 3;
+          // Patagonia Web laptop mockup needs a tighter frame than the default full-bleed card.
           const colClass =
-            pattern === 0
-              ? "md:col-span-7"
-              : pattern === 1
-                ? "md:col-span-5 md:col-start-8 md:mt-16"
-                : "md:col-span-10 md:col-start-2";
+            item.slug === "patagonia-web"
+              ? "md:col-span-7 md:col-start-3"
+              : pattern === 0
+                ? "md:col-span-7"
+                : pattern === 1
+                  ? "md:col-span-5 md:col-start-8 md:mt-16"
+                  : "md:col-span-10 md:col-start-2";
 
           // Wide landscape frames — web mockups stay large and fully visible.
           const aspectClass = "aspect-[16/10]";
@@ -350,7 +359,7 @@ function BrandingSection({ items, lang }: { items: Project[]; lang: Locale }) {
     <section
       id="branding"
       data-header-theme="ink"
-      className="tone-ink hayler-grid-bg px-[5vw] py-[14vh] md:py-[20vh]"
+      className="tone-ink px-[5vw] py-[14vh] md:py-[20vh]"
     >
       <SectionHeader
         number="03"
@@ -390,7 +399,7 @@ function SeeAllWorksBanner({ total, lang }: { total: number; lang: Locale }) {
   return (
     <section
       data-header-theme="paper"
-      className="hayler-grid-bg border-b border-[var(--c-line)] px-[5vw] py-[12vh] md:py-[16vh]"
+      className="border-b border-[var(--c-line)] px-[5vw] py-[12vh] md:py-[16vh]"
     >
       <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
         <MagneticLink

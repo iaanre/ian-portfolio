@@ -19,31 +19,30 @@ export function NextProject({ project }: { project: Project }) {
   };
 
   return (
-    <section data-header-theme="paper" className="border-t border-[var(--c-line)] px-[5vw] py-[12vh]">
+    <section data-header-theme="paper" className="border-t border-[var(--c-line)] px-[5vw] py-[10vh] md:py-[12vh]">
       <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--c-muted)]">{copy.nextProject}</p>
       <Link
         to={`/work/${project.slug}`}
         data-cursor="next"
         onClick={onClick}
-        className="mt-8 grid items-end gap-8 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-8 md:grid-cols-12"
+        className="mt-6 grid items-end gap-6 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-8 md:mt-8 md:grid-cols-12 md:gap-8"
       >
-        <div className="md:col-span-7">
+        <div className="md:col-span-4">
           <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--c-muted)]">{project.index}</p>
-          <h2 className="mt-3 text-[clamp(2.4rem,8.5vw,8rem)] font-medium leading-[0.82] tracking-[-0.06em]">
+          <h2 className="mt-3 text-[clamp(2.2rem,5.5vw,5.5rem)] font-medium leading-[0.88] tracking-[-0.055em]">
             {localizedTitle.lines.map((line) => (
               <span key={line} className="block">
                 {line}
               </span>
             ))}
           </h2>
-          <p className="mt-5 text-[11px] uppercase tracking-[0.16em] text-[var(--c-muted)]">
+          <p className="mt-4 text-[11px] uppercase tracking-[0.16em] text-[var(--c-muted)]">
             {localizeDisciplines(project, lang)}
           </p>
         </div>
-        {/* Landscape-leaning mask so laptop/web mockups stay readable when covered. */}
         <div
           ref={mediaRef}
-          className="aspect-[5/4] overflow-hidden md:col-span-4 md:col-start-9"
+          className="aspect-[16/11] overflow-hidden md:col-span-8"
         >
           <ProjectVisual
             project={project}

@@ -77,7 +77,7 @@ export default function Work() {
 
   return (
     <>
-      <section data-header-theme="paper" className="hayler-grid-bg px-[5vw] pb-12 pt-32 md:pb-16 md:pt-40">
+      <section data-header-theme="paper" className="px-[5vw] pb-12 pt-32 md:pb-16 md:pt-40">
         <div className="grid items-end gap-8 md:grid-cols-12">
           <div className="md:col-span-8">
             <h1 className="text-[clamp(3.2rem,8.4vw,7.4rem)] font-semibold leading-[0.9] tracking-[-0.055em]">
@@ -170,7 +170,7 @@ export default function Work() {
       {viewMode === "grid" ? (
         <section
           data-header-theme="paper"
-          className="hayler-grid-bg px-[5vw] pb-[16vh] pt-4"
+          className="px-[5vw] pb-[16vh] pt-4"
         >
           <div className="grid items-start gap-y-14 md:grid-cols-12 md:gap-x-8 md:gap-y-24">
             {filtered.map((project, idx) => {
@@ -203,7 +203,7 @@ export default function Work() {
       ) : (
         <section
           data-header-theme="paper"
-          className="hayler-grid-bg grid items-start gap-10 px-[5vw] pb-[16vh] pt-4 md:grid-cols-12"
+          className="grid items-start gap-10 px-[5vw] pb-[16vh] pt-4 md:grid-cols-12"
         >
           <div className="md:col-span-7">
             {filtered.map((project) => (
@@ -223,7 +223,10 @@ export default function Work() {
                 <ProjectVisual
                   project={current}
                   slot={homeMedia(current)}
-                  className="h-full w-full origin-center object-cover scale-[1.14]"
+                  className={cn(
+                    "h-full w-full origin-center object-cover",
+                    homeMedia(current).scale == null && "scale-[1.14]",
+                  )}
                 />
               </div>
               <div className="mt-4 flex items-center justify-between text-[12px] text-[var(--c-muted)]">
@@ -270,7 +273,10 @@ function WorkGridCard({
               <ProjectVisual
                 project={project}
                 slot={slot}
-                className="h-full w-full origin-center object-cover scale-[1.14]"
+                className={cn(
+                  "h-full w-full origin-center object-cover",
+                  slot.scale == null && "scale-[1.14]",
+                )}
               />
             </ParallaxImage>
           </ImageReveal>

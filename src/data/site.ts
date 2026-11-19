@@ -6,6 +6,8 @@ export const site = {
   disciplinesLine: "Editorial · Web Design · Brand Identity · UX/UI",
   yearsSpan: "2019 — 2026",
   email: "rebuffoi@gmail.com",
+  phone: "+54 9 11 3607 2956",
+  phoneHref: "tel:+5491136072956",
   location: "Buenos Aires, Argentina",
   socials: [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/ian-rebuffo-929b84383/" },

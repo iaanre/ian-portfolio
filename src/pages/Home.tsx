@@ -23,7 +23,7 @@ export default function Home() {
       {/* Hayler Post-Hero Studio Statement */}
       <section
         data-header-theme="paper"
-        className="hayler-grid-bg px-[5vw] pb-[14vh] pt-[16vh] md:pb-[18vh] md:pt-[22vh]"
+        className="px-[5vw] pb-[14vh] pt-[16vh] md:pb-[18vh] md:pt-[22vh]"
       >
         <div className="w-full max-w-none">
           <AnimatedHeading
@@ -71,7 +71,7 @@ export default function Home() {
       {/* Hayler Services, Skills & Expertise Strip */}
       <section
         data-header-theme="paper"
-        className="hayler-grid-bg px-[5vw] py-[12vh] md:py-[16vh]"
+        className="px-[5vw] py-[12vh] md:py-[16vh]"
       >
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-4">

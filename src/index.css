@@ -73,26 +73,28 @@
   color: #0c0c0c;
 }
 
-/* Subtle Hayler architectural column guide lines */
+/*
+ * Column guides aligned to page content (inside 5vw), not the full viewport.
+ * Four equal columns → same inset from each line when content uses matching gutters.
+ */
 .hayler-grid-bg {
+  --hayler-pad: 5vw;
+  --hayler-col: calc((100% - (var(--hayler-pad) * 2)) / 4);
   background-image: linear-gradient(
     to right,
-    transparent calc(20% - 1px),
-    var(--c-line) calc(20% - 1px),
-    var(--c-line) 20%,
-    transparent 20%,
-    transparent calc(40% - 1px),
-    var(--c-line) calc(40% - 1px),
-    var(--c-line) 40%,
-    transparent 40%,
-    transparent calc(60% - 1px),
-    var(--c-line) calc(60% - 1px),
-    var(--c-line) 60%,
-    transparent 60%,
-    transparent calc(80% - 1px),
-    var(--c-line) calc(80% - 1px),
-    var(--c-line) 80%,
-    transparent 80%
+    transparent 0,
+    transparent calc(var(--hayler-pad) + var(--hayler-col) - 0.5px),
+    var(--c-line) calc(var(--hayler-pad) + var(--hayler-col) - 0.5px),
+    var(--c-line) calc(var(--hayler-pad) + var(--hayler-col) + 0.5px),
+    transparent calc(var(--hayler-pad) + var(--hayler-col) + 0.5px),
+    transparent calc(var(--hayler-pad) + var(--hayler-col) * 2 - 0.5px),
+    var(--c-line) calc(var(--hayler-pad) + var(--hayler-col) * 2 - 0.5px),
+    var(--c-line) calc(var(--hayler-pad) + var(--hayler-col) * 2 + 0.5px),
+    transparent calc(var(--hayler-pad) + var(--hayler-col) * 2 + 0.5px),
+    transparent calc(var(--hayler-pad) + var(--hayler-col) * 3 - 0.5px),
+    var(--c-line) calc(var(--hayler-pad) + var(--hayler-col) * 3 - 0.5px),
+    var(--c-line) calc(var(--hayler-pad) + var(--hayler-col) * 3 + 0.5px),
+    transparent calc(var(--hayler-pad) + var(--hayler-col) * 3 + 0.5px)
   );
 }
 

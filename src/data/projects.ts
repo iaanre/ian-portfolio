@@ -14,6 +14,8 @@ import { NEXO_COPY } from "./nexoCopy.ts";
 import { packagingAsset, packagingCover } from "./packagingAssets.ts";
 import { PACKAGING_COPY } from "./packagingCopy.ts";
 import { patagoniaWebAsset, patagoniaWebCover } from "./patagoniaWebAssets.ts";
+import { planetaAceroAsset, planetaAceroCover } from "./planetaAceroAssets.ts";
+import { PLANETA_ACERO_COPY } from "./planetaAceroCopy.ts";
 
 const tayCovers = tayCover("es");
 const tayEn = TAY_COPY.en;
@@ -32,6 +34,8 @@ const nexoEn = NEXO_COPY.en;
 const packagingCovers = packagingCover("es");
 const packagingEn = PACKAGING_COPY.en;
 const patagoniaWebCovers = patagoniaWebCover("es");
+const planetaAceroCovers = planetaAceroCover("es");
+const planetaAceroEn = PLANETA_ACERO_COPY.en;
 
 export type MediaFrame = "none" | "browser" | "phone" | "spread";
 
@@ -68,6 +72,8 @@ export type MediaSlot = {
   objectPosition?: string;
   /** cover (default) crops to frame; contain shows the full image. */
   fit?: "cover" | "contain";
+  /** Absolute CSS scale inside preview/hero masks. When set, overrides default zoom. */
+  scale?: number;
 };
 
 export type CaseSection = {
@@ -551,9 +557,21 @@ export const projects: Project[] = [
         src: patagoniaWebCovers.desktop,
         srcMobile: patagoniaWebCovers.mobile,
         fit: "cover",
-        objectPosition: "center center",
+        objectPosition: "center 48%",
+        // No extra mask zoom — full laptop + rock framing stays readable.
+        scale: 1,
         alt: "Patagonia CNC — homepage en laptop sobre roca.",
         caption: "Portada",
+      },
+      {
+        ...media("cover-home", "Patagonia web home cover", "landscape"),
+        src: patagoniaWebCovers.desktop,
+        srcMobile: patagoniaWebCovers.mobile,
+        fit: "cover",
+        objectPosition: "center 48%",
+        scale: 1,
+        alt: "Patagonia CNC — homepage en laptop sobre roca.",
+        caption: "Home cover",
       },
       {
         ...media("mockup-devices", "Patagonia web devices", "landscape"),
@@ -1021,16 +1039,190 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: "planeta-acero",
+    index: "07",
+    title: "PLANETA ACERO",
+    lines: ["PLANETA ACERO"],
+    category: "branding",
+    categoryLabel: "Brand Identity",
+    featured: true,
+    disciplines: ["Brand Identity", "Visual System", "Stationery"],
+    year: planetaAceroEn.year,
+    role: planetaAceroEn.role,
+    tone: "ink",
+    banner: {
+      bg: "#05223A",
+      secondary: "#0a3558",
+      glow: "rgba(26, 143, 188, 0.32)",
+      accent: "#FF7F00",
+      headerTheme: "ink",
+    },
+    overview: planetaAceroEn.overview ?? PENDING_COPY,
+    sections: [
+      { id: "overview", title: "Overview", body: planetaAceroEn.overview ?? PENDING_COPY },
+      { id: "concept", title: "Brand Mark", body: planetaAceroEn.concept ?? PENDING_COPY },
+      { id: "lockups", title: "Lockups", body: planetaAceroEn.lockups ?? PENDING_COPY },
+      { id: "outcome", title: "Final Outcome", body: planetaAceroEn.outcome ?? PENDING_COPY },
+    ],
+    media: [
+      {
+        ...media("cover", "Planeta Acero cover", "landscape"),
+        src: planetaAceroCovers.desktop,
+        srcMobile: planetaAceroCovers.mobile,
+        fit: "cover",
+        objectPosition: "center center",
+        alt: "Planeta Acero — logo completo horizontal con fondo.",
+        caption: "Portada",
+      },
+      // Home hero only — dedicated asset (not the case-study banner).
+      {
+        ...media("cover-home", "Planeta Acero home hero", "landscape"),
+        src: planetaAceroAsset("hero"),
+        srcMobile: planetaAceroAsset("hero"),
+        fit: "cover",
+        objectPosition: "center center",
+        alt: "Planeta Acero — imagen de hero.",
+        caption: "Hero",
+      },
+      {
+        ...media("iso-pos", "Isotype positive", "square"),
+        src: planetaAceroAsset("iso-pos"),
+        fit: "contain",
+        alt: "Planeta Acero — isologo positivo.",
+        caption: "Isologo · positivo",
+      },
+      {
+        ...media("iso-mono", "Isotype negative", "square"),
+        src: planetaAceroAsset("iso-mono"),
+        fit: "contain",
+        alt: "Planeta Acero — isologo negativo.",
+        caption: "Isologo · negativo",
+      },
+      {
+        ...media("iso-full", "Isotype full color", "square"),
+        src: planetaAceroAsset("iso-full"),
+        fit: "contain",
+        alt: "Planeta Acero — isologo a color.",
+        caption: "Isologo · color",
+      },
+      {
+        ...media("logo-h-pos", "Horizontal positive", "landscape"),
+        src: planetaAceroAsset("logo-h-pos"),
+        fit: "contain",
+        alt: "Planeta Acero — lockup horizontal positivo.",
+        caption: "Horizontal · positivo",
+      },
+      {
+        ...media("logo-h-neg", "Horizontal negative", "landscape"),
+        src: planetaAceroAsset("logo-h-neg"),
+        fit: "contain",
+        alt: "Planeta Acero — lockup horizontal negativo.",
+        caption: "Horizontal · negativo",
+      },
+      {
+        ...media("logo-h-full", "Horizontal full", "landscape"),
+        src: planetaAceroAsset("logo-h-full"),
+        fit: "contain",
+        alt: "Planeta Acero — lockup horizontal completo.",
+        caption: "Horizontal · completo",
+      },
+      {
+        ...media("logo-h-complete", "Horizontal complete", "landscape"),
+        src: planetaAceroAsset("logo-h-complete"),
+        fit: "contain",
+        alt: "Planeta Acero — lockup horizontal completo alternativo.",
+        caption: "Horizontal · variantes",
+      },
+      {
+        ...media("logo-h-alt", "Horizontal alt", "landscape"),
+        src: planetaAceroAsset("logo-h-alt"),
+        fit: "contain",
+        alt: "Planeta Acero — lockup horizontal variante.",
+        caption: "Horizontal · alt",
+      },
+      {
+        ...media("logo-v", "Vertical lockup", "portrait"),
+        src: planetaAceroAsset("logo-v"),
+        fit: "contain",
+        alt: "Planeta Acero — lockup vertical.",
+        caption: "Vertical",
+      },
+      {
+        ...media("logo-v-bg", "Vertical with background", "portrait"),
+        src: planetaAceroAsset("logo-v-bg"),
+        fit: "contain",
+        alt: "Planeta Acero — lockup vertical con fondo.",
+        caption: "Vertical · fondo",
+      },
+      {
+        ...media("pattern", "Brand pattern", "landscape"),
+        src: planetaAceroAsset("pattern"),
+        fit: "cover",
+        alt: "Planeta Acero — trama general de marca.",
+        caption: "Trama",
+      },
+      {
+        ...media("palette", "Color palette", "landscape"),
+        src: planetaAceroAsset("palette"),
+        fit: "contain",
+        alt: "Planeta Acero — paleta de colores.",
+        caption: "Paleta",
+      },
+      {
+        ...media("card-front", "Business card front", "landscape"),
+        src: planetaAceroAsset("card-front"),
+        fit: "contain",
+        alt: "Planeta Acero — tarjeta personal, frente.",
+        caption: "Tarjeta · frente",
+      },
+      {
+        ...media("card-back", "Business card back", "landscape"),
+        src: planetaAceroAsset("card-back"),
+        fit: "contain",
+        alt: "Planeta Acero — tarjeta personal, dorso.",
+        caption: "Tarjeta · dorso",
+      },
+      {
+        ...media("email-signature", "Email signature", "landscape"),
+        src: planetaAceroAsset("email-signature"),
+        fit: "contain",
+        alt: "Planeta Acero — firma de correo.",
+        caption: "Firma de mail",
+      },
+      {
+        ...media("banner-01", "Banner example", "landscape"),
+        src: planetaAceroAsset("banner-01"),
+        fit: "cover",
+        alt: "Planeta Acero — ejemplo de banner.",
+        caption: "Banner",
+      },
+      {
+        ...media("social-02", "Social post 02", "square"),
+        src: planetaAceroAsset("social-02"),
+        fit: "cover",
+        alt: "Planeta Acero — post de redes 02.",
+        caption: "Post · 02",
+      },
+      {
+        ...media("social-03", "Social post 03", "square"),
+        src: planetaAceroAsset("social-03"),
+        fit: "cover",
+        alt: "Planeta Acero — post de redes 03.",
+        caption: "Post · 03",
+      },
+    ],
+  },
 ];
 
 /** Display order inside each home / work category section. */
 const CATEGORY_ORDER: Record<ProjectCategory, string[]> = {
   editorial: ["editorial-02", "patagonia", "catalog-02", "queer"],
-  branding: ["nudos", "patagonia-packaging"],
+  branding: ["planeta-acero", "nudos", "patagonia-packaging"],
   web: ["nudos-web", "tay", "patagonia-web"],
 };
 
-const FEATURED_ORDER = ["tay", "patagonia", "editorial-02"];
+const FEATURED_ORDER = ["tay", "patagonia", "editorial-02", "planeta-acero"];
 
 export const featuredProjects = FEATURED_ORDER.map((slug) =>
   projects.find((project) => project.slug === slug),
