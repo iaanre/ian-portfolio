@@ -98,7 +98,10 @@ export function CaseStudyHero({ project }: { project: Project }) {
       <div
         data-header-theme="ink"
         data-case-hero={project.slug}
-        className="relative h-[100svh] w-full overflow-hidden bg-[var(--c-paper)]"
+        className={cn(
+          "relative h-[100svh] w-full overflow-hidden",
+          isSocial ? "bg-[#1a2a6c]" : "bg-[var(--c-paper)]",
+        )}
       >
         {fromFlight ? (
           <div className="absolute inset-0">{media}</div>

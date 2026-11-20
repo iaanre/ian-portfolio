@@ -154,7 +154,7 @@ export function SocialFeed({ className }: { className?: string }) {
               </p>
               <SnapCarousel
                 label={social.reelsLabel}
-                itemClassName="w-[58vw] shrink-0 sm:w-[42vw] md:w-[22vw]"
+                itemClassName="w-[46vw] shrink-0 sm:w-[36vw] md:w-[22vw]"
               >
                 {reels.map((piece) => (
                   <ReelCard key={piece.id} piece={piece} />
@@ -170,7 +170,7 @@ export function SocialFeed({ className }: { className?: string }) {
               </p>
               <SnapCarousel
                 label={social.postsLabel}
-                itemClassName="w-[72vw] shrink-0 sm:w-[48vw] md:w-[28vw]"
+                itemClassName="w-[58vw] shrink-0 sm:w-[42vw] md:w-[28vw]"
               >
                 {posts.map((piece) => (
                   <PostCard key={piece.id} piece={piece} />
