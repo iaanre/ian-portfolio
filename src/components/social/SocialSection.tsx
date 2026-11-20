@@ -7,7 +7,7 @@ import {
   type SocialPiece,
 } from "../../data/socialMedia.ts";
 import { useLanguage } from "../../context/LanguageContext.tsx";
-import { UI_COPY } from "../../data/i18n.ts";
+import { localizeCategoryLabel, localizeProjectTitle, UI_COPY } from "../../data/i18n.ts";
 import { cn } from "../../lib/cn.ts";
 import { PhoneFrame } from "../media/PhoneFrame.tsx";
 import { SnapCarousel } from "../motion/SnapCarousel.tsx";
@@ -77,7 +77,6 @@ function SocialHomeCard({
 }) {
   const { lang } = useLanguage();
   const { mediaRef, onClick } = useProjectLaunch(project);
-  const cat = UI_COPY[lang].categories.social;
 
   return (
     <article className={cn("group", className)}>
@@ -97,11 +96,11 @@ function SocialHomeCard({
               style={{ backgroundColor: project.banner.accent }}
             />
             <h3 className="truncate text-[16px] font-medium tracking-[-0.02em] sm:text-[18px]">
-              {UI_COPY[lang].social.label}
+              {localizeProjectTitle(project, lang).title}
             </h3>
           </div>
           <p className="shrink-0 text-[12px] text-[var(--c-muted)] sm:text-[13px]">
-            {cat.shortLabel}
+            {localizeCategoryLabel(project, lang)}
           </p>
         </div>
       </Link>

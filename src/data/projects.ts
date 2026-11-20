@@ -16,6 +16,7 @@ import { PACKAGING_COPY } from "./packagingCopy.ts";
 import { patagoniaWebAsset, patagoniaWebCover } from "./patagoniaWebAssets.ts";
 import { planetaAceroAsset, planetaAceroCover } from "./planetaAceroAssets.ts";
 import { PLANETA_ACERO_COPY } from "./planetaAceroCopy.ts";
+
 const tayCovers = tayCover("es");
 const tayEn = TAY_COPY.en;
 const nudosCovers = nudosCover("es");
@@ -143,8 +144,8 @@ export const CATEGORY_META: Record<
   },
   social: {
     id: "social",
-    label: "Social Media",
-    shortLabel: "Social Media",
+    label: "Redes Sociales",
+    shortLabel: "Redes Sociales",
     subtitle: "Reels and posts for brand and B2B accounts.",
   },
 };
@@ -1221,10 +1222,10 @@ export const projects: Project[] = [
   {
     slug: "social",
     index: "12",
-    title: "Social Media",
-    lines: ["Social Media"],
+    title: "Redes Sociales",
+    lines: ["Redes Sociales"],
     category: "social",
-    categoryLabel: "Reels · Posts",
+    categoryLabel: "Redes Sociales",
     featured: false,
     disciplines: ["Social Media", "Motion", "Content"],
     year: "2023 — 2026",

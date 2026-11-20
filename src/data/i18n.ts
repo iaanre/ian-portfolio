@@ -27,7 +27,7 @@ export const UI_COPY = {
     docTitleHome: "Ian Rebuffo — Visual & Digital Designer",
     docTitleWorks: "Works — Ian Rebuffo",
     docTitleAbout: "Studio — Ian Rebuffo",
-    docTitleSocial: "Social — Ian Rebuffo",
+    docTitleSocial: "Social Media — Ian Rebuffo",
     docTitleNotFound: "Not found — Ian Rebuffo",
     nav: {
       index: "Home",
@@ -107,7 +107,7 @@ export const UI_COPY = {
       },
     } satisfies Record<ProjectCategory, { label: string; shortLabel: string; subtitle: string }>,
     social: {
-      docTitle: "Social — Ian Rebuffo",
+      docTitle: "Social Media — Ian Rebuffo",
       label: "Social Media",
       subtitle:
         "Reels and posts for Vitrium Capital, Patagonia CNC, BTEC and Perfect Welding.",
@@ -279,7 +279,7 @@ export const UI_COPY = {
     docTitleHome: "Ian Rebuffo — Diseñador Visual y Digital",
     docTitleWorks: "Trabajos — Ian Rebuffo",
     docTitleAbout: "Estudio — Ian Rebuffo",
-    docTitleSocial: "Redes — Ian Rebuffo",
+    docTitleSocial: "Redes Sociales — Ian Rebuffo",
     docTitleNotFound: "No encontrado — Ian Rebuffo",
     nav: {
       index: "Inicio",
@@ -359,7 +359,7 @@ export const UI_COPY = {
       },
     } satisfies Record<ProjectCategory, { label: string; shortLabel: string; subtitle: string }>,
     social: {
-      docTitle: "Redes — Ian Rebuffo",
+      docTitle: "Redes Sociales — Ian Rebuffo",
       label: "Redes Sociales",
       subtitle:
         "Reels y posts para Vitrium Capital, Patagonia CNC, BTEC y Perfect Welding.",
@@ -584,6 +584,7 @@ const CATEGORY_LABEL_ES: Record<string, string> = {
   "Web Design · UI": "Diseño Web · UI",
   "Visual Identity": "Identidad Visual",
   "Reels · Posts": "Reels · Posts",
+  "Redes Sociales": "Redes Sociales",
 };
 
 const SECTION_TITLE_ES: Record<string, string> = {
@@ -621,11 +622,17 @@ const PLACEHOLDER_TITLE_ES: Record<string, { title: string; lines: string[] }> =
   social: { title: "REDES SOCIALES", lines: ["REDES SOCIALES"] },
 };
 
+const PLACEHOLDER_TITLE_EN: Record<string, { title: string; lines: string[] }> = {
+  social: { title: "SOCIAL MEDIA", lines: ["SOCIAL MEDIA"] },
+};
+
 export function localizeProjectTitle(project: Project, lang: Locale): { title: string; lines: string[] } {
   const raw =
     lang === "es" && PLACEHOLDER_TITLE_ES[project.slug]
       ? PLACEHOLDER_TITLE_ES[project.slug]
-      : { title: project.title, lines: project.lines };
+      : lang === "en" && PLACEHOLDER_TITLE_EN[project.slug]
+        ? PLACEHOLDER_TITLE_EN[project.slug]
+        : { title: project.title, lines: project.lines };
   // Project titles always render in uppercase.
   return {
     title: raw.title.toUpperCase(),

@@ -1,12 +1,11 @@
-import type { CSSProperties } from "react";
-import { SOCIAL_BRANDS } from "../../data/socialMedia.ts";
-import { UI_COPY } from "../../data/i18n.ts";
-import { useLanguage } from "../../context/LanguageContext.tsx";
+import {
+  SOCIAL_BRANDS,
+  socialPiecesByBrand,
+  type SocialBrandId,
+  type SocialPiece,
+} from "../../data/socialMedia.ts";
 import { cn } from "../../lib/cn.ts";
 
-/**
- * Logos in src/assets/social/logos/ — fuzzy match on brand keywords.
- */
 const logoModules = import.meta.glob("../../assets/social/logos/*.{png,svg,webp,jpg,jpeg}", {
   eager: true,
   import: "default",
@@ -19,12 +18,10 @@ const LOGO_ALIASES: Record<string, string[]> = {
   "perfect-welding": ["perfect", "welding"],
 };
 
-/** Optical scale so marks read even in a 2×2 mobile grid. */
-const LOGO_SCALE: Record<string, { desktop: number; mobile: number }> = {
-  vitrium: { desktop: 1, mobile: 1 },
-  "patagonia-cnc": { desktop: 1.05, mobile: 1.02 },
-  btec: { desktop: 1.35, mobile: 1.28 },
-  "perfect-welding": { desktop: 1.05, mobile: 0.88 },
+/** Prefer brand-true reels; C12j lives in both folders (PW piece). */
+const PREFERRED_REELS: Partial<Record<SocialBrandId, string[]>> = {
+  btec: ["DWCrG3Tjyks", "DLiTAFcxU7a"],
+  "perfect-welding": ["C4v5dxctmdY", "DN0sSn03GFw", "C3ieWttRjBi", "C12jAu6L9MJ"],
 };
 
 function logoFor(brandId: string): string | undefined {
@@ -46,143 +43,130 @@ function logoFor(brandId: string): string | undefined {
   })?.[1];
 }
 
+function reelBase(piece: SocialPiece, brandId: string) {
+  return piece.id.startsWith(`${brandId}-`)
+    ? piece.id.slice(brandId.length + 1)
+    : piece.id;
+}
+
+function pickReel(brandId: SocialBrandId, usedBases: Set<string>): SocialPiece | undefined {
+  const reels = socialPiecesByBrand(brandId).filter((p) => p.kind === "reel" && p.src);
+  const preferred = PREFERRED_REELS[brandId];
+  const ordered = preferred
+    ? [...reels].sort((a, b) => {
+        const ai = preferred.findIndex((key) => reelBase(a, brandId).includes(key));
+        const bi = preferred.findIndex((key) => reelBase(b, brandId).includes(key));
+        return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+      })
+    : reels;
+
+  for (const reel of ordered) {
+    const base = reelBase(reel, brandId).toLowerCase();
+    if (usedBases.has(base)) continue;
+    usedBases.add(base);
+    return reel;
+  }
+  return undefined;
+}
+
+type CoverTile = {
+  brandId: SocialBrandId;
+  label: string;
+  src: string;
+  logo?: string;
+};
+
+function coverTiles(): CoverTile[] {
+  const usedBases = new Set<string>();
+  return SOCIAL_BRANDS.flatMap((brand) => {
+    const reel = pickReel(brand.id, usedBases);
+    if (!reel?.src) return [];
+    return [
+      {
+        brandId: brand.id,
+        label: brand.label,
+        src: reel.src,
+        logo: logoFor(brand.id),
+      },
+    ];
+  });
+}
+
 /**
- * Social cover — rotating gradient + client logos.
- * Mobile: logos only in the safe middle band (title lives outside the cover).
+ * Social cover — unique reel per client + multiply + white logos.
  */
 export function SocialCoverVisual({ className }: { className?: string }) {
-  const { lang } = useLanguage();
-  const social = UI_COPY[lang].social;
-  const brands = SOCIAL_BRANDS.map((b) => b.label).join("  ·  ");
-  const brandLine = `${brands}  ·  `;
+  const tiles = coverTiles();
+  const count = tiles.length;
+  const gridClass =
+    count >= 4
+      ? "grid-cols-2 grid-rows-2"
+      : count === 3
+        ? "grid-cols-3 grid-rows-1 max-sm:grid-cols-2 max-sm:grid-rows-2"
+        : count === 2
+          ? "grid-cols-2"
+          : "grid-cols-1";
 
   return (
-    <div
-      className={cn("relative h-full w-full overflow-hidden", className)}
-      style={{ background: "#1a2a6c" }}
-    >
-      {/* Large enough that a full rotation never exposes the page behind */}
-      <div className="social-cover-spin absolute inset-[-120%]" aria-hidden>
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(125deg, #0c3d8a 0%, #5b1fa8 38%, #0f6b7a 72%, #1a2a6c 100%)",
-          }}
-        />
-        <div className="absolute inset-0">
-          <div
-            className="absolute -left-[20%] -top-[30%] h-[90%] w-[80%] rounded-full blur-[80px]"
-            style={{ background: "#3bb7ff" }}
-          />
-          <div
-            className="absolute -right-[25%] -top-[20%] h-[85%] w-[75%] rounded-full blur-[90px]"
-            style={{ background: "#c44bff" }}
-          />
-          <div
-            className="absolute -bottom-[35%] left-[10%] h-[80%] w-[70%] rounded-full blur-[85px]"
-            style={{ background: "#1dffc2" }}
-          />
-          <div
-            className="absolute -bottom-[25%] -right-[15%] h-[75%] w-[65%] rounded-full blur-[80px]"
-            style={{ background: "#ff7a3d" }}
-          />
-          <div className="absolute left-[30%] top-[25%] h-[50%] w-[45%] rounded-full bg-[#ff4db8] opacity-50 blur-[100px]" />
+    <div className={cn("relative h-full w-full overflow-hidden bg-[#0d0d0d]", className)}>
+      {count === 0 ? (
+        <div className="flex h-full items-center justify-center px-6 text-center text-[13px] text-white/50">
+          Drop reel exports into the brand folders to build this cover.
         </div>
-      </div>
+      ) : (
+        <ul className={cn("grid h-full w-full gap-[2px] bg-[#0d0d0d]", gridClass)}>
+          {tiles.map((tile, idx) => {
+            const spanLastOnMobile =
+              count === 3 && idx === 2 ? "max-sm:col-span-2" : undefined;
 
-      <div className="pointer-events-none absolute inset-0 bg-black/15" aria-hidden />
-
-      {/* Logos — centered safe zone above hero title / card caption */}
-      <div className="absolute inset-0 z-[2] flex items-center justify-center px-6 pt-[12%] pb-[28%] sm:px-12 sm:pt-[10%] sm:pb-[22%]">
-        <ul className="grid w-full max-w-[20rem] grid-cols-2 gap-x-6 gap-y-8 sm:max-w-4xl sm:grid-cols-4 sm:gap-x-8 sm:gap-y-10">
-          {SOCIAL_BRANDS.map((brand) => {
-            const src = logoFor(brand.id);
-            const scale = LOGO_SCALE[brand.id] ?? { desktop: 1, mobile: 1 };
             return (
               <li
-                key={brand.id}
-                className="flex aspect-[5/3] items-center justify-center sm:aspect-auto sm:h-20 md:h-24"
+                key={tile.brandId}
+                className={cn("relative min-h-0 overflow-hidden bg-[#111]", spanLastOnMobile)}
               >
-                {src ? (
-                  <img
-                    src={src}
-                    alt={brand.label}
-                    className="social-cover-logo h-full w-full max-h-14 object-contain mix-blend-screen sm:max-h-none sm:h-[85%] sm:w-auto sm:max-w-[90%]"
-                    style={
-                      {
-                        "--logo-scale-mobile": String(scale.mobile),
-                        "--logo-scale-desktop": String(scale.desktop),
-                      } as CSSProperties
-                    }
-                  />
-                ) : (
-                  <span className="text-center text-[10px] font-medium uppercase tracking-[0.14em] text-white/90 sm:text-[12px]">
-                    {brand.label}
-                  </span>
-                )}
+                <video
+                  className="absolute inset-0 h-full w-full object-cover"
+                  src={tile.src}
+                  muted
+                  playsInline
+                  loop
+                  autoPlay
+                  preload="metadata"
+                  aria-label={`${tile.label} — reel`}
+                />
+
+                <div
+                  className="pointer-events-none absolute inset-0 bg-black/25 mix-blend-multiply"
+                  aria-hidden
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 bg-black/15"
+                  aria-hidden
+                />
+
+                <div className="absolute inset-0 z-[1] flex items-center justify-center p-5 sm:p-8">
+                  {tile.logo ? (
+                    <div className="flex h-12 w-36 items-center justify-center sm:h-14 sm:w-44 md:h-16 md:w-52">
+                      <img
+                        src={tile.logo}
+                        alt={tile.label}
+                        className={cn(
+                          "h-full w-full object-contain mix-blend-screen",
+                          tile.brandId === "btec" && "scale-125",
+                        )}
+                      />
+                    </div>
+                  ) : (
+                    <span className="text-center text-[11px] font-medium uppercase tracking-[0.16em] text-white sm:text-[13px]">
+                      {tile.label}
+                    </span>
+                  )}
+                </div>
               </li>
             );
           })}
         </ul>
-      </div>
-
-      {/* Desktop/tablet caption only — mobile uses case/card chrome outside */}
-      <div className="absolute inset-x-0 bottom-0 z-[6] hidden bg-gradient-to-t from-[#050816]/85 via-[#050816]/35 to-transparent px-8 pb-7 pt-20 sm:block">
-        <p className="flex flex-wrap items-center gap-2.5 text-[10px] font-medium uppercase tracking-[0.2em] text-cyan-100/80">
-          <span className="h-1.5 w-1.5 rounded-[1px] bg-[var(--c-accent)]" />
-          <span>{social.coverEyebrow}</span>
-          <span className="text-white/25">·</span>
-          <span>2023 — 2026</span>
-        </p>
-        <h3 className="mt-2 max-w-[14ch] text-[clamp(1.7rem,4vw,3rem)] font-semibold leading-[0.92] tracking-[-0.045em] text-white">
-          {social.label}
-        </h3>
-        <p className="mt-2 max-w-[36ch] text-[13px] leading-relaxed text-white/70">
-          {social.coverLine}
-        </p>
-        <div className="social-cover-marquee-mask mt-4 overflow-hidden text-[11px] uppercase tracking-[0.18em] text-teal-100/55">
-          <div className="social-cover-marquee flex w-max whitespace-nowrap">
-            <span className="pr-8">{brandLine}</span>
-            <span className="pr-8" aria-hidden>
-              {brandLine}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <style>{`
-        @keyframes social-cover-spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes social-cover-marquee {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-        .social-cover-spin {
-          transform-origin: center center;
-          animation: social-cover-spin 56s linear infinite;
-          will-change: transform;
-        }
-        .social-cover-marquee {
-          animation: social-cover-marquee 32s linear infinite;
-        }
-        .social-cover-logo {
-          transform: scale(var(--logo-scale-mobile, 1));
-        }
-        @media (min-width: 640px) {
-          .social-cover-logo {
-            transform: scale(var(--logo-scale-desktop, 1));
-          }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .social-cover-spin,
-          .social-cover-marquee {
-            animation: none;
-          }
-        }
-      `}</style>
+      )}
     </div>
   );
 }
