@@ -27,6 +27,7 @@ export const UI_COPY = {
     docTitleHome: "Ian Rebuffo — Visual & Digital Designer",
     docTitleWorks: "Works — Ian Rebuffo",
     docTitleAbout: "Studio — Ian Rebuffo",
+    docTitleSocial: "Social — Ian Rebuffo",
     docTitleNotFound: "Not found — Ian Rebuffo",
     nav: {
       index: "Home",
@@ -98,12 +99,31 @@ export const UI_COPY = {
         shortLabel: "Branding",
         subtitle: "Brand guidelines, packaging and visual systems.",
       },
+      social: {
+        label: "Social Media",
+        shortLabel: "Social Media",
+        subtitle:
+          "Reels and posts for Vitrium Capital, Patagonia CNC, BTEC and Perfect Welding.",
+      },
     } satisfies Record<ProjectCategory, { label: string; shortLabel: string; subtitle: string }>,
+    social: {
+      docTitle: "Social — Ian Rebuffo",
+      label: "Social Media",
+      subtitle:
+        "Reels and posts for Vitrium Capital, Patagonia CNC, BTEC and Perfect Welding.",
+      coverEyebrow: "Clients",
+      coverLine: "Reels and posts across brand and B2B accounts.",
+      filterAll: "All",
+      filterAria: "Filter social work by client",
+      reelsLabel: "Reels",
+      postsLabel: "Posts",
+      empty: "No pieces for this client yet — drop Instagram exports into the brand folder.",
+    },
     works: {
       heading: "Selected Works",
-      subline: "Editorial · Web & App · Brand Identity",
+      subline: "Editorial · Web & App · Brand Identity · Social Media",
       description:
-        "Curated works spanning printed publications, websites, mobile products and brand systems.",
+        "Curated works spanning printed publications, websites, mobile products, brand systems and social content.",
       scrollToExplore: "Scroll to Explore",
       filterAll: "All",
       filterAria: "Filter works by discipline",
@@ -259,6 +279,7 @@ export const UI_COPY = {
     docTitleHome: "Ian Rebuffo — Diseñador Visual y Digital",
     docTitleWorks: "Trabajos — Ian Rebuffo",
     docTitleAbout: "Estudio — Ian Rebuffo",
+    docTitleSocial: "Redes — Ian Rebuffo",
     docTitleNotFound: "No encontrado — Ian Rebuffo",
     nav: {
       index: "Inicio",
@@ -330,12 +351,31 @@ export const UI_COPY = {
         shortLabel: "Branding",
         subtitle: "Manuales de marca, packaging y sistemas visuales.",
       },
+      social: {
+        label: "Redes Sociales",
+        shortLabel: "Redes Sociales",
+        subtitle:
+          "Reels y posts para Vitrium Capital, Patagonia CNC, BTEC y Perfect Welding.",
+      },
     } satisfies Record<ProjectCategory, { label: string; shortLabel: string; subtitle: string }>,
+    social: {
+      docTitle: "Redes — Ian Rebuffo",
+      label: "Redes Sociales",
+      subtitle:
+        "Reels y posts para Vitrium Capital, Patagonia CNC, BTEC y Perfect Welding.",
+      coverEyebrow: "Clientes",
+      coverLine: "Reels y posts para marcas y cuentas B2B.",
+      filterAll: "Todos",
+      filterAria: "Filtrar piezas de redes por cliente",
+      reelsLabel: "Reels",
+      postsLabel: "Posts",
+      empty: "Todavía no hay piezas de este cliente — subí los exports de Instagram a su carpeta.",
+    },
     works: {
       heading: "Trabajos Seleccionados",
-      subline: "Editorial · Web y App · Identidad de Marca",
+      subline: "Editorial · Web y App · Identidad de Marca · Redes Sociales",
       description:
-        "Selección curada de publicaciones impresas, sitios web interactivos, productos mobile y sistemas de marca.",
+        "Selección curada de publicaciones impresas, sitios web interactivos, productos mobile, sistemas de marca y contenido para redes.",
       scrollToExplore: "Scrolleá para explorar",
       filterAll: "Todos",
       filterAria: "Filtrar trabajos por disciplina",
@@ -513,6 +553,9 @@ const DISCIPLINE_ES: Record<string, string> = {
   Magazine: "Revista",
   Packaging: "Packaging",
   Industrial: "Industrial",
+  "Social Media": "Redes Sociales",
+  Motion: "Motion",
+  Content: "Contenido",
   "Information Design": "Diseño de Información",
   Stationery: "Papelería",
 };
@@ -540,6 +583,7 @@ const CATEGORY_LABEL_ES: Record<string, string> = {
   "Book · Typography": "Libro · Tipografía",
   "Web Design · UI": "Diseño Web · UI",
   "Visual Identity": "Identidad Visual",
+  "Reels · Posts": "Reels · Posts",
 };
 
 const SECTION_TITLE_ES: Record<string, string> = {
@@ -573,6 +617,8 @@ const PLACEHOLDER_TITLE_ES: Record<string, { title: string; lines: string[] }> =
   queer: { title: "NEXO", lines: ["NEXO"] },
   "patagonia-packaging": { title: "PATAGONIA PACKAGING", lines: ["PATAGONIA", "PACKAGING"] },
   "planeta-acero": { title: "PLANETA ACERO", lines: ["PLANETA ACERO"] },
+  kobe: { title: "KOBE", lines: ["KOBE"] },
+  social: { title: "REDES SOCIALES", lines: ["REDES SOCIALES"] },
 };
 
 export function localizeProjectTitle(project: Project, lang: Locale): { title: string; lines: string[] } {
@@ -604,7 +650,9 @@ export function localizeMetaValue(value: string, lang: Locale): string {
   // Project meta — keep Spanish when UI lang is ES
   if (lang === "es") {
     if (value === "2025 — 2026") return "2025 — 2026";
+    if (value === "2023 — 2026") return "2023 — 2026";
     if (value === "2025") return "2025";
+    if (value === "Social Content") return "Contenido para redes";
     if (value === "Product Design Lead · UX/UI") return "Lead de Diseño de Producto · UX/UI";
     if (value === "Founder · Brand & Product Design Lead") {
       return "Fundador · Lead de Marca y Diseño de Producto";

@@ -3,6 +3,7 @@ import type { MouseEvent, RefObject } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getProject, homeMedia, projectBelongsTo, projects } from "../data/projects.ts";
 import type { Project, ProjectCategory } from "../data/projects.ts";
+import { socialPieces } from "../data/socialMedia.ts";
 import {
   localizeCategoryLabel,
   localizeDisciplines,
@@ -20,8 +21,14 @@ import { Footer } from "../components/footer/Footer.tsx";
 import { ProjectVisual } from "../components/media/ProjectVisual.tsx";
 import { ImageReveal } from "../components/motion/ImageReveal.tsx";
 import { ParallaxImage } from "../components/motion/ParallaxImage.tsx";
+import { SocialFeed } from "../components/social/SocialSection.tsx";
+import { SocialCoverVisual } from "../components/social/SocialCover.tsx";
 
 type FilterValue = "all" | ProjectCategory;
+
+const FILTER_IDS: FilterValue[] = ["all", "editorial", "web", "branding", "social"];
+
+const socialPieceCount = () => socialPieces.filter((piece) => Boolean(piece.src)).length;
 
 export default function Work() {
   const { lang } = useLanguage();
@@ -33,14 +40,12 @@ export default function Work() {
     { id: "editorial", label: cats.editorial.shortLabel },
     { id: "web", label: cats.web.shortLabel },
     { id: "branding", label: cats.branding.shortLabel },
+    { id: "social", label: cats.social.shortLabel },
   ];
 
   const [searchParams, setSearchParams] = useSearchParams();
   const initialCat = (searchParams.get("category") as FilterValue | null) ?? "all";
-  const validInitial: FilterValue =
-    initialCat === "editorial" || initialCat === "web" || initialCat === "branding"
-      ? initialCat
-      : "all";
+  const validInitial: FilterValue = FILTER_IDS.includes(initialCat) ? initialCat : "all";
 
   const [filter, setFilter] = useState<FilterValue>(validInitial);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -54,7 +59,9 @@ export default function Work() {
   const filtered =
     filter === "all"
       ? projects
-      : projects.filter((project) => projectBelongsTo(project, filter));
+      : filter === "social"
+        ? []
+        : projects.filter((project) => projectBelongsTo(project, filter));
 
   const current =
     filtered.find((item) => item.slug === activeSlug) ??
@@ -64,9 +71,11 @@ export default function Work() {
 
   const handleFilter = (next: FilterValue) => {
     setFilter(next);
-    const nextList =
-      next === "all" ? projects : projects.filter((p) => projectBelongsTo(p, next));
-    if (nextList[0]) setActiveSlug(nextList[0].slug);
+    if (next !== "social") {
+      const nextList =
+        next === "all" ? projects : projects.filter((p) => projectBelongsTo(p, next));
+      if (nextList[0]) setActiveSlug(nextList[0].slug);
+    }
     if (next === "all") {
       searchParams.delete("category");
       setSearchParams(searchParams, { replace: true });
@@ -109,9 +118,11 @@ export default function Work() {
               const count =
                 item.id === "all"
                   ? projects.length
-                  : projects.filter((p) =>
-                      projectBelongsTo(p, item.id as ProjectCategory),
-                    ).length;
+                  : item.id === "social"
+                    ? socialPieceCount()
+                    : projects.filter((p) =>
+                        projectBelongsTo(p, item.id as ProjectCategory),
+                      ).length;
               const isSelected = filter === item.id;
 
               return (
@@ -139,35 +150,52 @@ export default function Work() {
           </div>
 
           <div className="flex items-center justify-end gap-2 md:col-span-3">
-            <button
-              type="button"
-              onClick={() => setViewMode("list")}
-              className={cn(
-                "rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
-                viewMode === "list"
-                  ? "bg-[#0d0d0d] text-[#f5f4f0]"
-                  : "text-[var(--c-muted)] hover:text-[var(--c-ink)]",
-              )}
-            >
-              {copy.list}
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode("grid")}
-              className={cn(
-                "rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
-                viewMode === "grid"
-                  ? "bg-[#0d0d0d] text-[#f5f4f0]"
-                  : "text-[var(--c-muted)] hover:text-[var(--c-ink)]",
-              )}
-            >
-              {copy.grid}
-            </button>
+            {filter === "social" ? null : (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setViewMode("list")}
+                  className={cn(
+                    "rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
+                    viewMode === "list"
+                      ? "bg-[#0d0d0d] text-[#f5f4f0]"
+                      : "text-[var(--c-muted)] hover:text-[var(--c-ink)]",
+                  )}
+                >
+                  {copy.list}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode("grid")}
+                  className={cn(
+                    "rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
+                    viewMode === "grid"
+                      ? "bg-[#0d0d0d] text-[#f5f4f0]"
+                      : "text-[var(--c-muted)] hover:text-[var(--c-ink)]",
+                  )}
+                >
+                  {copy.grid}
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>
 
-      {viewMode === "grid" ? (
+      {filter === "social" ? (
+        <section data-header-theme="paper" className="px-[5vw] pb-[16vh] pt-4">
+          <div className="mb-10 aspect-[16/10] w-full overflow-hidden md:mb-14 md:max-w-[70%]">
+            <Link
+              to="/work/social"
+              data-cursor="project"
+              className="block h-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8"
+            >
+              <SocialCoverVisual className="h-full w-full" />
+            </Link>
+          </div>
+          <SocialFeed />
+        </section>
+      ) : viewMode === "grid" ? (
         <section
           data-header-theme="paper"
           className="px-[5vw] pb-[16vh] pt-4"
@@ -220,14 +248,18 @@ export default function Work() {
           <div className="hidden md:col-span-4 md:col-start-9 md:block">
             <div className="sticky top-28">
               <div ref={visualRef} className="aspect-[16/10] overflow-hidden">
-                <ProjectVisual
-                  project={current}
-                  slot={homeMedia(current)}
-                  className={cn(
-                    "h-full w-full origin-center object-cover",
-                    homeMedia(current).scale == null && "scale-[1.14]",
-                  )}
-                />
+                {current.slug === "social" ? (
+                  <SocialCoverVisual className="h-full w-full" />
+                ) : (
+                  <ProjectVisual
+                    project={current}
+                    slot={homeMedia(current)}
+                    className={cn(
+                      "h-full w-full origin-center object-cover",
+                      homeMedia(current).scale == null && "scale-[1.14]",
+                    )}
+                  />
+                )}
               </div>
               <div className="mt-4 flex items-center justify-between text-[12px] text-[var(--c-muted)]">
                 <span className="font-medium text-[var(--c-ink)]">
@@ -258,6 +290,7 @@ function WorkGridCard({
 }) {
   const { mediaRef, onClick } = useProjectLaunch(project);
   const slot = homeMedia(project);
+  const isSocial = project.slug === "social";
 
   return (
     <article className={cn("group", className)}>
@@ -268,18 +301,22 @@ function WorkGridCard({
         className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8"
       >
         <div ref={mediaRef} className={cn("w-full overflow-hidden", aspectClass)}>
-          <ImageReveal variant="vertical" className="h-full w-full">
-            <ParallaxImage className="h-full w-full">
-              <ProjectVisual
-                project={project}
-                slot={slot}
-                className={cn(
-                  "h-full w-full origin-center object-cover",
-                  slot.scale == null && "scale-[1.14]",
-                )}
-              />
-            </ParallaxImage>
-          </ImageReveal>
+          {isSocial ? (
+            <SocialCoverVisual className="h-full w-full" />
+          ) : (
+            <ImageReveal variant="vertical" className="h-full w-full">
+              <ParallaxImage className="h-full w-full">
+                <ProjectVisual
+                  project={project}
+                  slot={slot}
+                  className={cn(
+                    "h-full w-full origin-center object-cover",
+                    slot.scale == null && "scale-[1.14]",
+                  )}
+                />
+              </ParallaxImage>
+            </ImageReveal>
+          )}
         </div>
 
         <div className="mt-4 flex items-baseline justify-between gap-4">
@@ -343,6 +380,8 @@ function WorkRow({
     });
   };
 
+  const isSocial = project.slug === "social";
+
   return (
     <article className="border-b border-[var(--c-line)] py-7 md:py-9">
       <Link
@@ -372,7 +411,11 @@ function WorkRow({
           {localizeProjectTitle(project, lang).title}
         </h2>
         <div ref={localRef} className="mt-6 aspect-[16/10] overflow-hidden md:hidden">
-          <ProjectVisual project={project} slot={project.media[0]} />
+          {isSocial ? (
+            <SocialCoverVisual className="h-full w-full" />
+          ) : (
+            <ProjectVisual project={project} slot={project.media[0]} />
+          )}
         </div>
       </Link>
     </article>

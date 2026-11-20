@@ -3,6 +3,9 @@ node_modules
 dist
 dist-ssr
 
+# Unoptimized source masters (kept local; site uses WebP exports)
+src/assets/**/_raw/
+
 # Logs
 logs
 *.log

@@ -4,6 +4,7 @@ import { ease, gsap } from "../../lib/gsap.ts";
 import { runtime } from "../../lib/runtime.ts";
 import type { Flight } from "../../context/TransitionContext.tsx";
 import { ProjectVisual } from "../media/ProjectVisual.tsx";
+import { SocialCoverVisual } from "../social/SocialCover.tsx";
 
 export function ProjectTransition({
   flight,
@@ -106,13 +107,17 @@ export function ProjectTransition({
       ref={ref}
       className="pointer-events-none fixed inset-0 z-[70] origin-top-left overflow-hidden will-change-transform"
     >
-      <ProjectVisual
-        project={project}
-        slot={slot}
-        underNav
-        hideOverlayMeta
-        className="h-full w-full object-cover"
-      />
+      {flight.slug === "social" ? (
+        <SocialCoverVisual className="h-full w-full" />
+      ) : (
+        <ProjectVisual
+          project={project}
+          slot={slot}
+          underNav
+          hideOverlayMeta
+          className="h-full w-full object-cover"
+        />
+      )}
     </div>
   );
 }

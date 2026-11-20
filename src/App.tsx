@@ -14,6 +14,7 @@ import { PageCurtain } from "./components/motion/PageCurtain.tsx";
 
 const Home = lazy(() => import("./pages/Home.tsx"));
 const Work = lazy(() => import("./pages/Work.tsx"));
+const SocialPage = lazy(() => import("./pages/work/SocialPage.tsx"));
 const About = lazy(() => import("./pages/About.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const TayPage = lazy(() => import("./pages/work/TayPage.tsx"));
@@ -63,6 +64,7 @@ function AppShell() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/work" element={<Work />} />
+            <Route path="/social" element={<SocialPage />} />
             <Route path="/work/tay" element={<TayPage />} />
             <Route path="/work/nudos" element={<NudosPage />} />
             <Route path="/work/nudos-web" element={<NudosWebPage />} />
@@ -73,6 +75,7 @@ function AppShell() {
             <Route path="/work/queer" element={<NexoPage />} />
             <Route path="/work/patagonia-packaging" element={<PatagoniaPackagingPage />} />
             <Route path="/work/planeta-acero" element={<PlanetaAceroPage />} />
+            <Route path="/work/social" element={<SocialPage />} />
             <Route path="/work/:slug" element={<GenericCasePage />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />

@@ -65,7 +65,7 @@ export default function Home() {
         secondary={copy.kineticSecondary}
       />
 
-      {/* Categorized Sections: 01 Editorial, 02 Web & Product, 03 Brand Identity */}
+      {/* 01 Editorial · 02 Web & App · 03 Branding · 04 Social */}
       <ProjectShowcase />
 
       {/* Hayler Services, Skills & Expertise Strip */}

@@ -12,6 +12,7 @@ import { runtime } from "../../lib/runtime.ts";
 import { cn } from "../../lib/cn.ts";
 import { ImageReveal } from "../motion/ImageReveal.tsx";
 import { ProjectVisual } from "../media/ProjectVisual.tsx";
+import { SocialCoverVisual } from "../social/SocialCover.tsx";
 
 export function CaseStudyHero({ project }: { project: Project }) {
   const { lang } = useLanguage();
@@ -19,6 +20,7 @@ export function CaseStudyHero({ project }: { project: Project }) {
   const localizedTitle = localizeProjectTitle(project, lang);
   // Same crop as listing / flight overlay — keeps preview → banner continuous.
   const slot = { ...homeMedia(project), fit: "cover" as const };
+  const isSocial = project.slug === "social";
   // If we arrived via the expand flight, never remount/fade the banner image.
   const [fromFlight, setFromFlight] = useState(() => runtime.flying || runtime.handoff);
   const [handoff, setHandoff] = useState(() => runtime.flying || runtime.handoff);
@@ -31,6 +33,12 @@ export function CaseStudyHero({ project }: { project: Project }) {
 
     // Tell the flight overlay the identical banner is painted underneath.
     const signal = () => window.dispatchEvent(new Event("ir-hero-ready"));
+
+    if (isSocial) {
+      requestAnimationFrame(signal);
+      return;
+    }
+
     const imgs = Array.from(
       document.querySelectorAll<HTMLImageElement>(
         `[data-case-hero="${project.slug}"] img`,
@@ -56,7 +64,7 @@ export function CaseStudyHero({ project }: { project: Project }) {
         img.removeEventListener("error", onLoad);
       });
     };
-  }, [project.slug]);
+  }, [project.slug, isSocial]);
 
   useEffect(() => {
     const onDone = () => setHandoff(false);
@@ -64,7 +72,9 @@ export function CaseStudyHero({ project }: { project: Project }) {
     return () => window.removeEventListener("ir-handoff-done", onDone);
   }, [project.slug]);
 
-  const media = (
+  const media = isSocial ? (
+    <SocialCoverVisual className="h-full w-full" />
+  ) : (
     <ProjectVisual
       project={project}
       slot={slot}

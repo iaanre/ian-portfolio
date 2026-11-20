@@ -16,7 +16,6 @@ import { PACKAGING_COPY } from "./packagingCopy.ts";
 import { patagoniaWebAsset, patagoniaWebCover } from "./patagoniaWebAssets.ts";
 import { planetaAceroAsset, planetaAceroCover } from "./planetaAceroAssets.ts";
 import { PLANETA_ACERO_COPY } from "./planetaAceroCopy.ts";
-
 const tayCovers = tayCover("es");
 const tayEn = TAY_COPY.en;
 const nudosCovers = nudosCover("es");
@@ -39,7 +38,7 @@ const planetaAceroEn = PLANETA_ACERO_COPY.en;
 
 export type MediaFrame = "none" | "browser" | "phone" | "spread";
 
-export type ProjectCategory = "editorial" | "web" | "branding";
+export type ProjectCategory = "editorial" | "web" | "branding" | "social";
 
 export type BannerTheme = {
   /** Base dark or light surface of the project banner */
@@ -141,6 +140,12 @@ export const CATEGORY_META: Record<
     label: "Brand Identity",
     shortLabel: "Branding",
     subtitle: "Brand guidelines, packaging and visual systems.",
+  },
+  social: {
+    id: "social",
+    label: "Social Media",
+    shortLabel: "Social Media",
+    subtitle: "Reels and posts for brand and B2B accounts.",
   },
 };
 
@@ -1213,6 +1218,37 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: "social",
+    index: "12",
+    title: "Social Media",
+    lines: ["Social Media"],
+    category: "social",
+    categoryLabel: "Reels · Posts",
+    featured: false,
+    disciplines: ["Social Media", "Motion", "Content"],
+    year: "2023 — 2026",
+    role: "Social Content",
+    tone: "ink",
+    banner: {
+      bg: "#121212",
+      secondary: "#1c1c1c",
+      glow: "rgba(180, 180, 180, 0.18)",
+      accent: "#c4f000",
+      headerTheme: "ink",
+    },
+    overview:
+      "Reels and posts for Vitrium Capital, Patagonia CNC, BTEC and Perfect Welding.",
+    sections: [
+      {
+        id: "overview",
+        title: "Overview",
+        body: "Reels and posts for Vitrium Capital, Patagonia CNC, BTEC and Perfect Welding.",
+      },
+    ],
+    /** Cover is rendered by SocialCoverVisual — no bitmap asset. */
+    media: [media("cover", "Social media cover", "landscape")],
+  },
 ];
 
 /** Display order inside each home / work category section. */
@@ -1220,6 +1256,7 @@ const CATEGORY_ORDER: Record<ProjectCategory, string[]> = {
   editorial: ["editorial-02", "patagonia", "catalog-02", "queer"],
   branding: ["planeta-acero", "nudos", "patagonia-packaging"],
   web: ["nudos-web", "tay", "patagonia-web"],
+  social: ["social"],
 };
 
 const FEATURED_ORDER = ["tay", "patagonia", "editorial-02", "planeta-acero"];

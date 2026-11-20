@@ -16,6 +16,7 @@ import { ProjectVisual } from "../media/ProjectVisual.tsx";
 import { ImageReveal } from "../motion/ImageReveal.tsx";
 import { ParallaxImage } from "../motion/ParallaxImage.tsx";
 import { MagneticLink } from "../navigation/MagneticLink.tsx";
+import { SocialSection } from "../social/SocialSection.tsx";
 
 export function ProjectShowcase() {
   const { lang } = useLanguage();
@@ -28,6 +29,7 @@ export function ProjectShowcase() {
       <EditorialSection items={editorialItems} lang={lang} />
       <WebSection items={webItems} lang={lang} />
       <BrandingSection items={brandingItems} lang={lang} />
+      <SocialSection />
       <SeeAllWorksBanner total={projects.length} lang={lang} />
     </div>
   );
